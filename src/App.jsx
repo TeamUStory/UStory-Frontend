@@ -1,4 +1,5 @@
-import {BrowserRouter, Routes} from 'react-router-dom';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import "/src/styles/global.scss";
 
 function App() {
 
@@ -6,7 +7,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          
+
         </Routes>
       </BrowserRouter>
     </>
