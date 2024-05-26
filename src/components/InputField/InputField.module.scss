@@ -1,0 +1,29 @@
+label{
+    display: block;
+    margin-bottom: 8px;
+    color: $black2;
+    font-size: 14px;
+}
+
+input{
+  box-sizing: border-box;
+  padding: 13px 17px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid $black3;
+
+  &::placeholder{
+    color: $black3;
+    font-weight: normal;
+  }
+
+  &:focus{
+    border: 1px solid $point-color1;
+    outline: 1px solid $point-color1;
+  }
+
+  &:active{
+    border: 1px solid $point-color1;
+    outline: 1px solid $point-color1;
+  }
+}
