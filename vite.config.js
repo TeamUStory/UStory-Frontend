@@ -8,4 +8,9 @@ export default defineConfig({
     react(),
     VitePWA(),
   ],
+  resolve: {
+    alias: {
+      "@": "/src"
+    }
+  }
 })
