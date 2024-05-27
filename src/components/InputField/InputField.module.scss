@@ -12,6 +12,11 @@ input{
   border-radius: 10px;
   border: 1px solid $black4;
 
+  /*ios대응*/
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+
   &::placeholder{
     color: $black3;
     font-weight: normal;
