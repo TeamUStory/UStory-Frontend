@@ -1,3 +1,5 @@
+@import "@/assets/styles/global.scss";
+
 label{
     display: block;
     margin-bottom: 8px;
@@ -15,7 +17,7 @@ input{
   /*ios대응*/
   appearance: none;
   -webkit-appearance: none;
-  -webkit-border-radius: 0;
+  -webkit-border-radius: 10px;
 
   &::placeholder{
     color: $black3;
