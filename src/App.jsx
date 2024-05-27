@@ -1,16 +1,14 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import "/src/styles/global.scss";
+import {BrowserRouter, Routes} from 'react-router-dom';
+import "@/assets/styles/global.scss";
 
 function App() {
 
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        
+      </Routes>
+    </BrowserRouter>
   )
 }
 
