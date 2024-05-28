@@ -2,7 +2,7 @@ import styles from './Modal.module.scss';
 import propTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Button from "@/components/Button/Button";
-import XIcon from "/public/icons/XIcon";
+import XIcon from "@/assets/icons/XIcon";
 
 const Modal = ({icon, children, buttonText, actionFn, closeFn}) => {
   return ReactDOM.createPortal(
