@@ -8,6 +8,7 @@ const Button = ({ label, type = 'button', onClick, variant}) => {
       type={type}
       onClick={onClick}
       className={clsx(styles.button, styles[variant])}
+      disabled={variant === 'disabled'}
     >
       {label}
     </button>
