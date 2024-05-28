@@ -1,0 +1,38 @@
+@import "@/assets/styles/global.scss";
+
+label{
+  display: block;
+  margin-bottom: 8px;
+  color: $black2;
+  font-size: 14px;
+}
+
+select {
+  box-sizing: border-box;
+  padding: 13px 54px 13px 17px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid $black4;
+  color: $black3;
+
+  -webkit-appearance:none; /* for chrome */
+  -moz-appearance:none; /*for firefox*/
+  appearance:none;
+  &::-ms-expand{
+    display:none; /*for IE10,11*/
+  }
+
+  background: url('/public/icons/selectArrow.png') no-repeat right 18px top 50%;
+
+  &:focus{
+    border: 1px solid $point-color1;
+    outline: 1px solid $point-color1;
+    background: url('/public/icons/selectArrow_up.png') no-repeat right 18px top 50%;
+  }
+
+  &:active{
+    border: 1px solid $point-color1;
+    outline: 1px solid $point-color1;
+    background: url('/public/icons/selectArrow_up.png') no-repeat right 18px top 50%;
+  }
+}
