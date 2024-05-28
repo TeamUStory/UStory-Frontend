@@ -1,3 +1,5 @@
+@import "@/assets/styles/global.scss";
+
 label{
     display: block;
     margin-bottom: 8px;
@@ -10,7 +12,12 @@ input{
   padding: 13px 17px;
   font-size: 14px;
   border-radius: 10px;
-  border: 1px solid $black3;
+  border: 1px solid $black4;
+
+  /*ios대응*/
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-border-radius: 10px;
 
   &::placeholder{
     color: $black3;

@@ -1,0 +1,34 @@
+@import "@/assets/styles/global.scss";
+
+.noResult{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  padding:30px 20px;
+  width: 100%;
+
+  .iconBox{
+    width: 37px;
+    height: 37px;
+
+    svg{
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .messageText{
+    font-size: 14px;
+    color: $black2;
+    font-weight: 600;
+    margin: 20px 0px;
+    white-space: pre-wrap;
+    text-align: center;
+  }
+}
