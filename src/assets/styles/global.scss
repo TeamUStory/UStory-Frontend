@@ -26,6 +26,10 @@ body {
 	line-height: 1.5;
   font-family: 'Pretendard';
 }
+html, body{
+  height: 100%;
+  width: 100%;
+}
 ol, ul {
 	list-style: none;
 }
@@ -42,8 +46,16 @@ table {
 	border-spacing: 0;
 }
 button{
-  all: unset;
   cursor: pointer;
+  border: 0px;
+  background: none;
+  outline: none;
+
+  //ios
+  -webkit-appearance: none;
+
+  //android
+  -moz-appearance: none;
 }
 
 // font 
