@@ -22,17 +22,17 @@ select {
     display:none; /*for IE10,11*/
   }
 
-  background: url('/public/icons/selectArrow.png') no-repeat right 18px top 50%;
+  background: url('/src/assets/images/selectArrow.png') no-repeat right 18px top 50%;
 
   &:focus{
     border: 1px solid $point-color1;
     outline: 1px solid $point-color1;
-    background: url('/public/icons/selectArrow_up.png') no-repeat right 18px top 50%;
+    background: url('/src/assets/images/selectArrow_up.png') no-repeat right 18px top 50%;
   }
 
   &:active{
     border: 1px solid $point-color1;
     outline: 1px solid $point-color1;
-    background: url('/public/icons/selectArrow_up.png') no-repeat right 18px top 50%;
+    background: url('/src/assets/images/selectArrow_up.png') no-repeat right 18px top 50%;
   }
 }
