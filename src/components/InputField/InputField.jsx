@@ -1,3 +1,4 @@
+import propTypes from 'prop-types';
 import { useId } from "react"
 import styles from './InputField.module.scss';
 
@@ -11,6 +12,10 @@ const InputField = (props) => {
       <input {...inputProps} id={inputId} />
     </div>
   )
+}
+
+InputField.propTypes = {
+  label: propTypes.string
 }
 
 export default InputField;
