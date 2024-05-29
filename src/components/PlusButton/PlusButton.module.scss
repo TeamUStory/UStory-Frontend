@@ -1,10 +1,54 @@
-.plus {
-    position: fixed;
-    bottom: 77px;
-    right: 11px;
-    z-index: 1;
+@import '@/assets/styles/colors.scss';
 
-    .plusShadow {
-        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25); 
+.container {
+    position: relative;
+
+    .plus {
+        position: fixed;
+        bottom: 77px;
+        right: 20px;
+        z-index: 1;
+    
+        .plusShadow {
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25); 
+        }
+    
+        &.open {
+            transform: rotate(45deg);
+        }
+    }
+    
+    .buttons {
+        position: fixed;
+        bottom: 145px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+
+        .link {
+            text-decoration: none;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            
+            padding: 11px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: black;
+
+            &.registerPage {
+                background-color: $sub-color3;
+            }
+
+            &.registerDiary {
+                background-color: $sub-color4;
+            }
+        }
+
     }
 }

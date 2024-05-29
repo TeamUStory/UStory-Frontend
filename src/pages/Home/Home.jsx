@@ -22,7 +22,7 @@ const Home = () => {
                     <p>내가 속한 다이어리를 확인해보세요!</p>
                     <div className={styles.diaryList}>
                         <div className={styles.diary}>
-                            <img src="src\assets\images\diasryBasicImage.png" alt="다이어리 이미지" />
+                            <img src="src\assets\images\diaryBasicImage.png" alt="다이어리 이미지" />
                             <div className={styles.diaryContent}>
                                 <p className={styles.diaryName}>기본 다이어리</p>
                                 <p className={styles.diaryCategory}>개인</p>

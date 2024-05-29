@@ -1,4 +1,4 @@
-@import '@/assets/styles/global.scss';
+@import 'src/assets/styles/colors.scss';
 
 .postItem {
     display: flex;
@@ -6,7 +6,7 @@
     border-radius: 20px;
     transition: transform 0.2s ease-in-out;
     text-decoration: none;
-    width: 166px;
+    width: 46%;
     gap:17px;
 
     &:hover {
@@ -16,6 +16,7 @@
     .image {
         width: 100%;
         height: 100%;
+        border-radius: 10px;
     }
 
     .content {
