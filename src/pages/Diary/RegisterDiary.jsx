@@ -35,7 +35,7 @@ const RegisterDiary = () => {
                     className={styles.input}
                 />
                 <DiaryImageUpload />
-                <SelectBox options={categories} value={categories} />
+                <SelectBox options={categories} value={categories.label} label="친구 선택" />
                 <div className={styles.markerColorSelect}>
                     <p>마커 색상</p>
                     <p className={styles.information}>선택한 색상으로 지도에 마커가 생성됩니다.</p>
@@ -73,7 +73,7 @@ const RegisterDiary = () => {
                     <p>소개</p>
                     <textarea id='diaryIntroduction' placeholder='다이어리에 대해 소개해주세요.'></textarea>
                 </div>
-                <Button label="기록하기" disabled />
+                <Button label="기록하기" variant="active" />
             </div>
         </div>
     );

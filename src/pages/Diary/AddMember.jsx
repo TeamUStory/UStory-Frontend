@@ -18,7 +18,7 @@ const AddMember = () => {
     };
 
     useEffect(() => {
-        setMemberExist(true);
+        setMemberExist(false);
     },[])
 
     return (
@@ -53,7 +53,7 @@ const AddMember = () => {
                     <div className={styles.noResultContainer}>
                         <NoResult icon={<SadIcon stroke="#616161" />} message="앗, 친구목록에 친구가 없어요" />
                     </div>
-                    <Button label="선택완료" onChange ={()=><div></div>} disabled/>
+                    <Button label="선택완료" onChange ={()=><div></div>} variant="disabled" />
                 </div>
             )}
         </div>

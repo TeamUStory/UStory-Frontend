@@ -1,6 +1,7 @@
 @import 'src/assets/styles/colors.scss';
 
 .bottomBar {
+ 
     position: fixed;
     bottom: 0;
     left: 0;
@@ -31,7 +32,7 @@
                 border-radius: 50%;
                 width: 43px;
                 height: 43px;
-                background-color: #F2B1AB;
+                background-color: #F2B1AB45;
             }
         }
     }
