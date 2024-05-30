@@ -112,7 +112,7 @@ const Diary = () => {
                                 <CirclePlusIcon fill="#F2B1AB" />
                             </div>
                             <div className={styles.right}>
-                                <Link to="/">
+                                <Link to="/diary/pagelist">
                                     <p>전체 보기</p>
                                     <ArrowIcon fill="black" />
                                 </Link>

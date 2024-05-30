@@ -38,7 +38,8 @@ const DiaryList = () => {
     ];
 
     // 현재 보여지는 포스트 상태
-    const [postItems, setPostItems] = useState(initialPostItems.slice(0, 4));
+    const pageSize = 4;
+    const [postItems, setPostItems] = useState(initialPostItems.slice(0, pageSize));
 
     // 감지할 요소
     const loaderRef = useRef(null);
@@ -48,7 +49,7 @@ const DiaryList = () => {
     const loadMorePosts = () => {
         setPostItems((prevPostItems) => {
             const currentLength = prevPostItems.length;
-            const newPosts = initialPostItems.slice(currentLength, currentLength + 4);
+            const newPosts = initialPostItems.slice(currentLength, currentLength + pageSize);
             return [...prevPostItems, ...newPosts];
         });
     };
@@ -62,7 +63,7 @@ const DiaryList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isIntersecting]);
 
-    // 다이어리를 2개로 나누는 함수
+    // 배열을 2개씩 나누는 함수
     const makeArray = (array, size) => {
         return array.reduce((acc, _, i) => {
             if (i % size === 0) acc.push(array.slice(i, i + size));
@@ -70,7 +71,7 @@ const DiaryList = () => {
         }, []);
     };
 
-    // 2개씩 나뉜 다이어리 그룹
+    // 2개씩 나뉜 다이어리 모음
     const groupedPostItems = makeArray(postItems, 2);
 
     console.log(postItems);
