@@ -1,0 +1,134 @@
+@import "@/assets/styles/colors.scss";
+
+.allContainer {
+
+    .contentsContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 37px;
+        
+        padding: 70px 20px 20px 20px;
+        overflow-y: auto;
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            box-sizing: border-box;
+            height: 595px;
+            
+            border-radius: 20px;
+            border: 1px solid $black4;
+            background-color: #f8f8f8;
+
+            .membersSearchContainer {
+                background-color: $white1;
+                width: 100%;
+                border-radius: 20px 20px 0 0;
+                
+                padding: 25px 21px;
+                box-sizing: border-box;
+                
+                display: flex;
+                flex-direction: column;
+                gap: 29px;
+                
+                .searchBox {
+                    position: relative; // 부모 요소에 position: relative 설정
+                    width: 100%;
+                    height: 44px;
+                    
+                    input {
+                        box-sizing: border-box;
+                        width: 100%;
+                    }
+                    
+                    svg {
+                        position: absolute;
+                        text-align: center;
+                        top: 19px;
+                        right: 10px;
+                        pointer-events: none;
+                    }
+                }
+                
+            }
+        
+            .membersContainer {
+                
+                .memberContainer {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    
+                    .memberProfile {  
+                        display: flex;
+                        align-items: center;
+                        gap: 17px;
+                        
+                        padding-left: 10px;
+                        box-sizing: border-box;
+                        
+                        img {
+                            width: 41px;
+                            height: 41px;
+                            border-radius: 10px;
+                            border: 1px solid $point-color1;
+                        }
+                        
+                        .information {
+                            display: flex;
+                            flex-direction: column;
+                            
+                            p {
+                                font-size: 14px;
+                                font-weight: 600;
+                            }
+                            
+                            .memberName {
+                                font-size: 12px;
+                                font-weight: 400;
+                                color: #616161;
+                            }
+                        }
+                    }
+                    
+                    label {
+                        margin: 0;
+                    }
+                }
+            }
+            
+        }
+        
+    }
+
+    .noResult {
+        display: flex;
+        flex-direction: column;
+        gap: 37px;
+        width: 100%;
+        
+        box-sizing: border-box;
+        padding: 70px 20px 20px 20px;
+
+        .noResultContainer {
+            z-index: -2;
+           
+            height: 595px;
+            overflow-y: auto;
+            
+            border-radius: 20px;
+            border: 1px solid $black4;
+            background-color: #f8f8f8;
+            
+            & div{
+                text-align: center;
+                z-index: -3;
+            }
+        }
+
+    }
+    
+}

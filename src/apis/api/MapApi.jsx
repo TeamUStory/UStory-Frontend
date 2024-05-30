@@ -18,7 +18,25 @@ const MapApi = () => {
                         center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
                         level: 9, // 지도의 확대 레벨
                     };
-                    new window.kakao.maps.Map(containerRef.current, mapOption);
+                    const map = new window.kakao.maps.Map(containerRef.current, mapOption);
+
+                    // 지도를 표시하는 div 크기를 변경하는 함수
+                    const resizeMap = () => {
+                        const mapContainer = document.getElementById('map');
+                        if (mapContainer) {
+                            mapContainer.style.width = '100%';
+                            mapContainer.style.height = '344px'; 
+                        }
+                    }
+
+                    // 크기를 변경한 이후에는 반드시 map.relayout 함수를 호출
+                    const relayout = () => {
+                        map.relayout();
+                    }
+
+                    // 예시: 지도 크기 변경 후 재배치
+                    resizeMap();
+                    relayout();
                 }
             });
         };
@@ -30,7 +48,7 @@ const MapApi = () => {
     }, []);
 
     return (
-        <div ref={containerRef} style={{ width: "343px", height: "484px",   }}></div>
+        <div ref={containerRef} id="map"></div>
     );
 };
 

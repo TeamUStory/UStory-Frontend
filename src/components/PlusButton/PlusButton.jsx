@@ -22,7 +22,7 @@ const PlusButton = () => {
                         <p>장소 기록하기</p>
                         <PencilIcon />
                     </button>
-                    <Link to='register-diary' className={styles.link}>
+                    <Link to='/register-diary' className={styles.link}>
                         <button className={styles.registerDiary}>
                             <p>다이어리 추가</p>
                             <Plus 

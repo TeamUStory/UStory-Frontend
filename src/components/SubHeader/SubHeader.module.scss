@@ -1,4 +1,4 @@
-@import "@/assets/styles/global.scss";
+@import "@/assets/styles/colors.scss";
 
 header{
   background: $white1;
@@ -28,6 +28,7 @@ header{
     svg{
       width: 24px;
       height: 24px;
+      vertical-align: middle;
     }
   }
 }
