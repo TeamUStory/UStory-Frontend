@@ -28,20 +28,13 @@ const DiaryList = () => {
 
     // 다이어리 배열
     const initialPostItems = [
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 02', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 03', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 04', link: '', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 04', link: '', subText: '개인', borderColor: 'black' },
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 05', link: '/diary', subText: '개인', borderColor: 'black' },
     ];
 
     // 현재 보여지는 포스트 상태

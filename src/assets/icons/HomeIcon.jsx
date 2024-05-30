@@ -22,7 +22,7 @@ const HomeIcon = ({color, bgColor}) => {
 
 HomeIcon.propTypes = {
     color: PropTypes.string.isRequired,
-    bgColor: PropTypes.string.isRequired
+    bgColor: PropTypes.string
 }
 
 export default HomeIcon;

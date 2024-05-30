@@ -29,11 +29,17 @@
             font-weight: bold;
             color: $black1;
         }
+        
+        .sub {
+            display: flex;
+            align-items: center;
+            gap: 5px;
 
-        .subText {
-            font-size: 13px;
-            font-weight: medium;
-            color: $black3;
+            .subText {
+                font-size: 13px;
+                font-weight: medium;
+                color: $black3;
+            }
         }
     }
 }

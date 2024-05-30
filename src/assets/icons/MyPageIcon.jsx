@@ -22,7 +22,7 @@ const MyPageIcon = ({color, bgColor}) => {
 
 MyPageIcon.propTypes = {
     color: PropTypes.string.isRequired,
-    bgColor: PropTypes.string.isRequired
+    bgColor: PropTypes.string
 }
 
 export default MyPageIcon;
