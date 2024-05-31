@@ -17,7 +17,9 @@ const Home = () => {
                 <NotificationIcon />
             </header>
             <div className={styles.contents}>
-                <MapApi />
+                <div className={styles.mapContainer}>
+                    <MapApi />
+                </div>
                 <div className={styles.diaryContainer}>
                     <p>내가 속한 다이어리를 확인해보세요!</p>
                     <div className={styles.diaryList}>

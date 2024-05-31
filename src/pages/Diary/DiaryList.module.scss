@@ -20,6 +20,7 @@
         .leftHeader {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 5px;
 
             p {
@@ -28,9 +29,13 @@
                 color: $point-color1;
                 white-space: nowrap;
             }
-            svg {
-                width: 18px;
-                height: 18px;
+
+            button {
+                padding: 0;
+                position: relative;
+                left: 0px;
+                top: 0;
+                transform: translateY(0);
             }
         }
     }

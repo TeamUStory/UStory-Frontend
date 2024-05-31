@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './DiaryList.module.scss';
 import CirclePlusIcon from '@/assets/icons/CirclePlusIcon';
 import NotificationIcon from '@/assets/icons/NotificationIcon';
@@ -6,8 +7,11 @@ import PlusButton from '@/components/PlusButton/PlusButton';
 import PostItem from '@/components/PostItem/PostItem';
 import BottomBar from '@/components/BottomBar/BottomBar';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import Button from '@/components/Button/Button';
 
 const DiaryList = () => {
+    const navigate = useNavigate();
+
     // 카테고리 배열
     const [buttonStates, setButtonStates] = useState([
         { category: "개인", isActive: false },
@@ -74,14 +78,12 @@ const DiaryList = () => {
     // 2개씩 나뉜 다이어리 모음
     const groupedPostItems = makeArray(postItems, 2);
 
-    console.log(postItems);
-
     return (
         <div className={styles.container}>
             <header className={styles.header}>
                 <div className={styles.leftHeader}>
                     <p>다이어리</p>
-                    <CirclePlusIcon fill="#FB8176" />
+                    <Button type="button" variant="inactive" label={<CirclePlusIcon fill="#FB8176" />} onClick={() => navigate('/register/diary')} />
                 </div>
                 <NotificationIcon />
             </header>

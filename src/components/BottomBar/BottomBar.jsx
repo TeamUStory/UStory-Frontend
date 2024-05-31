@@ -39,7 +39,7 @@ const BottomBar = () => {
                         <HomeIcon color={selectedIcon === 'home' ? '#FB8176' : 'black'} alt="홈화면" />
                     </div>
                 </Link>
-                <Link to="/pageList">
+                <Link to="/diary/pagelist">
                     <div className={`${styles.iconWrapper} ${selectedIcon === 'pageList' ? styles.selected : ''}`} onClick={() => setSelectedIcon('pageList')}>
                         <PageListIcon color={selectedIcon === 'pageList' ? '#FB8176' : 'black'} alt="내가 기록한 장소" />
                     </div>
