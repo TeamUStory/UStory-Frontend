@@ -33,6 +33,7 @@ function App() {
         <Route path='/editdiary' element={<EditDiary />} />
         <Route path='/diary/pagelist' element={<DiaryPageList/>} />
         <Route path='/register/paper' element={<RegisterPaper />} />
+        <Route path='/login' element={<Login/>} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/findpassword' element={<FindPassword />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
