@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './AddMember.module.scss'
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
@@ -12,6 +12,12 @@ const AddMember = () => {
     // 라디오 버튼의 체크 상태를 관리하는 상태
     const [isChecked, setIsChecked] = useState(false);
     const [memberExist, setMemberExist] = useState(false);
+
+    const members = [
+        { nickName: '메타몽', name: '김영희', src: '/src/assets/images/basicMemberImage.png' },
+        { nickName: '피카츄', name: '김철수', src: '/src/assets/images/basicMemberImage.png' },
+        { nickName: '이브이', name: '난사람', src: '/src/assets/images/basicMemberImage.png' },
+    ];
 
     const handleRadioButtonClick = () => {
         setIsChecked(!isChecked);
@@ -33,16 +39,22 @@ const AddMember = () => {
                             <SearchIcon />
                         </div>
                         <div className={styles.membersContainer}>
-                            <div className={styles.memberContainer} >
-                                <div className={styles.memberProfile}>
-                                    <img src='/src/assets/images/basicMemberImage.png' alt='멤버 기본이미지' />
-                                    <div className={styles.information}>
-                                        <p>메타몽</p>
-                                        <p className={styles.memberName}>@김영희</p>
+                            {members.map((member, index) => (
+                                <React.Fragment key={index}>
+                                    <div className={styles.memberContainer} >
+                                        <div className={styles.memberProfile}>
+                                            <img src='/src/assets/images/basicMemberImage.png' alt='멤버 기본이미지' />
+                                            <div className={styles.information}>
+                                                <p>{member.nickName}</p>
+                                                <p className={styles.memberName}>@{member.name}</p>
+                                            </div>
+                                        </div>
+                                        <RadioButton checked={isChecked} onChange={handleRadioButtonClick} />
                                     </div>
-                                </div>
-                                <RadioButton checked={isChecked} onChange={handleRadioButtonClick} />
-                            </div>
+                                    {index < members.length - 1 && <hr />}
+                                </React.Fragment>
+                            ))}
+                            
                         </div>
                     </div>
                 </div>

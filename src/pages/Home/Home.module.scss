@@ -23,6 +23,7 @@
         background-color: $white1;
 
         z-index: 100;
+        border: none;
 
         p {
             font-size: 16px;
@@ -45,6 +46,12 @@
         padding-top: 80px;
         padding-bottom: 63px;
         overflow-y: auto;
+        
+        .mapContainer{
+            padding: 0 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
         .diaryContainer {
             display: flex;

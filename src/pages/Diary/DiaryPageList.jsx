@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import styles from './DiaryPageList.module.scss';
 import SubHeader from '@/components/SubHeader/SubHeader';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
-import { useRef } from 'react';
 import PostItem from '../../components/PostItem/PostItem';
 import PlaceMark from '../../assets/icons/PlaceMark';
 import Calender from '../../components/Calender/Calender';
@@ -10,6 +10,7 @@ import Calender from '../../components/Calender/Calender';
 const DiaryPageList = () => {
     // 기록 배열
     const initialPostItems = [
+        { image: '/src/assets/images/place.png', title: '껑냥이들 01', link: '/diary', subText: '장소', borderColor: 'black' },
         { image: '/src/assets/images/place.png', title: '껑냥이들 01', link: '/diary', subText: '장소', borderColor: 'black' },
         { image: '/src/assets/images/place.png', title: '껑냥이들 01', link: '/diary', subText: '장소', borderColor: 'black' },
         { image: '/src/assets/images/place.png', title: '껑냥이들 01', link: '/diary', subText: '장소', borderColor: 'black' },

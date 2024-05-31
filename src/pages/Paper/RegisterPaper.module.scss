@@ -1,0 +1,104 @@
+@import '@/assets/styles/colors.scss';
+
+.container {
+    .formContainer {
+        min-width: 320px;
+        max-width: 480px;
+        display: flex;
+        flex-direction: column;
+        gap: 19px;
+
+        padding: 20px;
+        width: 100%;
+
+        padding-top: 80px;
+        overflow-y: auto;
+        box-sizing: border-box;
+        
+        .input {
+            width: 100%;
+        }
+
+        .diarySelect{
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+
+            .title {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                p {
+                    color: $black2;
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+
+                button {
+                    padding: 0;
+                    svg {
+                        height: 20px;
+                        transform: rotate(180deg);
+                        
+                    }
+                }
+            }
+
+            .selectedDiary {
+                color: $black1;
+                background-color: #1d1d1d14;
+
+                box-sizing: border-box;
+                padding: 2px 9px;
+                border-radius: 5px;
+
+                font-size: 12px;
+                font-weight: 500;
+                width: fit-content;
+            }
+        }
+
+        .selectDate {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+
+            p {
+                color: $black2;
+                font-size: 14px;
+                font-weight: 500;
+            } 
+
+            input {
+                color: $black3;
+                font-size: 14px;
+                font-weight: 500;  
+            }
+        }
+
+        .PlaceContainer {
+
+            display: flex;
+            flex-direction: column;
+            gap: 21px;
+
+            &#map{
+                border-radius: 20px;
+            }
+        }
+        
+        .submitButton {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 132px;
+
+            color: $white1;
+            background-color: $black4;
+            border-radius: 10px;
+
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+}

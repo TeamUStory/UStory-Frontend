@@ -34,10 +34,10 @@
             gap:20px;
             
             button {
-                width:24px;
                 vertical-align: middle;
                 height: 24px;
             }
+
             .menuContainer {
                 position: fixed;
                 top: 50px;
@@ -59,11 +59,6 @@
                 font-size: 14px;
                 font-weight: 500;
 
-                .editButton {
-                    width: 100%;
-                    color: $black2;
-                    text-decoration: none;
-                }
                 .exitButton {
                     width: 100%;
                     color: $wrong-color;
