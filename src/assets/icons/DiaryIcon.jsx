@@ -22,7 +22,7 @@ const DiaryIcon = ({ color, bgColor }) => {
 
 DiaryIcon.propTypes = {
     color: PropTypes.string.isRequired,
-    bgColor: PropTypes.string.isRequired
+    bgColor: PropTypes.string
 }
 
 export default DiaryIcon;

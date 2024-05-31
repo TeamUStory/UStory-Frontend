@@ -1,0 +1,84 @@
+@import '@/assets/styles/colors.scss';
+
+
+    
+    .react-datepicker__input-container {
+        
+        display: flex;
+        align-items: center;
+        input {
+            width: 100%;
+            // font-size: 14px;
+            font-weight: 500;
+            font-family: "Pretendard";
+            padding: 13px 10px;
+        }
+        svg{
+            position: absolute;
+            right:0px;
+            width: 2.5rem;
+            height: 24px;
+            pointer-events: none
+        }
+    }
+    
+    .react-datepicker-popper {
+        background-color: white;
+        border-radius: 10px;
+        top: -10px !important; 
+        
+        .react-datepicker{
+            border-color: $point-color1;
+
+            .react-datepicker__navigation-icon {
+                
+                &::before {
+                    border-color: $white1;
+                }
+            }
+        }
+        
+        .react-datepicker__triangle {
+            display: none;
+        }
+        
+        .react-datepicker__month-container{
+            
+            .react-datepicker__header{
+                background-color: #FB817640;
+                border-bottom: $point-color1 1px solid;
+                
+                .react-datepicker__current-month {
+                    font-size: 16px;
+                    font-weight: bold;
+                    font-family: "Pretendard";
+                    color: black;
+                }
+            }
+            
+            .react-datepicker__day-name {
+                width: 1.3rem;
+                line-height: 1.2rem;
+                margin: 0;
+                font-size: 12px;
+                font-weight: 500;
+                font-family: "Pretendard";
+                color: $black1;
+            }
+            .react-datepicker__day {
+                width: 1.3rem;
+                line-height: 1.2rem;
+                margin: 0;
+                font-size: 12px;
+                font-weight: 500;
+                font-family: "Pretendard";
+                color: $black2;
+                
+                &.react-datepicker__day--selected{
+                    color: $white1;
+                    background-color: $point-color1;
+                }
+            }
+            
+        }
+    }

@@ -7,6 +7,7 @@ axios.defaults.timeout = 5000;
 
 export const api = axios.create();
 
+// reject 했을때, error가 useAXios로 넘어가지 않을 시 -> throw Err 변경
 // 요청
 api.interceptors.request.use(
   (req) => {

@@ -1,0 +1,131 @@
+@import '@/assets/styles/colors.scss';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    box-sizing: border-box;
+
+    .header {
+        position: fixed;
+        top: 0;
+
+        width: 100%;
+        height: 83px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        box-sizing: border-box;
+        padding: 20px;
+        background-color: $white1;
+
+        z-index: 100;
+
+        p {
+            font-size: 16px;
+            font-weight: 600;
+            
+            .nickname {
+                font-weight: 700;
+                color: $point-color1;
+            }
+        }
+    }
+    
+    .contents{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        
+        padding-top: 80px;
+        padding-bottom: 63px;
+        overflow-y: auto;
+
+        .diaryContainer {
+            display: flex;
+            flex-direction: column;
+
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #EDD8DD40;
+            border-radius: 50px 0 50px 0;
+
+            padding: 30px 20px;
+            gap: 20px;
+
+            p {
+                font-size: 16px;
+                font-weight: 600;
+            }
+            
+            .diaryList {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+
+                background-color: $white1;
+                border-radius: 20px;
+
+                .diary {
+                    display: flex;
+                    gap: 17px;
+                    padding: 20px;
+
+                    img {
+                        width: 40px;
+                        height: 40px;
+                    }
+
+                    .diaryContent {
+                        .diaryName {
+                            font-size: 14px;
+                            font-weight: 600;
+                        }
+
+                        .diaryCategory {
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: #616161;
+                        }
+                    }
+                }
+            }
+        }
+        
+        .recordContainer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            box-sizing: border-box;
+            padding: 0px 20px 20px 20px;
+            gap: 20px;
+
+            p {
+                font-size: 16px;
+                font-weight: 600;
+            }
+            
+            .noRecordList {
+                width: 100%;
+                border: $black3 1px solid;
+                border-radius: 20px;
+
+                padding-top: 69px;
+                padding-bottom: 69px;
+
+                p {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: $black3;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

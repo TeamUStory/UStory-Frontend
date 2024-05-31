@@ -12,4 +12,4 @@ const SearchIcon = ({color = "#FB8176"}) => {
 SearchIcon.propTypes = {
     color: PropTypes.string,
 }
-export default SearchIcon;
+export default SearchIcon;  
