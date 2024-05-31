@@ -1,14 +1,16 @@
 @import '@/assets/styles/colors.scss';
 
 
-    
+    .react-datepicker-wrapper{
+        width: 100%;
+    }
+
     .react-datepicker__input-container {
         
         display: flex;
         align-items: center;
         input {
             width: 100%;
-            // font-size: 14px;
             font-weight: 500;
             font-family: "Pretendard";
             padding: 13px 10px;

@@ -12,28 +12,30 @@ import Button from '@/components/Button/Button';
 import SadIcon from '@/assets/icons/SadIcon';
 import PlaceMark from '../../assets/icons/PlaceMark';
 
-const members = [
-    { name: '메타몽', imgSrc: '/src/assets/images/basicMemberImage.png' },
-    { name: '멤버2', imgSrc: '/src/assets/images/basicMemberImage.png' },
-    { name: '멤버3', imgSrc: '/src/assets/images/basicMemberImage.png' },
-    { name: '멤버4', imgSrc: '/src/assets/images/basicMemberImage.png' },
-    { name: '멤버5', imgSrc: '/src/assets/images/basicMemberImage.png' },
-];
-
-// 다이어리를 2개로 나누는 함수
-const makeArray = (array, size) => {
-    return array.reduce((acc, _, i) => {
-        if (i % size === 0) acc.push(array.slice(i, i + size));
-        return acc;
-    }, []);
-};
-
-// 2개씩 나뉜 다이어리 그룹
-const newMembers = makeArray(members, 2);
 
 const Diary = () => {
-    const navigator = useNavigate();    
+    const navigate = useNavigate();    
     const [isPostItems, setIsPostItems] = useState(false);
+    const [isToggle, setIsToggle] = useState(false);
+
+    const members = [
+        { name: '메타몽', imgSrc: '/src/assets/images/basicMemberImage.png' },
+        { name: '멤버2', imgSrc: '/src/assets/images/basicMemberImage.png' },
+        { name: '멤버3', imgSrc: '/src/assets/images/basicMemberImage.png' },
+        { name: '멤버4', imgSrc: '/src/assets/images/basicMemberImage.png' },
+        { name: '멤버5', imgSrc: '/src/assets/images/basicMemberImage.png' },
+    ];
+    
+    // 다이어리를 2개로 나누는 함수
+    const makeArray = (array, size) => {
+        return array.reduce((acc, _, i) => {
+            if (i % size === 0) acc.push(array.slice(i, i + size));
+            return acc;
+        }, []);
+    };
+    
+    // 2개씩 나뉜 다이어리 그룹
+    const newMembers = makeArray(members, 2);
 
     // 장소 기록 배열
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,7 +53,6 @@ const Diary = () => {
         setIsPostItems(postItems.length > 0);
     },[postItems]);
 
-    const [isToggle, setIsToggle] = useState(false);
 
     const toggleMenu = () => {
         setIsToggle(!isToggle);
@@ -60,9 +61,9 @@ const Diary = () => {
     return (
         <div className={styles.allContainer}>
             <div className={styles.header}>
-                <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={() => navigator(-1)} />
+                <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={() => navigate(-1)} />
                 <div className={styles.rightHeader}>
-                    <button onClick={() => navigator(0)} >
+                    <button onClick={() => navigate(0)} >
                         <NotificationIcon />
                     </button>
                     <button className={styles.moreIcon} onClick={toggleMenu} >
@@ -70,7 +71,7 @@ const Diary = () => {
                     </button>
                     {isToggle && (
                         <div className={styles.menuContainer}>
-                            <Link to="/editdiary" className={styles.editButton}>수정하기</Link>
+                            <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate("/editdiary")} />
                             <button className={styles.exitButton}>나가기</button>
                         </div>
                     )}

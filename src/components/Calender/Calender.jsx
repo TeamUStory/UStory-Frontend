@@ -5,12 +5,12 @@ import './Calender.scss';
 import CalenderIcon from "@/assets/icons/CalenderIcon";
 
 const ReactDatePicker = () => {
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
 
 	return (
 		<div>
 			<DatePicker
-                placeholderText={"날짜 선택" }
+                placeholderText="날짜 선택"
                 showIcon
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}

@@ -7,7 +7,7 @@ const SignUp = () => {
 
   return(
     <div className={styles.signUpWrap}>
-      <SubHeader pageTitle={"페이지 타이틀"}/>
+      <SubHeader pageTitle={"회원가입"}/>
       <div className={styles.formBox}>
         <div className={styles.wrap}>
           <form>
@@ -17,8 +17,8 @@ const SignUp = () => {
               </div>
               <Button type="button" label="중복 확인" variant="active"/>
             </div>
-            <InputField type="text" placeholder="이름" label="이름"/>
-            <InputField type="password" placeholder="비밀번호 (영문, 숫자, 특수문자 1개 포함 8~16자)" label="비밀번호"/>
+            <InputField type="text" placeholder="이름" label="이름"/>
+            <InputField type="password" placeholder="비밀번호 (영문, 숫자, 특수문자 1개 포함 8~16자)  " label="비밀번호"/>
             <InputField type="password" placeholder="비밀번호 재확인" label="비밀번호 재확인"/>
             <div className={styles.certified}>
               <div className={styles.inputBox}>

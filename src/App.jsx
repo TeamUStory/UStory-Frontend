@@ -19,6 +19,9 @@ import SavePageList from './pages/Mypage/SavePageList';
 import Noti from "./pages/Noti/Noti";
 import Friends from "./pages/Friends/Friends";
 import AddFriend from "./pages/Friends/AddFriend";
+import SelectDiary from './pages/Paper/SelectDiary';
+import Paper from './pages/Paper/Paper';
+import EditPaper from './pages/Paper/EditPaper';
 
 function App() {
 
@@ -44,6 +47,9 @@ function App() {
         <Route path='/noti' element={<Noti />} />
         <Route path='/friends' element={<Friends />} />
         <Route path='/friends/add' element={<AddFriend />} /> 
+        <Route path='/diaryselect' element={<SelectDiary />} /> 
+        <Route path='/paper' element={<Paper />} /> 
+        <Route path='/editpaper' element={<EditPaper />} />
       </Routes>
     </>
   )
