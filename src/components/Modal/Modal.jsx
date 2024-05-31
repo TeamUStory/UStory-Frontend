@@ -68,4 +68,40 @@ ModalButton.propTypes = {
   children: propTypes.node
 }
 
+const ModalBody = ({children}) => {
+  return (
+    <div className={styles.modal__content__body}>
+      {children}
+    </div>
+  )
+}
+
+const ModalButton = ({children}) => {
+  return (
+    <div className={styles.modal__content__button}>
+      {children}
+    </div>
+  )
+}
+
+Modal.Icon = ModalIcon;
+Modal.Body = ModalBody;
+Modal.Button = ModalButton;
+
+Modal.propTypes = {
+  children: propTypes.node
+}
+
+ModalIcon.propTypes = {
+  children: propTypes.node
+}
+
+ModalBody.propTypes = {
+  children: propTypes.node
+}
+
+ModalButton.propTypes = {
+  children: propTypes.node
+}
+
 export default Modal;

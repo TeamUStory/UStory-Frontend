@@ -23,7 +23,7 @@ const PageListIcon = ({color, bgColor}) => {
 
 PageListIcon.propTypes = {
     color: PropTypes.string.isRequired,
-    bgColor: PropTypes.string.isRequired
+    bgColor: PropTypes.string
 }
 
 export default PageListIcon;

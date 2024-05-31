@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import styles from './RadioButton.module.scss';
 
 const RadioButton = ({ checked, onChange }) => {
+  
   return (
     <label className={styles.radioButton}>
       <input
