@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import styles from './RegisterDiary.module.scss';
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
@@ -6,9 +7,14 @@ import DiaryImageUpload from '@/components/DiaryImageUpload/DiaryImageUpload';
 import SelectBox from '@/components/SelectBox/SelectBox';
 import ArrowIcon from '@/assets/icons/ArrowIcon'
 import Button from '@/components/Button/Button'
-import { Link } from 'react-router-dom';
+import Modal from '@/components/Modal/Modal';
 
 const RegisterDiary = () => {
+
+    const [selectedColor, setSelectedColor] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
+
     const categories = [  
         { label: "개인", value: "개인" },
         { label: "연인", value: "연인" },
@@ -19,10 +25,18 @@ const RegisterDiary = () => {
     const markerColors = ["#FBB9C5", "#FDD0B1", "#FBB9C5", "#FDD0B1", "#FBB9C5", "#FDD0B1", "#F9EFC7",  "#FBB9C5", "#FDD0B1", "#F9EFC7"];
     const memebers = ["마자용", "그래용"];
 
-    const [selectedColor, setSelectedColor] = useState("");
 
     const handleColorSelect = (color) => {
         setSelectedColor(color);
+    };
+
+
+    const handleButtonClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
     };
 
     return (
@@ -73,7 +87,20 @@ const RegisterDiary = () => {
                     <p>소개</p>
                     <textarea id='diaryIntroduction' placeholder='다이어리에 대해 소개해주세요.'></textarea>
                 </div>
-                <Button label="기록하기" variant="active" />
+                <Button label="기록하기" variant="active" onClick={handleButtonClick} />
+                {isModalOpen && (
+                    <Modal closeFn={closeModal}>
+                        <Modal.Icon>
+                            <img src="/src/assets/images/completedImage.png" alt="완료" />
+                        </Modal.Icon> 
+                        <Modal.Body>
+                            <p>다이어리 추가가 완료되었습니다.</p>
+                        </Modal.Body>
+                        <Modal.Button>
+                            <Button type="button" label="확인" variant="active" onClick={() => navigate('/diary')} />
+                        </Modal.Button>
+                    </Modal>
+                )}
             </div>
         </div>
     );
