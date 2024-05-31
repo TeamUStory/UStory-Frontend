@@ -1,4 +1,4 @@
-@import "@/assets/styles/global.scss";
+@import "@/assets/styles/colors.scss";
 
 label{
   display: block;
@@ -28,11 +28,13 @@ select {
     border: 1px solid $point-color1;
     outline: 1px solid $point-color1;
     background: url('/src/assets/images/selectArrow_up.png') no-repeat right 18px top 50%;
+    color: $black1;
   }
 
   &:active{
     border: 1px solid $point-color1;
     outline: 1px solid $point-color1;
     background: url('/src/assets/images/selectArrow_up.png') no-repeat right 18px top 50%;
+    color: $black1;
   }
 }
