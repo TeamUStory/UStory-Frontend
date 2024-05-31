@@ -1,0 +1,127 @@
+@import "@/assets/styles/colors.scss";
+
+.loginWrap{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  flex-direction: column;
+  min-width: 320px;
+  max-width: 480px;
+  margin: 0 auto;
+  
+  .wrap{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 42px;
+  }
+}
+
+.logoBox{
+  text-align: center;
+  margin-bottom: 57px;
+
+  p{
+    font-size: 14px;
+    font-weight: 500;
+    color: $black2;
+    margin-bottom: 10px;
+  }
+}
+
+.loginBox{
+  margin-bottom: 22px;
+
+  button{
+    width: 100%;
+  }
+}
+
+.emailBox{
+  position: relative;
+  width: 100%;
+  height: 43px;
+  margin-bottom: 10px;
+
+  label{
+    display: none;
+  }
+
+  input{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-left: 50px;
+    margin-bottom: 12px;
+  }
+
+  svg{
+    fill: $black4;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 17px;
+    height: 17px;
+  }
+}
+
+.pwBox{
+  position: relative;
+  width: 100%;
+  height: 43px;
+  margin-bottom: 22px;
+
+  label{
+    display: none;
+  }
+
+  input{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-left: 50px;
+  }
+
+  svg{
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 17px;
+    height: 17px;
+  }
+}
+
+.bottomBtns {
+  text-align: center;
+
+  button{
+    padding: 0px;
+    margin: 0px 22px;
+    font-size: 12px;
+    color: $black1;
+  }
+}
+
+.socialBox{
+  text-align: center;
+  margin-top: 52px;
+
+  span{
+    font-size: 14px;
+    color: $black3;
+    margin-bottom: 34px;
+    display: inline-block;
+  }
+
+  button{
+    padding: 0px;
+    margin: 0px 14px;
+  }
+}
