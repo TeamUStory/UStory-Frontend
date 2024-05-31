@@ -1,0 +1,313 @@
+@import "@/assets/styles/colors.scss";
+
+.mypageHeader{
+  border-bottom: 0px;
+  flex-direction: row;
+  justify-content: space-between;
+  z-index: 10000;
+
+  .title{
+    font-size: 16px;
+    color: $point-color1;
+    font-weight: 600;
+  }
+
+  .btnBox{
+
+    button{
+      position: static;
+      transform: translateY(0);
+    }
+
+    svg{
+      width: 26px;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+  }
+}
+
+.mypageWrap{
+  box-sizing: border-box;
+  padding-top: 50px;
+  min-width: 320px;
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: 64px;
+
+  .wrap{
+    box-sizing: border-box;
+    padding: 20px;
+
+    .profileBox{
+      width: 100%;
+
+      .profileInfoBox{
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 16px;
+
+        .profileImg{
+          width: 70px;
+          height: 70px;
+          border-radius: 20px;
+          overflow: hidden;
+          border: 1px solid $black4;
+
+          img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .profileInfo{
+          width: 70%;
+          
+          .nickname{
+            font-size: 16px;
+            font-weight: 600;
+            color: $black1;
+
+            button{
+              padding: 0px;
+
+              svg{
+                width: 20px;
+                transform: rotate(180deg);
+                margin-top: -6px;
+                vertical-align: middle;
+              }
+            }
+          }
+
+          .name{
+            font-size: 12px;
+            color: $black2;
+          }
+        }
+      }
+
+      .introSelf{
+        width: 100%;
+        background: $black6;
+        border-radius: 10px;
+
+        div{
+          box-sizing: border-box;
+          padding: 16px;
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 10px;
+          width: 100%;
+
+          svg{
+            width: 14px;
+          }
+          
+          p{
+            margin-top: -3px;
+            font-size: 12px;
+            color: $black1;
+            overflow: hidden;
+            word-break: break-all;
+            width: 92%;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 나의 기록
+.myRecord{
+  margin-top: 18px;
+  width: 100%;
+
+  .title{
+    font-size:16px;
+    font-weight: 700;
+    color: $black1;
+    margin-bottom: 10px;
+  }
+
+  .myRecordBox{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    .box{
+      width: 47%;
+      border-radius: 20px;
+      box-sizing: border-box;
+      padding: 22px 16px;
+
+      p{
+        font-size: 14px;
+        color: $black2;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+
+      button{
+        padding: 0px;
+        font-size: 24px;
+        font-weight: 600;
+        color: $point-color1;
+        text-decoration: underline;
+        word-break: break-all;
+        text-align: left;
+      }
+    }
+
+    .location{
+      background: url("/src/assets/images/location_bg.png") no-repeat right 16px bottom 22px #D0EEEC30;
+    }
+
+    .diary{
+      background: url("/src/assets/images/save_bg.png") no-repeat right 16px bottom 22px #F7DEBD30;
+    }
+  }
+}
+
+// 저장한 기록
+.mySave{
+  width: 100%;
+  margin-top: 18px;
+
+  .titleBox{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .title{
+      font-size: 16px;
+      font-weight: 700;
+      color: $black1;
+    }
+
+    .allBtn{
+      font-size: 12px;
+      color: $black1;
+      
+      button{
+        padding: 0px;
+        transform: rotate(180deg);
+        margin-left: 5px;
+      }
+
+      svg{
+        width: 14px;
+        margin-top: 3px;
+      }
+    }
+  }
+
+  .mySaveList{
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 30vh;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+
+// 정보 수정
+.editWrap{
+  box-sizing: border-box;
+  padding-top: 50px;
+  min-width: 320px;
+  max-width: 480px;
+  margin: 0 auto;
+
+  .wrap{
+    box-sizing: border-box;
+    padding: 20px;
+    padding-top: 0px;
+
+    label{
+      margin-top: 20px;
+    }
+
+    input{
+      width: 100%;
+    }
+
+    .certified{
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-direction: row;
+      flex-wrap: wrap;
+  
+      .inputBox{
+        width: 62%;
+  
+        input{
+          width: 100%;
+        }
+      }
+  
+      button{
+        width: 35%;
+        padding: 12px 20px;
+      }
+    }
+  }
+}
+
+.btnWrap{
+  margin-top: 50px;
+
+  button{
+    width: 100%;
+  }
+
+  .withdrawal{
+    text-decoration: underline;
+    color: $black2;
+    margin-top: 18px;
+    padding: 0px;
+  }
+}
+
+.input{
+  width: 100%;
+  margin-top: 22px;
+}
+
+// 내가 기록한 장소 - PageList
+.listWrap{
+  box-sizing: border-box;
+  padding-top: 50px;
+  min-width: 320px;
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: 64px;
+
+  .wrap{
+    box-sizing: border-box;
+    padding: 20px;
+  }
+}
+.myRecordList{
+  position: relative;
+  width: 100%;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.noWrap{
+  height: 80vh;
+  width: 100%;
+}
