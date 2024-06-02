@@ -15,7 +15,7 @@ const ReactDatePicker = () => {
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
                 dateFormat="yyyy/MM/dd"
-                icon={<CalenderIcon color="#AAA" />}
+                icon={<CalenderIcon color="#AAA"/>}
                 maxDate={new Date()}
 			/>
 		</div>

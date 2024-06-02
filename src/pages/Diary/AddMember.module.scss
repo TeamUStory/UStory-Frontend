@@ -45,13 +45,19 @@
                     input {
                         box-sizing: border-box;
                         width: 100%;
+                        padding-right: 50px;
+                    }
+
+                    label{
+                      display: none;
                     }
                     
                     svg {
                         position: absolute;
                         text-align: center;
-                        top: 19px;
-                        right: 10px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        right: 17px;
                         pointer-events: none;
                     }
                 }
@@ -64,20 +70,19 @@
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+                    box-sizing: border-box;
+                    padding: 0px 10px;
                     
                     .memberProfile {  
                         display: flex;
                         align-items: center;
                         gap: 17px;
                         
-                        padding-left: 10px;
-                        box-sizing: border-box;
-                        
                         img {
                             width: 41px;
                             height: 41px;
                             border-radius: 10px;
-                            border: 1px solid $point-color1;
+                            border: 1px solid $black4;
                         }
                         
                         .information {
@@ -103,10 +108,12 @@
                 }
 
                 hr {
+                    background: $black4;
+                    border: 0px;
                     width: 100%;
-                    border: 1px solid $black4;
                     box-sizing: border-box;
                     margin: 15px 0;
+                    height: 1px;
                 }
             }
             
@@ -125,8 +132,7 @@
 
         .noResultContainer {
             z-index: -2;
-           
-            height: 595px;
+            height: 80vh;
             overflow-y: auto;
             
             border-radius: 20px;

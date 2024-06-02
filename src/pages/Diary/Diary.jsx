@@ -110,7 +110,7 @@ const Diary = () => {
                         <div className={styles.title}>
                             <div className={styles.left}>
                                 <p>우리들의 기록</p>
-                                <CirclePlusIcon fill="#F2B1AB" />
+                                <Button type="button" label={<CirclePlusIcon fill="#F2B1AB" />}/>
                             </div>
                             <div className={styles.right}>
                                 <Link to="/diary/pagelist">

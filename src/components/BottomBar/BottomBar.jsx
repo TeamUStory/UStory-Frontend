@@ -15,7 +15,7 @@ const BottomBar = () => {
             case '/':
                 setSelectedIcon('home');
                 break;
-            case '/pageList':
+            case '/mypage/pagelist':
                 setSelectedIcon('pageList');
                 break;
             case '/diarylist':
@@ -39,7 +39,7 @@ const BottomBar = () => {
                         <HomeIcon color={selectedIcon === 'home' ? '#FB8176' : 'black'} alt="홈화면" />
                     </div>
                 </Link>
-                <Link to="/diary/pagelist">
+                <Link to="/mypage/pagelist">
                     <div className={`${styles.iconWrapper} ${selectedIcon === 'pageList' ? styles.selected : ''}`} onClick={() => setSelectedIcon('pageList')}>
                         <PageListIcon color={selectedIcon === 'pageList' ? '#FB8176' : 'black'} alt="내가 기록한 장소" />
                     </div>

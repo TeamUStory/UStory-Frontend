@@ -18,7 +18,7 @@ const DiaryList = () => {
         { category: "연인", isActive: false },
         { category: "친구", isActive: false },
         { category: "가족",  isActive: false },
-
+        { category: "어스",  isActive: false },
     ]);
     
     // 카테고리 선택
@@ -86,8 +86,7 @@ const DiaryList = () => {
                     <Button type="button" variant="inactive" label={<CirclePlusIcon fill="#FB8176" />} onClick={() => navigate('/register/diary')} />
                 </div>
                 <NotificationIcon />
-            </header>
-            <div className={styles.category}>
+                <div className={styles.category}>
                 {buttonStates.map((buttonState, index) => (
                     <button
                         key={index}
@@ -98,6 +97,7 @@ const DiaryList = () => {
                     </button>
                 ))}
             </div>
+            </header>
             <div className={styles.diaryList} >
                 {groupedPostItems.map((group, index) => (
                     <div key={index} className={styles.postItem}>

@@ -1,10 +1,25 @@
 @import "@/assets/styles/colors.scss";
 
 .mypageHeader{
-  border-bottom: 0px;
   flex-direction: row;
   justify-content: space-between;
   z-index: 10000;
+
+  background: $white1;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 13px 20px;
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  min-width: 320px;
+  max-width: 480px;
+  margin: 0 auto;
+
+  button{
+    padding: 0px;
+  }
 
   .title{
     font-size: 16px;
@@ -265,7 +280,7 @@
 }
 
 .btnWrap{
-  margin-top: 50px;
+  margin-top: 19px;
 
   button{
     width: 100%;

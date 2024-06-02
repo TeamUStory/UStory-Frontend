@@ -35,7 +35,7 @@ const EditPaper = () => {
             <div className={styles.formContainer}>
                 <InputField
                     label="제목"
-                    placeholder="제목을 입력해주세요."
+                    placeholder="제목 입력"
                     className={styles.input}
                 />
                 <div className={styles.diarySelect}>
@@ -55,19 +55,12 @@ const EditPaper = () => {
                 <div className={styles.PlaceContainer}>
                     <InputField
                         label ="장소"
-                        placeholder="장소를 입력해주세요."
+                        placeholder="건물, 지번 또는 도로명 검색"
                         className={styles.input}
                     />
                     <MapApi height="218px"/>
                 </div>
-                <div className={styles.commentContainer}>
-                    <InputField 
-                        label="코멘트"
-                        placeholder="장소에 대해 한 줄 코멘트 작성해주세요."
-                        className={styles.input}
-                    />
-                </div>
-                <Button label="기록하기" variant="active" onClick={handleButtonClick} />
+                <Button label="수정하기" variant="disabled" onClick={handleButtonClick} />
                 {isModalOpen && (
                     <Modal closeFn={closeModal}>
                             <Modal.Icon>

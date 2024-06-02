@@ -1,15 +1,15 @@
 @import '@/assets/styles/colors.scss';
 
 .allContainer {
-    min-width: 320px;
-    max-width: 480px;
-
+  
     .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
 
         width: 100%;
+        min-width: 320px;
+        max-width: 480px;
         padding: 13px 17px;
         box-sizing: border-box;
 
@@ -32,6 +32,7 @@
         .rightHeader {
             display: flex;
             gap:20px;
+            position: relative;
             
             button {
                 vertical-align: middle;
@@ -39,9 +40,9 @@
             }
             
             .menuContainer {
-                position: fixed;
-                top: 50px;
-                right: 19px;
+                position: absolute;
+                top: 35px;
+                right: 0px;
 
                 display: flex;
                 flex-direction: column;
@@ -54,7 +55,7 @@
                 box-sizing: border-box;
                 background-color: #FFF;
                 border-radius: 10px;
-                box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+                box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.09);
                 
                 font-size: 14px;
                 font-weight: 500;
@@ -110,7 +111,11 @@
                     
                     color: $black1;
                     font-size: 14px;
-                    font-weight: bold;
+                    font-weight: 400;
+                }
+
+                .date{
+                  margin: 5px 0px;
                 }
 
                 .diary {
@@ -153,9 +158,11 @@
             padding: 0 20px;
         }
         hr {
-            border: 1px solid $black5;
             box-sizing: border-box;
             margin: 0 20px ;
+            border: 0px;
+            height: 1px;
+            background: $black4;
         }
 
         .pharsesContainer {
@@ -166,8 +173,12 @@
 
             box-sizing: border-box;
             padding: 0 20px;
+            font-size: 15px;
+            font-weight: 500;
+
             svg {
-                width: 24px;
+                width: 20px;
+                vertical-align: middle;
             }
         }
 
@@ -262,6 +273,7 @@
                 padding: 0 20px;
                 gap: 16px;
                 position: relative;
+                align-items: flex-start;
             
                 img {
                     border-radius: 10px;
@@ -285,7 +297,8 @@
                     }
                     .textshadow {
                         text-shadow: 0px 0px 6px black;
-                        color: transparent
+                        color: transparent;
+                        word-break: break-all;
                     }
                 }
             
@@ -360,6 +373,10 @@
 
             input{
                 width: 50vh;
+            }
+            
+            label{
+              display: none;
             }
 
             button{

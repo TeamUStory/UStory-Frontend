@@ -10,11 +10,10 @@ import { Link } from 'react-router-dom';
 
 const EditDiary = () => {
     const categories = [  
-        { label: "개인", value: "개인" },
         { label: "연인", value: "연인" },
         { label: "가족", value: "가족" },
         { label: "친구", value: "친구" },
-        { label: "기타", value: "기타" }
+        { label: "어스", value: "어스" }
     ];
     const markerColors = ["#FBB9C5", "#FDD0B1", "#FBB9C5", "#FDD0B1", "#FBB9C5", "#FDD0B1", "#F9EFC7",  "#FBB9C5", "#FDD0B1", "#F9EFC7"];
     const memebers = ["마자용", "그래용"];
@@ -31,7 +30,7 @@ const EditDiary = () => {
             <div className={styles.formContainer}>
                 <InputField
                     label="다이어리 이름"
-                    placeholder="다이어리 이름을 입력해주세요."
+                    placeholder="다이어리 이름 입력"
                     className={styles.input}
                 />
                 <DiaryImageUpload />
@@ -69,10 +68,12 @@ const EditDiary = () => {
                         ))}    
                     </div>
                 </div>
-                <div className={styles.diaryIntroduction}>
-                    <p>소개</p>
-                    <textarea id='diaryIntroduction' placeholder='다이어리에 대해 소개해주세요.'></textarea>
-                </div>
+                <InputField
+                    label="소개"
+                    placeholder="다이어리 소개 입력"
+                    id='diaryIntroduction'
+                    style={{ width: '100%' }}
+                />
                 <Button label="수정하기" variant="disabled" />
             </div>
         </div>

@@ -21,7 +21,7 @@ const Home = () => {
                     <MapApi />
                 </div>
                 <div className={styles.diaryContainer}>
-                    <p>내가 속한 다이어리를 확인해보세요!</p>
+                    <p>내가 속한 다이어리를<br/>확인해보세요!</p>
                     <div className={styles.diaryList}>
                         <div className={styles.diary}>
                             <img src="src\assets\images\diaryBasicImage.png" alt="다이어리 이미지" />

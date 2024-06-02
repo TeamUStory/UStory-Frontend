@@ -1,14 +1,14 @@
 @import '@/assets/styles/colors.scss';
 
 .allContainer {
-    min-width: 320px;
-    max-width: 480px;
 
     .selectDate {
         position: fixed;
         top:50px;
         background-color: #FFF;
         width: 100%;
+        min-width: 320px;
+        max-width: 480px;
         height: 84px;
 
         display: flex;
@@ -18,6 +18,7 @@
         box-sizing: border-box;
         padding: 27px 22px;
         gap: 10px;
+
 
         span {
             font-size: 14px;

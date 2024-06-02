@@ -65,8 +65,8 @@ const SelectDiary = () => {
                             )}
                         </div>
                     </div>
+                    <Button label="선택 완료" variant="disabled" onChange ={()=><div></div>}/>
                 </div>
-            <Button label="선택완료" variant={"active"} onChange ={()=><div></div>}/>
         </div>
     )
 }

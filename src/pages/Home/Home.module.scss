@@ -12,6 +12,8 @@
         top: 0;
 
         width: 100%;
+        min-width: 320px;
+        max-width: 480px;
         height: 83px;
 
         display: flex;
@@ -62,7 +64,7 @@
             background-color: #EDD8DD40;
             border-radius: 50px 0 50px 0;
 
-            padding: 30px 20px;
+            padding: 20px;
             gap: 20px;
 
             p {
@@ -86,6 +88,8 @@
                     img {
                         width: 40px;
                         height: 40px;
+                        border: 1px solid $black5;
+                        border-radius: 10px;
                     }
 
                     .diaryContent {
@@ -120,15 +124,14 @@
             
             .noRecordList {
                 width: 100%;
-                border: $black3 1px solid;
+                border: $black4 1px dashed;
                 border-radius: 20px;
-
-                padding-top: 69px;
-                padding-bottom: 69px;
+                padding: 60px 30px;
+                box-sizing: border-box;
 
                 p {
                     font-size: 14px;
-                    font-weight: 500;
+                    font-weight: 400;
                     color: $black3;
                     text-align: center;
                 }

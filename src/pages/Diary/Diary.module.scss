@@ -1,9 +1,6 @@
 @import '@/assets/styles/colors.scss';
 
 .allContainer {
-    min-width: 320px;
-    max-width: 480px;
-
     .header {
         display: flex;
         justify-content: space-between;
@@ -18,6 +15,9 @@
         border-bottom: 1px solid $black5;
         height: 47px;
         z-index: 100;
+        max-width: 480px;
+        min-width: 320px;
+        margin: 0 auto;
 
         button{
             padding: 0;
@@ -32,6 +32,7 @@
         .rightHeader {
             display: flex;
             gap:20px;
+            position: relative;
             
             button {
                 vertical-align: middle;
@@ -39,9 +40,9 @@
             }
 
             .menuContainer {
-                position: fixed;
-                top: 50px;
-                right: 19px;
+                position: absolute;
+                top: 35px;
+                right: 0px;
 
                 display: flex;
                 flex-direction: column;
@@ -54,10 +55,11 @@
                 box-sizing: border-box;
                 background-color: #FFF;
                 border-radius: 10px;
-                box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+                box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.09);
                 
                 font-size: 14px;
-                font-weight: 500;
+                font-weight: 400;
+                color: $black2;
 
                 .exitButton {
                     width: 100%;
@@ -88,7 +90,7 @@
                 margin: 0 auto;
                 width: 71px;
                 height: 71px;
-                border: 1px solid black;
+                border: 1px solid $black4;
                 border-radius: 10px;
             }
         
@@ -98,7 +100,7 @@
                 gap: 4px;
                 align-items: center;
                 justify-content: center;
-                
+
                 p {
                     font-size: 16px;
                     font-weight: bold;
@@ -130,12 +132,12 @@
             .introduction {
                 background-color: #D0EEEC30;
                 display: flex;
-                align-items: center;
                 gap: 11px;
                 padding: 16px;
                 width: 100%;
                 box-sizing: border-box;
                 border-radius: 10px;
+                align-items: flex-start;
 
                 svg {
                     width: 14px;
@@ -144,6 +146,8 @@
                     font-size: 12px;
                     font-weight: 500;
                     color: $black1;
+                    width: 90%;
+                    margin-top: -3px;
                 }
             }
             
@@ -198,7 +202,9 @@
             
             hr {
                 width:100%;
-                border: 1px solid $black4;
+                height: 1px;
+                background: $black4;
+                border: 0;
                 margin: 0;
             }
             
@@ -215,6 +221,10 @@
                         align-items: center;
                         gap: 4px;
 
+                        button{
+                          padding: 0px;
+                        }
+
                         p {
                             font-size: 14px;
                             font-weight: bold;
@@ -222,8 +232,9 @@
                         }
 
                         svg {
-                            width: 12px;
-                            height: 12px;
+                            width: 20px;
+                            height: 20px;
+                            vertical-align: middle;
                         }
                     }
 

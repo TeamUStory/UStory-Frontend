@@ -63,9 +63,9 @@ const AddMember = () => {
             ) : (
                 <div className={styles.noResult}>
                     <div className={styles.noResultContainer}>
-                        <NoResult icon={<SadIcon stroke="#616161" />} message="앗, 친구목록에 친구가 없어요" />
+                        <NoResult icon={<SadIcon stroke="#616161" />} message="앗, 친구 목록에 친구가 없어요!" />
                     </div>
-                    <Button label="선택완료" onChange ={()=><div></div>} variant="disabled" />
+                    <Button label="선택 완료" onChange ={()=><div></div>} variant="disabled" />
                 </div>
             )}
         </div>
