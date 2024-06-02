@@ -4,7 +4,9 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "plugin:prettier/recommended",
+        "plugin:@javascript-eslint/eslint-recommended"
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -18,7 +20,8 @@
         "indent": ["error", 2],
         "quotes": ["error", "double", "backtick"],
         "semi": ["error", "always"],
-        "no-unused-vars": "error",
+        "no-unused-vars": "off",
+        "@javascript-eslint/no-unused-vars": "off",
         "no-undef": "error",
         "no-extra-semi": "error",
         "linebreak-style": ["error", "unix"],

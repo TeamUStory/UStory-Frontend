@@ -1,0 +1,61 @@
+@import '@/assets/styles/colors.scss';
+
+.container {
+  position: fixed;
+  bottom: 77px;
+  right: 5%;
+
+    .plus {
+        z-index: 1;
+        transition: all 0.3s;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.10);
+        border-radius: 100%;
+    
+        .plusShadow {
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.10); 
+        }
+    
+        &.open {
+            transform: rotate(45deg);
+            transition: all 0.3s;
+        }
+    }
+    
+    .buttons {
+        position: absolute;
+        bottom: 70px;
+        right: 0px;
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+        z-index: 100;
+        width: 270%;
+
+        .link {
+            text-decoration: none;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            
+            padding: 11px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: black;
+
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.10);
+
+            &.registerPage {
+                background-color: $sub-color3;
+            }
+
+            &.registerDiary {
+                background-color: $sub-color4;
+            }
+        }
+
+    }
+}

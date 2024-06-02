@@ -1,0 +1,27 @@
+@import '@/assets/styles/colors.scss';
+
+button{
+  font-size: 14px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 12px 29px;
+  text-align: center;
+
+  &:disabled{
+    cursor: default;
+    background: $black4;
+    color: $white1;
+    border: 0px;
+  }
+}
+
+.active {
+  background: $point-color1;
+  color: $white1;
+}
+
+.noFilled {
+  border:1px solid $point-color1;
+  color: $point-color1;
+}
+

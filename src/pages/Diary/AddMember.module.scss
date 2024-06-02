@@ -1,0 +1,150 @@
+@import "@/assets/styles/colors.scss";
+
+.allContainer {
+    
+    .contentsContainer {
+        max-width: 480px;
+        min-width: 320px;
+        
+        display: flex;
+        flex-direction: column;
+        gap: 37px;
+        
+        padding: 70px 20px 20px 20px;
+        overflow-y: auto;
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            box-sizing: border-box;
+            height: 595px;
+            
+            border-radius: 20px;
+            border: 1px solid $black4;
+            background-color: #f8f8f8;
+
+            .membersSearchContainer {
+                background-color: $white1;
+                width: 100%;
+                border-radius: 20px 20px 0 0;
+                
+                padding: 25px 21px;
+                box-sizing: border-box;
+                
+                display: flex;
+                flex-direction: column;
+                gap: 29px;
+                
+                .searchBox {
+                    position: relative; // 부모 요소에 position: relative 설정
+                    width: 100%;
+                    height: 44px;
+                    
+                    input {
+                        box-sizing: border-box;
+                        width: 100%;
+                        padding-right: 50px;
+                    }
+
+                    label{
+                      display: none;
+                    }
+                    
+                    svg {
+                        position: absolute;
+                        text-align: center;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        right: 17px;
+                        pointer-events: none;
+                    }
+                }
+                
+            }
+        
+            .membersContainer {
+                
+                .memberContainer {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    box-sizing: border-box;
+                    padding: 0px 10px;
+                    
+                    .memberProfile {  
+                        display: flex;
+                        align-items: center;
+                        gap: 17px;
+                        
+                        img {
+                            width: 41px;
+                            height: 41px;
+                            border-radius: 10px;
+                            border: 1px solid $black4;
+                        }
+                        
+                        .information {
+                            display: flex;
+                            flex-direction: column;
+                            
+                            p {
+                                font-size: 14px;
+                                font-weight: 600;
+                            }
+                            
+                            .memberName {
+                                font-size: 12px;
+                                font-weight: 400;
+                                color: #616161;
+                            }
+                        }
+                    }
+                    
+                    label {
+                        margin: 0;
+                    }
+                }
+
+                hr {
+                    background: $black4;
+                    border: 0px;
+                    width: 100%;
+                    box-sizing: border-box;
+                    margin: 15px 0;
+                    height: 1px;
+                }
+            }
+            
+        }
+        
+    }
+
+    .noResult {
+        display: flex;
+        flex-direction: column;
+        gap: 37px;
+        width: 100%;
+        
+        box-sizing: border-box;
+        padding: 70px 20px 20px 20px;
+
+        .noResultContainer {
+            z-index: -2;
+            height: 80vh;
+            overflow-y: auto;
+            
+            border-radius: 20px;
+            border: 1px solid $black4;
+            background-color: #f8f8f8;
+            
+            & div{
+                text-align: center;
+                z-index: -3;
+            }
+        }
+
+    }
+    
+}
