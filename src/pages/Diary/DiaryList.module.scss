@@ -1,0 +1,99 @@
+@import '@/assets/styles/colors.scss';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    padding-top: 100px;
+    padding-bottom: 63px;
+
+    .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        min-width: 320px;
+        max-width: 480px;
+        margin: 0 auto;
+        height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 13px 20px;
+        background-color: $white1;
+        flex-wrap: wrap;
+
+        .leftHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 5px;
+
+            p {
+                font-size: 16px;
+                font-weight: 700;
+                color: $point-color1;
+                white-space: nowrap;
+            }
+
+            button {
+                padding: 0;
+                position: relative;
+                left: 0px;
+                top: 0;
+                transform: translateY(0);
+            }
+        }
+    }
+
+    .category {
+        vertical-align: middle;
+        
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-start;
+        box-sizing: border-box;
+        padding: 10px 0px;
+        background-color: white;
+        flex-wrap: wrap;
+
+        button {
+            padding: 4px 12px;
+            font-weight: 500;
+            font-size: 14px;
+            background-color: $black5;
+            color: $black3;
+            border-radius: 5px;
+
+            &.active {
+                background-color: $point-color1;
+                color: $white1;
+            }
+        }
+    }
+
+    .diaryList {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        overflow-y: auto;
+        gap: 15px;
+        box-sizing: border-box;
+        padding: 0px 20px;
+
+        .postItem {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            &:empty {
+                visibility: hidden;
+            }
+        }
+    }
+}

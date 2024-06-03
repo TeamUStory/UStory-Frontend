@@ -1,0 +1,197 @@
+@import "@/assets/styles/colors.scss";
+
+.friendWrap{
+  box-sizing: border-box;
+  padding-top: 50px;
+  min-width: 320px;
+  max-width: 480px;
+  margin: 0 auto;
+
+  .wrap{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+
+    .tabMenu{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .tabs{
+
+        button{
+          padding: 0px;
+        }
+      }
+    }
+  }
+}
+
+// 탭메뉴
+.tabMenu{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 34px;
+
+  .tabs{
+
+    .tab{
+      font-size: 16px;
+      font-weight: 600;
+      color: $black4;
+      margin-right: 16px;
+    }
+
+    .active{
+      color: $point-color1;
+      position: relative;
+    }
+
+    .active:after{
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 2px;
+      background: $point-color1;
+      left: 0;
+      bottom: -2px;
+    }
+  }
+}
+
+.plusBtn{
+  button{
+    padding: 0px;
+
+    svg{
+      width: 24px;
+      vertical-align: middle;
+    }
+  }
+}
+
+
+// 친구 리스트 {
+.listWrap{
+  width: 100%;
+}
+
+.list{
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// 친구 정보
+.friendInfo{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .img{
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid $black4;
+
+    img{
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+    }
+  }
+
+  .text{
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+
+    .name{
+      font-size: 12px;
+      color: $black2;
+      font-weight: 400;
+
+    }
+
+    .nickName{
+      font-size: 14px;
+      font-weight: 500;
+      color: $black1;
+    }
+  }
+}
+
+// 더보기 버튼
+.moreBtn{
+  position: relative;
+
+  button{
+    padding: 0px;
+
+    svg{
+      width: 24px;
+      vertical-align: middle;
+    }
+  }
+
+  .buttonWrap{
+    position: absolute;
+    top: 24px;
+    right: 0;
+    background: $white1;
+    box-shadow: 0px 0px 20px #00000009;
+    border-radius: 10px;
+    width: 95px;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+    display: none;
+    z-index: 1;
+
+    button{
+      padding: 0px;
+      color: $wrong-color;
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
+}
+
+.listBtnWrap{
+  button{
+    padding: 5px 15px;
+    font-size: 12px;
+    margin-left:8px;
+  }
+}
+
+// 친구 추가하기
+.searchInput{
+  width: 100%;
+  position: relative;
+  margin-bottom: 20px;
+
+  input{
+    width: 100%;
+    padding-right: 50px;
+  }
+
+  label{
+    display: none;
+  }
+
+  button{
+    padding: 0px;
+    position: absolute;
+    right: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    svg{
+      vertical-align: middle;
+    }
+  }
+}

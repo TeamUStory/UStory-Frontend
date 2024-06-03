@@ -1,0 +1,39 @@
+@import "@/assets/styles/colors.scss";
+
+.subHeader{
+  background: $white1;
+  border-bottom: 1px solid $black5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 13px 20px;
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  z-index: 100;
+  width: 100%;
+  min-width: 320px;
+  max-width: 480px;
+  margin: 0 auto;
+
+  h2{
+    font-size: 16px;
+    color: $black1;
+    font-weight: 500;
+  }
+
+  button{
+    position:absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0px;
+
+    svg{
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
+    }
+  }
+}

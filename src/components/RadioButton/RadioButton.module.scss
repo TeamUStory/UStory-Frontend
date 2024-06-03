@@ -1,0 +1,35 @@
+@import "@/assets/styles/colors.scss";
+
+.radioButton {
+  display: inline-block;
+}
+
+.radioButton__input {
+  display: none;
+}
+
+.radioButton__custom {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid $black4;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.radioButton__input:checked + .radioButton__custom {
+  border-color: $point-color1;
+}
+
+.radioButton__input:checked + .radioButton__custom::after {
+  content: '';
+  width: 9px;
+  height: 9px;
+  background: $point-color1;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -1,0 +1,165 @@
+@import '@/assets/styles/colors.scss';
+
+.container {
+    .formContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 19px;
+
+        padding: 20px;
+        width: 100%;
+
+        padding-top: 70px;
+        overflow-y: auto;
+        box-sizing: border-box;
+        
+        .input {
+            width: 100%;
+        }
+
+        select {
+            width: 100%;
+        }
+
+        .markerColorSelect {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+
+            p {
+                color: $black2;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .information {
+                color: $black3;
+                font-size: 12px;
+                font-weight: 500;
+            }
+
+            .colorButtons {
+                display: flex;
+                flex-wrap: wrap;
+                gap:19px;
+
+                button {
+                    width: 33px;
+                    height: 33px;
+                    padding: 0;
+
+                    &.selected {
+                        border: 2px;
+                        color: $point-color1;
+                    }
+                }
+            }
+        }
+
+        .membersSelect{
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+
+            .title {
+                display: flex;
+                justify-content: space-between;
+                .phrases{
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+
+                    p {
+                        color: $black2;
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                    
+                    .information {
+                        color: $black3;
+                        font-size: 12px;
+                        font-weight: 500;
+                    }
+                } 
+
+                svg {
+                    height: 20px;
+                    transform: rotate(180deg);
+                }
+            }
+
+            .selectedMembers {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+
+                .selectedMember {
+                    color: $black1;
+                    background-color: #1d1d1d14;
+                    font-size: 12px;
+
+                    box-sizing: border-box;
+                    padding: 2px 9px;
+                    border-radius: 5px;
+                }
+            }
+        }
+
+        .diaryIntroduction {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+
+            p {
+                color: $black2;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            textarea {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 13px 17px;
+
+                -moz-appearance: none;
+                -webkit-appearance: none;
+                appearance: none;
+                
+                border-radius: 10px;
+                border: 1px solid $black4;
+                outline: 1px solid $black4;
+
+                
+                font-size: 14px;
+                font-weight: 500;
+                color: black;
+                font-family: pretendard;
+
+                &::placeholder{
+                    color: $black4;
+                    font-size: 14px;
+                    font-weight: 500;
+                    font-family: pretendard;
+                }
+
+                &:focus{
+                    border: 1px solid $point-color1;
+                    outline: 1px solid $point-color1;
+                }
+            }
+        }
+        .submitButton {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 132px;
+
+            color: $white1;
+            background-color: $black4;
+            border-radius: 10px;
+
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+}

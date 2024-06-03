@@ -1,0 +1,37 @@
+@import '@/assets/styles/colors.scss';
+@import "@/assets/styles/colors.scss";
+
+label{
+    display: block;
+    margin-bottom: 8px;
+    color: $black2;
+    font-size: 14px;
+}
+
+input{
+  box-sizing: border-box;
+  padding: 13px 17px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid $black4;
+
+  /*ios대응*/
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-border-radius: 10px;
+
+  &::placeholder{
+    color: $black3;
+    font-weight: normal;
+  }
+
+  &:focus{
+    border: 1px solid $point-color1;
+    outline: 1px solid $point-color1;
+  }
+
+  &:active{
+    border: 1px solid $point-color1;
+    outline: 1px solid $point-color1;
+  }
+}

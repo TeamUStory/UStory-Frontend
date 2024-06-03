@@ -1,0 +1,61 @@
+@import '@/assets/styles/colors.scss';
+
+.allContainer {
+
+    .selectDate {
+        position: fixed;
+        top:50px;
+        background-color: #FFF;
+        width: 100%;
+        min-width: 320px;
+        max-width: 480px;
+        height: 84px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        box-sizing: border-box;
+        padding: 27px 22px;
+        gap: 10px;
+
+
+        span {
+            font-size: 14px;
+            font-weight: 500;
+            color: $black3;
+        }
+    }   
+
+    .pageList {
+        display: flex;
+        flex-direction: column;
+
+        padding: 134px 20px 20px 20px;
+        box-sizing: border-box;
+        width: 100%;
+        gap: 15px;
+
+        .postItemRow {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 21px;
+
+            .postItem{
+                width: calc(50% - 10.5px);
+
+                a{
+                    width: 100%;   
+
+                    svg{
+                        width:12px;
+                        height: 100%;
+                    }
+                }
+            }
+        }
+
+    }
+
+}

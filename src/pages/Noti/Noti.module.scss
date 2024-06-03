@@ -1,0 +1,84 @@
+@import "@/assets/styles/colors.scss";
+
+.NotiWrap{
+  box-sizing: border-box;
+  padding-top: 50px;
+  min-width: 320px;
+  max-width: 480px;
+  margin: 0 auto;
+
+  .wrap{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 20px;
+
+    .NotiBox{
+      width: 100%;
+      border-bottom: 1px solid $black5;
+      box-sizing: border-box;
+      padding: 20px 0px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .Noti{
+        width: 92%;
+
+        .contentBox{
+          margin-bottom: 10px;
+          display: flex;
+          gap: 10px;
+          align-items: flex-start;
+
+          .category{
+            font-size: 12px;
+            box-sizing: border-box;
+            padding: 2px 10px;
+            border-radius: 5px;
+          }
+
+          .friend{
+            background: #1d1d1d14;
+            color: $black1;
+          }
+
+          .comment{
+            background: #FB817614;
+            color: $point-color1;
+          }
+
+          .record{
+            background: #D0EEEC70;
+            color: #75A2A0;
+          }
+
+          .content{
+            font-size: 14px;
+            font-weight: 400;
+            color: $black1;
+            width: 75%;
+          }
+        }
+
+        .date{
+          font-size: 12px;
+          color: $black3;
+        }
+      }
+
+      .btnBox{
+        width: 5%;
+
+        button{
+          padding: 0px;
+        }
+
+        svg{
+          width: 20px;
+          transform: rotate(180deg);
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}

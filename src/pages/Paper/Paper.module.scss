@@ -1,0 +1,394 @@
+@import '@/assets/styles/colors.scss';
+
+.allContainer {
+  
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 100%;
+        min-width: 320px;
+        max-width: 480px;
+        padding: 13px 17px;
+        box-sizing: border-box;
+
+        position: fixed;
+        background-color: $white1;
+        border-bottom: 1px solid $black5;
+        height: 47px;
+        z-index: 100;
+
+        button{
+            padding: 0;
+
+            svg{
+              width: 24px;
+              height: 24px;
+              vertical-align: middle;
+            }
+          }
+
+        .rightHeader {
+            display: flex;
+            gap:20px;
+            position: relative;
+            
+            button {
+                vertical-align: middle;
+                height: 24px;
+            }
+            
+            .menuContainer {
+                position: absolute;
+                top: 35px;
+                right: 0px;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                white-space: nowrap;
+                gap: 14px;
+
+                padding: 21px 24px;
+                box-sizing: border-box;
+                background-color: #FFF;
+                border-radius: 10px;
+                box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.09);
+                
+                font-size: 14px;
+                font-weight: 500;
+
+                .editButton {
+                    width: 100%;
+                    color: $black2;
+                    text-decoration: none;
+                }
+                .exitButton {
+                    width: 100%;
+                    color: $wrong-color;
+                }
+            }
+        }
+    }
+
+    .contentsContainer {
+        display: flex;
+        flex-direction: column;
+        padding: 67px 0 20px 0;
+        overflow-y: auto;
+        box-sizing: border-box;
+        gap: 24px;
+
+        .pageName {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: $black1;
+
+        }
+
+        .imagesContainer img {
+            text-align: center;
+            width: 100%;
+        }
+        
+        .contents {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            
+            padding: 0 20px;
+            box-sizing: border-box;
+
+            .left {
+                
+                .diary, .date, .place {
+                    display: flex;
+                    align-items: center;
+                    gap: 9px;
+                    
+                    color: $black1;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+
+                .date{
+                  margin: 5px 0px;
+                }
+
+                .diary {
+                    position: relative;
+                    left:-14px;
+                    top: 10px;
+                    height: fit-content;
+                    color: $sub-color2 !important;
+                    svg {
+                        width: 15px;
+                    }
+                    p {
+                        position: relative;
+                        left: -14px;
+                    }
+
+                }
+
+                .date svg {
+                    box-sizing: border-box;
+                    padding: 0;
+                }
+
+                .place svg{
+                    width: 15px;
+                    height: fit-content;
+                }
+
+            }
+
+            .right button {
+                padding: 0;
+                
+            }
+            
+        }
+        .mapContainer {
+            display: flex;
+            justify-content: center;
+            padding: 0 20px;
+        }
+        hr {
+            box-sizing: border-box;
+            margin: 0 20px ;
+            border: 0px;
+            height: 1px;
+            background: $black4;
+        }
+
+        .pharsesContainer {
+            display: flex;
+            white-space: nowrap;
+            align-items: center;
+            gap: 11px;
+
+            box-sizing: border-box;
+            padding: 0 20px;
+            font-size: 15px;
+            font-weight: 500;
+
+            svg {
+                width: 20px;
+                vertical-align: middle;
+            }
+        }
+
+
+        .allCommentContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+
+            .commentsContainer {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 0 20px;
+                gap: 16px;
+                position: relative;
+            
+                img {
+                    border-radius: 10px;
+                    border: 1px solid $black4;
+                    width: 41px;
+                    height: 41px;
+                }
+            
+                .commentContainer {
+                    width: 100%;
+                    white-space: nowrap;
+                    .nickName {
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: $black1;
+                    }
+                    .date {
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: $black3;
+                    }
+                    .comment {
+                        font-size: 14px;
+                        font-weight: 500;
+                        color: $black1;
+                    }
+                }
+            
+                button {
+                    position: absolute;
+                    right: 20px;
+                    padding: 0;
+                    box-sizing: border-box;
+                    svg {
+                        width: 21px;
+                    }
+                }
+            
+                .tapContainer {
+                    position: absolute;
+                    top: 50px;
+                    right: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    white-space: nowrap;
+                    gap: 14px;
+                    padding: 21px 24px;
+                    box-sizing: border-box;
+                    background-color: #FFF;
+                    border-radius: 10px;
+                    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+                    font-size: 14px;
+                    font-weight: 500;
+                    z-index: 10; /* Ensure it's above other content */
+            
+                    button {
+                        position: relative;
+                        left: 0;
+                        color: $black2;
+                    }
+                    .deleteButton {
+                        width: 100%;
+                        color: $wrong-color;
+                    }
+                }
+            }
+
+            .commentClosedContainer {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 0 20px;
+                gap: 16px;
+                position: relative;
+                align-items: flex-start;
+            
+                img {
+                    border-radius: 10px;
+                    border: 1px solid $black4;
+                    width: 41px;
+                    height: 41px;
+                }
+            
+                .commentContainer {
+                    width: 100%;
+                    white-space: nowrap;
+                    .nickName {
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: $black1;
+                    }
+                    .date {
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: $black3;
+                    }
+                    .textshadow {
+                        text-shadow: 0px 0px 6px black;
+                        color: transparent;
+                        word-break: break-all;
+                    }
+                }
+            
+                button {
+                    position: absolute;
+                    right: 20px;
+                    padding: 0;
+                    box-sizing: border-box;
+                    svg {
+                        width: 21px;
+                    }
+                }
+            
+                .tapContainer {
+                    position: absolute;
+                    top: 50px;
+                    right: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    white-space: nowrap;
+                    gap: 14px;
+                    padding: 21px 24px;
+                    box-sizing: border-box;
+                    background-color: #FFF;
+                    border-radius: 10px;
+                    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+                    font-size: 14px;
+                    font-weight: 500;
+                    z-index: 10; /* Ensure it's above other content */
+            
+                    button {
+                        position: relative;
+                        left: 0;
+                        color: $black2;
+                    }
+                    .deleteButton {
+                        width: 100%;
+                        color: $wrong-color;
+                    }
+                }
+            }
+        }
+
+        .commentClosed {
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 17px 23px;
+            margin: 0 20px;
+            gap: 17px;
+            background-color: #E6000010;
+            border-radius: 10px;
+
+            p {
+                font-size: 14px;
+                font-weight: bold;
+                color: $wrong-color;
+            }
+        }
+
+        .sendComment {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+
+            box-sizing: border-box;
+            padding: 0 20px 20px 20px;
+
+            input{
+                width: 50vh;
+            }
+            
+            label{
+              display: none;
+            }
+
+            button{
+                padding: 12px;
+                display: flex;
+                align-items: center;
+
+                & svg{
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+}
