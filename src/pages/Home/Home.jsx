@@ -1,11 +1,29 @@
+import { useEffect, useState } from "react";
 import styles from "../Home/Home.module.scss";
 import PlusButton from "@/components/PlusButton/PlusButton"
 import BottomBar from "@/components/BottomBar/BottomBar"
 import NotificationIcon from "@/assets/icons/NotificationIcon";
 import MapApi from "@/apis/api/MapApi";
-// import PostItem from "@/components/PostItem/PostItem";
+import PostItem from "@/components/PostItem/PostItem";
+import FriendIcon from "@/assets/icons/FriendIcon";
 
 const Home = () => {
+    const [isPostItems, setIsPostItems] = useState(false);
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const postItems = [
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
+        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
+        { image: '/src/assets/images/place.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
+        ];
+
+    useEffect(() => {
+        setIsPostItems(postItems.length > 0);
+    },[postItems]);
+    
     return (
         <div className={styles.container}>
             <header className={styles.header}>
@@ -34,10 +52,26 @@ const Home = () => {
                 </div>
                 <div className={styles.recordContainer}>
                     <p>나만의 기록일지</p>
-                    <div className={styles.noRecordList}>
-                        <p>기록을 등록해보세요!</p>
-                    </div>
-                    {/* <PostItem /> */}
+                    {isPostItems ? (
+                        <div className={styles.recordsList}>
+                            {postItems.map((postitem, idx) => (
+                                <PostItem
+                                    key={idx}
+                                    image={postitem.image}
+                                    title={postitem.title}
+                                    link={postitem.link}
+                                    subText={postitem.subText}
+                                    borderColor={postitem.borderColor}
+                                >
+                                    <FriendIcon stroke="#AAAAAA" />
+                                </PostItem>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className={styles.noRecordList}>
+                            <p>기록을 등록해보세요!</p>
+                        </div>
+                    )}
                 </div>
             </div>
             <PlusButton />

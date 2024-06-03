@@ -17,7 +17,7 @@ const Diary = () => {
     const navigate = useNavigate();    
     const [isPostItems, setIsPostItems] = useState(false);
     const [isToggle, setIsToggle] = useState(false);
-
+    
     const members = [
         { name: '메타몽', imgSrc: '/src/assets/images/basicMemberImage.png' },
         { name: '멤버2', imgSrc: '/src/assets/images/basicMemberImage.png' },
@@ -110,7 +110,7 @@ const Diary = () => {
                         <div className={styles.title}>
                             <div className={styles.left}>
                                 <p>우리들의 기록</p>
-                                <Button type="button" label={<CirclePlusIcon fill="#F2B1AB" />}/>
+                                <Button type="button" label={<CirclePlusIcon fill="#F2B1AB" />} onClick={()=> navigate("/register/paper")}/>
                             </div>
                             <div className={styles.right}>
                                 <Link to="/diary/pagelist">
