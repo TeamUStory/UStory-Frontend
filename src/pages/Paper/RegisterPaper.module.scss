@@ -71,7 +71,15 @@
             input {
                 color: $black3;
                 font-size: 14px;
-                font-weight: 500;  
+                font-weight: 500; 
+                
+                &:active{
+                  color: $black1;
+                }
+
+                &:focus{
+                  color: $black1;
+                }
             }
         }
 
@@ -80,10 +88,6 @@
             display: flex;
             flex-direction: column;
             gap: 21px;
-
-            &#map{
-                border-radius: 20px;
-            }
         }
         
         .submitButton {

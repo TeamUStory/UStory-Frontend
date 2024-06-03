@@ -63,7 +63,7 @@ const RegisterPaper = () => {
                 <div className={styles.commentContainer}>
                     <InputField 
                         label="코멘트"
-                        placeholder="장소에 대한  한 줄 코멘트 입력"
+                        placeholder="장소에 대한 한 줄 코멘트 입력"
                         className={styles.input}
                     />
                 </div>

@@ -3,6 +3,7 @@
 
     .react-datepicker-wrapper{
         width: 100%;
+        position: relative;
     }
 
     .react-datepicker__input-container {
@@ -24,11 +25,18 @@
         }
     }
     
+    .react-datepicker__tab-loop{
+      position: relative;
+    }
+
     .react-datepicker-popper {
         background-color: white;
         border-radius: 10px;
-        top: -10px !important; 
-        width: 80%;
+        z-index: 2;
+        top: 0px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+
         
         .react-datepicker{
             border-color: $point-color1;
@@ -93,4 +101,12 @@
   .react-datepicker__day--selected{
     color: $white1 !important;
     background-color: $point-color1;
+}
+.react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range){
+  color: $white1 !important;
+  background-color: $point-color1;
+}
+.react-datepicker__day--in-range{
+  color: $white1 !important;
+  background-color: $point-color1;
 }

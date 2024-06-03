@@ -45,7 +45,7 @@
         align-items: center;
         gap: 20px;
         
-        padding-top: 80px;
+        padding-top: 83px;
         padding-bottom: 63px;
         overflow-y: auto;
         
@@ -53,6 +53,10 @@
             padding: 0 20px;
             width: 100%;
             box-sizing: border-box;
+        }
+
+        #map{
+          border-radius: 20px !important;
         }
 
         .diaryContainer {
