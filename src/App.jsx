@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route} from 'react-router-dom';
 import "@/assets/styles/global.scss";
+import Loading from '@/components/Loading/Loading';
 
 const Home = lazy(() => import('./pages/Home/Home'));
 const DiaryList = lazy(() => import('./pages/Diary/DIaryList'));
@@ -29,7 +30,7 @@ const PlaceSearch = lazy(() => import('./pages/Paper/PlaceSearch'));
 function App() {
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading />}>
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/diarylist' element={<DiaryList />} />
