@@ -15,7 +15,7 @@ const SignUp = () => {
               <div className={styles.inputBox}>
                 <InputField type="text" placeholder="닉네임" label="닉네임"/>
               </div>
-              <Button type="button" label="중복 확인" variant="active"/>
+              <Button type="button" label="확인" variant="active"/>
             </div>
             <InputField type="text" placeholder="이름" label="이름"/>
             <InputField type="password" placeholder="비밀번호 (영문, 숫자, 특수문자 1개 포함 8~16자)  " label="비밀번호"/>

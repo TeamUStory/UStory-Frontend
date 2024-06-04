@@ -1,0 +1,16 @@
+@import "@/assets/styles/colors.scss";
+
+.notiBox{
+  position: relative;
+  display: inline-block;
+
+  .dot{
+    position: absolute;
+    top: 0;
+    right: 4px;
+    width: 9px;
+    height: 9px;
+    background-color: $point-color1;
+    border-radius: 50%;
+  }
+}

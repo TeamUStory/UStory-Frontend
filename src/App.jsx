@@ -1,32 +1,36 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route} from 'react-router-dom';
 import "@/assets/styles/global.scss";
-import Home from './pages/Home/Home';
-import DiaryList from '@/pages/Diary/DIaryList';
-import RegisterDiary from './pages/Diary/RegisterDiary';
-import AddMember from './pages/Diary/AddMember';
-import Diary from './pages/Diary/Diary';
-import EditDiary from './pages/Diary/EditDiary';
-import DiaryPageList from './pages/Diary/DiaryPageList';
-import RegisterPaper from './pages/Paper/RegisterPaper';
-import Login from "./pages/Login/Login";
-import SignUp from "./pages/SignUp/SignUp";
-import FindPassword from "./pages/FindPassword/FindPassword";
-import ResetPassword from "./pages/FindPassword/ResetPassword";
-import Mypage from "./pages/Mypage/Mypage";
-import EditMypage from "./pages/Mypage/EditMypage";
-import PageList from './pages/Mypage/PageList';
-import SavePageList from './pages/Mypage/SavePageList';
-import Noti from "./pages/Noti/Noti";
-import Friends from "./pages/Friends/Friends";
-import AddFriend from "./pages/Friends/AddFriend";
-import SelectDiary from './pages/Paper/SelectDiary';
-import Paper from './pages/Paper/Paper';
-import EditPaper from './pages/Paper/EditPaper';
+import Loading from '@/components/Loading/Loading';
+
+const Home = lazy(() => import('./pages/Home/Home'));
+const DiaryList = lazy(() => import('./pages/Diary/DIaryList'));
+const RegisterDiary = lazy(() => import('./pages/Diary/RegisterDiary'));
+const AddMember = lazy(() => import('./pages/Diary/AddMember'));
+const Diary = lazy(() => import('./pages/Diary/Diary'));
+const EditDiary = lazy(() => import('./pages/Diary/EditDiary'));
+const DiaryPageList = lazy(() => import('./pages/Diary/DiaryPageList'));
+const RegisterPaper = lazy(() => import('./pages/Paper/RegisterPaper'));
+const Login = lazy(() => import('./pages/Login/Login'));
+const SignUp = lazy(() => import('./pages/SignUp/SignUp'));
+const FindPassword = lazy(() => import('./pages/FindPassword/FindPassword'));
+const ResetPassword = lazy(() => import('./pages/FindPassword/ResetPassword'));
+const Mypage = lazy(() => import('./pages/Mypage/Mypage'));
+const EditMypage = lazy(() => import('./pages/Mypage/EditMypage'));
+const PageList = lazy(() => import('./pages/Mypage/PageList'));
+const SavePageList = lazy(() => import('./pages/Mypage/SavePageList'));
+const Noti = lazy(() => import('./pages/Noti/Noti'));
+const Friends = lazy(() => import('./pages/Friends/Friends'));
+const AddFriend = lazy(() => import('./pages/Friends/AddFriend'));
+const SelectDiary = lazy(() => import('./pages/Paper/SelectDiary'));
+const Paper = lazy(() => import('./pages/Paper/Paper'));
+const EditPaper = lazy(() => import('./pages/Paper/EditPaper'));
+const PlaceSearch = lazy(() => import('./pages/Paper/PlaceSearch'));
 
 function App() {
 
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/diarylist' element={<DiaryList />} />
@@ -50,8 +54,9 @@ function App() {
         <Route path='/diaryselect' element={<SelectDiary />} /> 
         <Route path='/paper' element={<Paper />} /> 
         <Route path='/editpaper' element={<EditPaper />} />
+        <Route path='/search/place' element={<PlaceSearch />} />
       </Routes>
-    </>
+    </Suspense>
   )
 }
 
