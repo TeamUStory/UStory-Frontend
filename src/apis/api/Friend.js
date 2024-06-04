@@ -4,22 +4,25 @@ export default {
   /**
    * @method DELETE
    * @summeray 친구 삭제
+   * @param friendId 친구 ID
    */
-  deleteFriend(userId, friendId) {
+  deleteFriend(friendId) {
     return api({
-      url: `/friend/${userId}/${friendId}`,
+      url: `/friend/${friendId}`,
       method: "delete"
     })
   },
 
   /**
    * @method GET
-   * @summeray 사용자 검색
+   * @summeray 사용자의 전체 친구 리스트를 조회하거나 닉네임으로 친구 검색
+   * @param nickname 친구 닉네임
    */
-  searchUser() {
+  searchUser(nickname) {
     return api({
       url: `/friend/search`,
-      method: "get"
+      method: "get",
+      params: nickname
     })
   },
 
@@ -27,43 +30,38 @@ export default {
    * @method GET
    * @summeray 친구 요청 목록 조회
    */
-  getFriendRequestList(userId) {
+  getFriendRequestList() {
     return api({
-      url: `/friend/requests/${userId}`,
-      method: "get"
-    })
-  },
-
-  /**
-   * @method GET
-   * @summeray 멤버 추가 페이지에서 사용자 검색
-   */
-  getFriendList() {
-    return api({
-      url: `/friend/friends`,
+      url: `/friend/received`,
       method: "get"
     })
   },
 
   /**
    * @method POST
-   * @summeray 친구 요청 수락
+   * @summeray 친구 요청 응답
+   * @param senderNickname 요청한 사용자 닉네임
+   * @param receiverNickname 요청 받은 사용자 닉네임
+   * @param accepted 수락 여부 (boolean)
    */
-  postFriendRespond() {
+  postFriendRespond(senderNickname, receiverNickname, accepted) {
     return api({
-      url: `/friend/respond`,
+      url: `/friend/approve`,
       method: "post",
+      params: senderNickname, receiverNickname, accepted
     })
   },
 
   /**
    * @method POST
    * @summeray 친구 요청
+   * @param userData 친구 요청할 사용자 데이터
    */
-  postFriendRequest() {
+  postFriendRequest(userData) {
     return api({
-      url: `/friend/request`,
-      method: "post"
+      url: `/friend`,
+      method: "post",
+      data: userData
     })
   }
 }

@@ -4,21 +4,22 @@ export default {
   /**
    * @method DELETE
    * @summeray 알림 삭제
+   * @param noticeId 알림 ID
    */
-  deleteFriend(id) {
+  deleteFriend(noticeId) {
     return api({
-      url: `/notice/${id}`,
+      url: `/notices/${noticeId}`,
       method: "delete"
     })
   },
 
   /**
    * @method GET
-   * @summeray 알림 목록 조회
+   * @summeray 사용자가 가진 모든 알림 조회 / type: 친구 or 기록 or 코멘트
    */
-  getNoticeList(userId) {
+  getNoticeList() {
     return api({
-      url: `/notice/notices/${userId}`,
+      url: `/notices`,
       method: "get"
     })
   }
