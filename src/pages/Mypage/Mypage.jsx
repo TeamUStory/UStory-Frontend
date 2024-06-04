@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Mypage.module.scss';
 import FriendIcon from '@/assets/icons/FriendIcon';
-import BellIcon from '@/assets/icons/BellIcon';
 import Button from "@/components/Button/Button";
 import BottomBar from '@/components/BottomBar/BottomBar';
 import PlusButton from '@/components/PlusButton/PlusButton';
@@ -12,6 +11,7 @@ import MyRecord from './MyRecord';
 import LogoutIcon from "@/assets/icons/LogoutIcon"
 import Modal from "@/components/Modal/Modal"
 import BanImg from '@/assets/images/ban.png';
+import Noti from '@/components/Noti/Noti';
 
 const Mypage = () => {
   const [isLogouModal, setIsLogoutModal] = useState(false)
@@ -36,7 +36,7 @@ const Mypage = () => {
         <div className={styles.btnBox}>
           <Button type="button" label={<LogoutIcon stroke="#1d1d1d" />} variant="inactive" onClick={() => setIsLogoutModal(true)}/>
           <Button type="button" label={<FriendIcon stroke="#1d1d1d" />} variant="inactive" onClick={() => navigate("/friends")}/>
-          <Button type="button" label={<BellIcon stroke="#1d1d1d" />} variant="inactive" onClick={() => navigate("/noti")}/>
+          <Noti />
         </div>
       </header>
       <div className={styles.mypageWrap}>
