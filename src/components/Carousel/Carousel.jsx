@@ -45,42 +45,19 @@ export const Carousel = ({ children }) => {
 
   console.log(currentIndex);
   return (
-    <div
-      className={styles.carousel}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      <CarouselContext.Provider value={{ currentIndex }}>
-        {React.Children.map(children, (child, index) => (
-          <div
-            className={styles.carouselItem}
-            style={{ transform: `translateX(${(index - (currentIndex * 3)) * 100}%)` }} // currentIndex * 3을 해서 각 페이지별로 currentIndex를 설정합니다.
-            key={index}
-          >
-            {child}
-          </div>
-        ))}
-      </CarouselContext.Provider>
+    <div className={styles.carousel}>
+        <CarouselContext.Provider 
+          value={currentIndex}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+            {children}
+        </CarouselContext.Provider>
     </div>
   );
 };
-
-const CarouselContent = ({ children }) => {
-  return (
-    <div className={styles.carouselContent}>
-      {children}
-    </div>
-  );
-};
-
-
-Carousel.Content = CarouselContent;
 
 Carousel.propTypes = {
-  children: propTypes.node.isRequired,
-};
-
-CarouselContent.propTypes = {
   children: propTypes.node.isRequired,
 };
 

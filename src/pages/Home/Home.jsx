@@ -7,7 +7,9 @@ import NotificationIcon from "@/assets/icons/NotificationIcon";
 import MapApi from "@/apis/api/MapApi";
 import PostItem from "@/components/PostItem/PostItem";
 import FriendIcon from "@/assets/icons/FriendIcon";
-import CarouselComponent from "@/components/Carousel/CarouselComponent";
+import Carousel from "@/components/Carousel/Carousel"
+import CarouselContent from "@/components/Carousel/CarouselContent"
+import CarouselItem from "@/components/Carousel/CarouselItem"
 
 const Home = () => {
     const navigate = useNavigate();
@@ -64,34 +66,40 @@ const Home = () => {
                     <MapApi />
                 </div>
                 <div className={styles.diaryContainer}>
-                    <p>내가 속한 다이어리를<br/>확인해보세요!</p>
-                    <div className={styles.diaryList}>
-                        {/* <div className={styles.diary}>
-                            <img src="src\assets\images\diaryBasicImage.png" alt="다이어리 이미지" />
-                            <div className={styles.diaryContent}>
-                                <p className={styles.diaryName}>기본 다이어리</p>
-                                <p className={styles.diaryCategory}>개인</p>
-                            </div>
-                        </div> */}
-                        <CarouselComponent>
-                            {newDiaryItems.map((diaryItems, groupIndex) => (
-                                <div className={styles.page} key={groupIndex}>
-                                    {diaryItems.map((diary, index) => (
-                                        <button key={index} onClick={() => navigate('/diary')}>
-                                            <div className={styles.diaryItem}>
-                                                <img src={diary.image} alt={diary.title} />
-                                                <div className={styles.diaryContent}>
-                                                    <p className={styles.diaryName}>{diary.title}</p>
-                                                    <p className={styles.diaryCategory}>{diary.subText}</p>
-                                                </div>
-                                            </div>
-                                            {index !== diaryItems.length - 1 && <hr />}
-                                        </button>
-                                    ))}
-                                </div>
-                            ))}
-                        </CarouselComponent>
-                    </div>
+                  <p>내가 속한 다이어리를<br/>확인해보세요!</p>
+                  <div className={styles.diaryList}>
+                    {/* <div className={styles.diary}>
+                      <img src="src\assets\images\diaryBasicImage.png" alt="다이어리 이미지" />
+                      <div className={styles.diaryContent}>
+                        <p className={styles.diaryName}>기본 다이어리</p>
+                        <p className={styles.diaryCategory}>개인</p>
+                      </div>
+                    </div> */}
+                    <Carousel>
+                      <CarouselContent>
+                        {newDiaryItems.map((diaryItems, groupIndex) => {
+                          return (
+                            <CarouselItem key={groupIndex}>
+                              <div className={styles.page}>
+                                {diaryItems.map((diary, index) => (
+                                  <button key={diary.title} onClick={() => navigate('/diary')}>
+                                    <div className={styles.diaryItem}>
+                                      <img src={diary.image} alt={diary.title} />
+                                      <div className={styles.diaryContent}>
+                                        <p className={styles.diaryName}>{diary.title}</p>
+                                        <p className={styles.diaryCategory}>{diary.subText}</p>
+                                      </div>
+                                    </div>
+                                    {index !== diaryItems.length - 1 && <hr />}
+                                  </button>
+                                ))}
+                              </div>
+                            </CarouselItem>
+                          );
+                        })}
+                      </CarouselContent>
+                    </Carousel>
+                  </div>
                 </div>
                 <div className={styles.recordContainer}>
                     <p>나만의 기록일지</p>

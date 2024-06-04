@@ -1,16 +1,24 @@
 .carousel {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-  }
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+  overflow: hidden;
+}
   
-  .carouselContent {
-    display: flex;
-    transition: transform 0.5s ease;
-  }
-  
-  .carouselItem {
-    width: 100%;
-  }
-  
-  
+
+.carousel_content {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  box-sizing: content-box;
+  position: relative;
+  transition-property: transform;
+  transform: translateX(0);
+}
+
+.carousel_item{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
