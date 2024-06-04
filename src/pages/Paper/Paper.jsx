@@ -30,6 +30,7 @@ const Paper = () => {
         { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' },
         { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' }
     ];
+
     
     // header에 있는 moreIcon
     const toggleMenu = () => {
@@ -138,23 +139,25 @@ const Paper = () => {
                     </div>
                 ) : (
                     <div className={styles. allCommentContainer}>
-                        <div className={styles.commentClosedContainer}>
-                            <img src="/src/assets/images/basic_profile.png" alt='기본 프로필' />
-                            <div className={styles.commentContainer}>
-                                <p className={styles.nickName}>껑냥이</p>
-                                <p className={styles.date}>2024.06.01 (토)</p>
-                                <p className={styles.textshadow}>asfs dfds fsd</p>
-                            </div>
-                            <button className={styles.moreIcon} onClick={toggleMenu} >
-                                <MoreIcon stroke="black" />
-                            </button>
-                            {isToggle && (
-                                <div className={styles.menuContainer}>
-                                    <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate("/editpaper")} />
-                                    <button className={styles.deleteButton}>삭제하기</button>
+                        {commentsData.map((comment, index) => (
+                            <div className={styles.commentsContainer} key={index}>
+                                <img src="/src/assets/images/basic_profile.png" alt='기본 프로필' />
+                                <div className={styles.commentContainer}>
+                                    <p className={styles.nickName}>{comment.nickName}</p>
+                                    <p className={styles.date}>{comment.date}</p>
+                                    <p className={styles.textshadow}>asfs dfds fsd</p>
                                 </div>
-                            )}
-                        </div>
+                                <button className={styles.moreIcon} onClick={() => toggleMenu2(index)} >
+                                    <MoreIcon stroke="black" />
+                                </button>
+                                {toggleIndex === index && (
+                                    <div className={styles.tapContainer}>
+                                        <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate("/editpaper")} />
+                                        <button className={styles.deleteButton}>삭제하기</button>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                         <div className={styles.commentClosed}>
                             <LoudSpeakerIcon color="#E60000" />
                             <p>모든 멤버가 코멘트를 등록해야<br/>기록 확인이 가능합니다.</p>
