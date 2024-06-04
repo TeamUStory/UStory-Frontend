@@ -28,7 +28,7 @@ const EditMypage = () => {
               <div className={styles.inputBox}>
                 <InputField type="text" label="닉네임" placeholder="닉네임 (10자 이내)"/>
               </div>
-              <Button type="button" label="중복 확인" variant="active"/>
+              <Button type="button" label="확인" variant="active"/>
             </div>
             <InputField type="text" label="이름" placeholder="이름"/>
             <InputField type="text" label="자기 소개" placeholder="자기 소개 (150자 이내)"/>
