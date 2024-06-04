@@ -24,38 +24,38 @@ const AddFriend = lazy(() => import('./pages/Friends/AddFriend'));
 const SelectDiary = lazy(() => import('./pages/Paper/SelectDiary'));
 const Paper = lazy(() => import('./pages/Paper/Paper'));
 const EditPaper = lazy(() => import('./pages/Paper/EditPaper'));
+const PlaceSearch = lazy(() => import('./pages/Paper/PlaceSearch'));
 
 function App() {
 
   return (
-    <>
-      <Suspense>
-        <Routes>
-          <Route path='/' element={<Home/>} />
-          <Route path='/diarylist' element={<DiaryList />} />
-          <Route path='/register/diary' element={<RegisterDiary />} />
-          <Route path='/memberselect' element={<AddMember/> } />
-          <Route path='/diary' element={<Diary />} />
-          <Route path='/editdiary' element={<EditDiary />} />
-          <Route path='/diary/pagelist' element={<DiaryPageList/>} />
-          <Route path='/register/paper' element={<RegisterPaper />} />
-          <Route path='/login' element={<Login/>} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/findpassword' element={<FindPassword />} />
-          <Route path='/resetpassword' element={<ResetPassword />} />
-          <Route path='/mypage' element={<Mypage />} />
-          <Route path='/mypage/edit' element={<EditMypage />} />
-          <Route path='/mypage/pagelist' element={<PageList />} />
-          <Route path='/mypage/savepagelist' element={<SavePageList />} />
-          <Route path='/noti' element={<Noti />} />
-          <Route path='/friends' element={<Friends />} />
-          <Route path='/friends/add' element={<AddFriend />} /> 
-          <Route path='/diaryselect' element={<SelectDiary />} /> 
-          <Route path='/paper' element={<Paper />} /> 
-          <Route path='/editpaper' element={<EditPaper />} />
-        </Routes>
-      </Suspense>
-    </>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path='/diarylist' element={<DiaryList />} />
+        <Route path='/register/diary' element={<RegisterDiary />} />
+        <Route path='/memberselect' element={<AddMember/> } />
+        <Route path='/diary' element={<Diary />} />
+        <Route path='/editdiary' element={<EditDiary />} />
+        <Route path='/diary/pagelist' element={<DiaryPageList/>} />
+        <Route path='/register/paper' element={<RegisterPaper />} />
+        <Route path='/login' element={<Login/>} />
+        <Route path='/signup' element={<SignUp />} />
+        <Route path='/findpassword' element={<FindPassword />} />
+        <Route path='/resetpassword' element={<ResetPassword />} />
+        <Route path='/mypage' element={<Mypage />} />
+        <Route path='/mypage/edit' element={<EditMypage />} />
+        <Route path='/mypage/pagelist' element={<PageList />} />
+        <Route path='/mypage/savepagelist' element={<SavePageList />} />
+        <Route path='/noti' element={<Noti />} />
+        <Route path='/friends' element={<Friends />} />
+        <Route path='/friends/add' element={<AddFriend />} /> 
+        <Route path='/diaryselect' element={<SelectDiary />} /> 
+        <Route path='/paper' element={<Paper />} /> 
+        <Route path='/editpaper' element={<EditPaper />} />
+        <Route path='/search/place' element={<PlaceSearch />} />
+      </Routes>
+    </Suspense>
   )
 }
 
