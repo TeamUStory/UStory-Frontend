@@ -26,7 +26,7 @@ const Diary = () => {
         { name: '멤버5', imgSrc: '/src/assets/images/basicMemberImage.png' },
     ];
     
-    // 다이어리를 2개로 나누는 함수
+    // 멤버를 2개로 나누는 함수
     const makeArray = (array, size) => {
         return array.reduce((acc, _, i) => {
             if (i % size === 0) acc.push(array.slice(i, i + size));
@@ -34,7 +34,7 @@ const Diary = () => {
         }, []);
     };
     
-    // 2개씩 나뉜 다이어리 그룹
+    // 2개씩 나뉜 멤버 그룹
     const newMembers = makeArray(members, 2);
 
     // 장소 기록 배열

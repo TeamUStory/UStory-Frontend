@@ -165,7 +165,7 @@ const Paper = () => {
                     </div>
                 )}
                 <div className={styles.sendComment}>
-                    <InputField placeholder="따뜻한 코멘트 한줄을 입력해주세요 :)"/>
+                    <InputField placeholder="코멘트 한줄 입력해주세요 :)"/>
                     <Button type="button" variant="active" label={<CommentIcon color="#fff" />}/>
                 </div>
             </div>

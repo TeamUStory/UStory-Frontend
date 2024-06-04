@@ -300,13 +300,15 @@
             box-sizing: border-box;
             padding: 0 20px 20px 20px;
 
-            input{
-                width: 50vh;
-            }
-            
-            label{
-              display: none;
-            }
+            div {
+                width: 100%;
+                input {
+                    width: 100%;
+                }
+                label{
+                  display: none;
+                }
+            }            
 
             button{
                 padding: 12px;
