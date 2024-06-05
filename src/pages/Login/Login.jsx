@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Login.module.scss";
 import LogoImg from "@/assets/images/logo.png"; 
 import InputField from "@/components/InputField/InputField";
@@ -12,9 +12,11 @@ import User from "@/apis/api/User";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const hnadleLogin = async (e) => {
+  // 로그인 클릭
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     const userData = {
@@ -22,13 +24,37 @@ const Login = () => {
       password: password
     }
 
+    // 빈 칸 체크
+    if (!email || !password) return setError("* 이메일 혹은 비밀번호를 입력해 주세요.");
+
     try{
       const response = await User.postLogin(userData);
-      console.log(response);
+      const success = response.data;
+
+      // 비번 일치하지 않을 때 (추후 예외 처리 예정)
+      if(success.accessToken || success.refreshToken === null) {
+        setError("* 이메일 혹은 비밀번호를 확인해 주세요.");
+      }
+
+      // 이메일 일치하지 않을 때 (추후 예외 처리 예정)
+      if(success.status === 500) {
+        setError("* 이메일 혹은 비밀번호를 확인해 주세요.");
+      }
+
+      // 토큰 넘어왔을 때만 로그인
+      if(success.accessToken) {
+        navigate("/");
+      }
+
     } catch (error) {
       console.log(error);
+      setError("* 이메일 혹은 비밀번호를 확인해 주세요.");
     }
   }
+
+  useEffect(() => {
+    if (email || password) setError("");
+  }, [email, password]);
 
   return (
     <div className={styles.loginWrap}>
@@ -38,7 +64,7 @@ const Login = () => {
           <img src={LogoImg} alt="logo image" />
         </div>
         <div className={styles.loginBox}>
-          <form onSubmit={hnadleLogin}>
+          <form onSubmit={handleLogin}>
             <div className={styles.emailBox}>
               <MyPageIcon color="#dddddd" bgColor="none"/>
               <InputField type="email" placeholder="이메일" 
@@ -52,7 +78,8 @@ const Login = () => {
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)}  
               />
-            </div>    
+            </div>
+            {error && <p className={styles.error}>{error}</p>}    
             <Button type="submit" label="로그인" variant="active"/>
           </form>
         </div>
