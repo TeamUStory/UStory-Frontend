@@ -25,10 +25,12 @@ const SignUp = () => {
                 <InputField type="email" placeholder="이메일" label="이메일"/>
               </div>
               <Button type="button" label="인증 요청" variant="active"/>
-              <div className={styles.inputBox} style={{marginTop:"-10px"}}>
-                <InputField type="text" placeholder="인증 번호"/>
+              <div className={styles.certified} style={{display:"none"}}>
+                <div className={styles.inputBox} style={{marginTop:"-10px"}}>
+                  <InputField type="text" placeholder="인증 번호"/>
+                </div>
+                <Button type="button" label="인증" variant="noFilled"/>
               </div>
-              <Button type="button" label="인증" variant="noFilled"/>
             </div>
             <div className={styles.btnWrap}>
               <Button type="submit" label="가입하기" variant="disabled"/>

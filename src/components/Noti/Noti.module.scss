@@ -13,4 +13,12 @@
     background-color: $point-color1;
     border-radius: 50%;
   }
+
+  button{
+    padding: 0px !important;
+
+    svg{
+      width: 26px !important;
+    }
+  }
 }
