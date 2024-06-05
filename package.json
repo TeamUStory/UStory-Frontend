@@ -11,6 +11,7 @@
   },
   "proxy": "http://34.64.93.16:8080",
   "dependencies": {
+    "@hookform/resolvers": "^3.5.0",
     "@reduxjs/toolkit": "^2.2.5",
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
