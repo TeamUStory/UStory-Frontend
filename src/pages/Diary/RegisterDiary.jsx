@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import styles from './RegisterDiary.module.scss';
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
-import DiaryImageUpload from '@/components/DiaryImageUpload/DiaryImageUpload';
+import DiaryImageUpload from './DiaryImageUpload'
 import SelectBox from '@/components/SelectBox/SelectBox';
 import ArrowIcon from '@/assets/icons/ArrowIcon'
 import Button from '@/components/Button/Button'

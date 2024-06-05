@@ -11,23 +11,14 @@ import Button from '@/components/Button/Button';
 
 const DiaryList = () => {
     const navigate = useNavigate();
+    const [activeTab, setActiveTab] = useState(null);
 
     // 카테고리 배열
-    const [buttonStates, setButtonStates] = useState([
-        { category: "개인", isActive: false },
-        { category: "연인", isActive: false },
-        { category: "친구", isActive: false },
-        { category: "가족",  isActive: false },
-        { category: "어스",  isActive: false },
-    ]);
-    
+    const categories = ["개인", "연인","친구","가족", "어스"];
+
     // 카테고리 선택
-    const handleButtonClick = (index) => {
-        setButtonStates(prevStates => {
-            const newButtonStates = [...prevStates];
-            newButtonStates[index].isActive = !newButtonStates[index].isActive;
-            return newButtonStates;
-        });
+    const handleTabClick = (category) => {
+        setActiveTab(category);
     };
 
     // 다이어리 배열
@@ -86,17 +77,17 @@ const DiaryList = () => {
                     <Button type="button" variant="inactive" label={<CirclePlusIcon fill="#FB8176" />} onClick={() => navigate('/register/diary')} />
                 </div>
                 <NotificationIcon />
-                <div className={styles.category}>
-                {buttonStates.map((buttonState, index) => (
-                    <button
-                        key={index}
-                        className={buttonState.isActive ? styles.active : ''}
-                        onClick={() => handleButtonClick(index)}
-                    >
-                        {buttonState.category}
-                    </button>
-                ))}
-            </div>
+                <div className={styles.tabMenu}>
+                    {categories.map((category, index) => (
+                        <button
+                            key={index}
+                            className={activeTab === category ? styles.active : styles.tab}
+                            onClick={() => handleTabClick(category)}
+                        >
+                            {category}
+                        </button>
+                    ))}
+                </div>
             </header>
             <div className={styles.diaryList} >
                 {groupedPostItems.map((group, index) => (

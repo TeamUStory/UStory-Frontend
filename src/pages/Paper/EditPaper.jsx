@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './RegisterPaper.module.scss'
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
-import DiaryImageUpload from '@/components/DiaryImageUpload/DiaryImageUpload';
+import ProfileUpload from './ProfileUpload';
 import Calender from '@/components/Calender/Calender';
 import ArrowIcon from '@/assets/icons/ArrowIcon'
 import Button from '@/components/Button/Button'
@@ -47,7 +47,7 @@ const EditPaper = () => {
                         깡냥꽁냥
                     </div>
                 </div>
-                <DiaryImageUpload />
+                <ProfileUpload />
                 <div className={styles.selectDate}>
                     <p>날짜</p>
                     <Calender />    
