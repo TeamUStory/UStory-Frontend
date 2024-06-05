@@ -4,7 +4,7 @@ import styles from "../Home/Home.module.scss";
 import PlusButton from "@/components/PlusButton/PlusButton"
 import BottomBar from "@/components/BottomBar/BottomBar"
 import NotificationIcon from "@/assets/icons/NotificationIcon";
-import MapApi from "@/apis/api/MapApi";
+import MapApi from "@/apis/MapApis/MapApi";
 import PostItem from "@/components/PostItem/PostItem";
 import FriendIcon from "@/assets/icons/FriendIcon";
 import Carousel from "@/components/Carousel/Carousel"
@@ -26,6 +26,12 @@ const Home = () => {
     ];
 
     const DiaryItems = [
+        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', subText: '개인', borderColor: 'black' },
+        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 02', subText: '개인', borderColor: 'black' },
+        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 03', subText: '개인', borderColor: 'black' },
+        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 04', subText: '개인', borderColor: 'black' },
+        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 05', subText: '개인', borderColor: 'black' },
+        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 06', subText: '개인', borderColor: 'black' },
         { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', subText: '개인', borderColor: 'black' },
         { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 02', subText: '개인', borderColor: 'black' },
         { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 03', subText: '개인', borderColor: 'black' },
@@ -68,19 +74,10 @@ const Home = () => {
                 <div className={styles.diaryContainer}>
                   <p>내가 속한 다이어리를<br/>확인해보세요!</p>
                   <div className={styles.diaryList}>
-                    {/* <div className={styles.diary}>
-                      <img src="src\assets\images\diaryBasicImage.png" alt="다이어리 이미지" />
-                      <div className={styles.diaryContent}>
-                        <p className={styles.diaryName}>기본 다이어리</p>
-                        <p className={styles.diaryCategory}>개인</p>
-                      </div>
-                    </div> */}
                     <Carousel>
-                      <CarouselContent>
                         {newDiaryItems.map((diaryItems, groupIndex) => {
                           return (
                             <CarouselItem key={groupIndex}>
-                              <div className={styles.page}>
                                 {diaryItems.map((diary, index) => (
                                   <button key={diary.title} onClick={() => navigate('/diary')}>
                                     <div className={styles.diaryItem}>
@@ -93,11 +90,9 @@ const Home = () => {
                                     {index !== diaryItems.length - 1 && <hr />}
                                   </button>
                                 ))}
-                              </div>
                             </CarouselItem>
                           );
                         })}
-                      </CarouselContent>
                     </Carousel>
                   </div>
                 </div>
