@@ -1,4 +1,3 @@
-import { request } from "express"
 import { api } from "../index"
 
 export default {

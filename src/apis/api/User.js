@@ -101,5 +101,16 @@ export default {
       method: "post",
       data: userData,
     })
+  },
+
+  /**
+   * @method POST
+   * @summeray 로그아웃
+   */
+  postLogout() {
+    return api({
+      url: "/user/logout",
+      method: "post",
+    })
   }
 }
