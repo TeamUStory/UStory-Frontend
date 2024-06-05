@@ -87,49 +87,43 @@
                 border-radius: 20px;
                 overflow: hidden;
                 
-                .page {
-                    display: flex;
-                    flex-direction: column;
+                button {
                     width: 100%;
-                    
-                    button {
-                        width: 100%;
-                        padding: 0;
-                        text-align: left;
+                    padding: 0;
+                    text-align: left;
 
-                        .diaryItem{
-                            display: flex;
-                            gap: 17px;
+                    .diaryItem{
+                        display: flex;
+                        gap: 17px;
 
-                            img {
-                                width: 40px;
-                                height: 40px;
-                                border: 1px solid $black5;
-                                border-radius: 10px;
+                        img {
+                            width: 40px;
+                            height: 40px;
+                            border: 1px solid $black5;
+                            border-radius: 10px;
+                        }
+                        .diaryContent {
+                            
+                            .diaryName {
+                                font-size: 14px;
+                                font-weight: 600;
                             }
-                            .diaryContent {
-                               
-                                .diaryName {
-                                    font-size: 14px;
-                                    font-weight: 600;
-                                }
-        
-                                .diaryCategory {
-                                    font-size: 12px;
-                                    font-weight: 400;
-                                    color: #616161;
-                                }
+    
+                            .diaryCategory {
+                                font-size: 12px;
+                                font-weight: 400;
+                                color: #616161;
                             }
                         }
                     }
-                    hr {
-                        background: $black4;
-                        border: 0px;
-                        width: 100%;
-                        box-sizing: border-box;
-                        margin: 15px 0px;
-                        height: 1px;
-                    }
+                }
+                hr {
+                    background: $black4;
+                    border: 0px;
+                    width: 100%;
+                    box-sizing: border-box;
+                    margin: 15px 0px;
+                    height: 1px;
                 }
             }
         }

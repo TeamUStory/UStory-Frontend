@@ -55,7 +55,7 @@ const RegisterPaper = () => {
                 </div>
                 <div className={styles.PlaceContainer}>
                     <p>장소</p>
-                    <div className={styles.PlaceSearch}>
+                    <div className={styles.PlaceSearch} onClick={() => navigate("/search/place")}>
                         <InputField
                             placeholder="장소 검색"
                             className={styles.input}

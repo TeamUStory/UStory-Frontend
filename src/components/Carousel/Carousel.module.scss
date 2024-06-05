@@ -1,24 +1,17 @@
-.carousel {
-  width: 100%;
-  height: 100%;
-  touch-action: pan-y;
-  overflow: hidden;
-}
-  
+@import "@/assets/styles/colors.scss";
 
-.carousel_content {
+.carousel {
   display: flex;
-  width: 100%;
-  height: 100%;
-  box-sizing: content-box;
-  position: relative;
-  transition-property: transform;
-  transform: translateX(0);
+  flex-direction: row;
+  touch-action: pan-x;
+  // overflow: hidden;
+  white-space: nowrap;
 }
 
 .carousel_item{
-  width: 100%;
+  min-width: 320px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
