@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import styles from './RegisterPaper.module.scss'
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
-import DiaryImageUpload from '@/components/DiaryImageUpload/DiaryImageUpload';
+import ProfileUpload from './ProfileUpload';
 import Calender from '@/components/Calender/Calender';
 import ArrowIcon from '@/assets/icons/ArrowIcon'
 import Button from '@/components/Button/Button'
 import Modal from '@/components/Modal/Modal';
 import MapApi from '@/apis/api/MapApi';
+import PlaceMark from '@/assets/icons/PlaceMark';
 
 const RegisterPaper = () => {
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ const RegisterPaper = () => {
 
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="기록하기" />
+            <SubHeader pageTitle="기록하기" /> 
             <div className={styles.formContainer}>
                 <InputField
                     label="제목"
@@ -47,17 +48,21 @@ const RegisterPaper = () => {
                         깡냥꽁냥
                     </div>
                 </div>
-                <DiaryImageUpload />
+                <ProfileUpload />
                 <div className={styles.selectDate}>
                     <p>날짜</p>
                     <Calender />    
                 </div>
                 <div className={styles.PlaceContainer}>
-                    <InputField
-                        label ="장소"
-                        placeholder="건물, 지번 또는 도로명 검색"
-                        className={styles.input}
-                    />
+                    <p>장소</p>
+                    <div className={styles.PlaceSearch}>
+                        <InputField
+                            placeholder="장소 검색"
+                            className={styles.input}
+                            disabled
+                        />
+                        <PlaceMark color = "#AAAAAA"/>
+                    </div>
                     <MapApi height="218px"/>
                 </div>
                 <div className={styles.commentContainer}>
