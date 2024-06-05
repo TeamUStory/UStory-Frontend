@@ -6,8 +6,8 @@ const CarouselContext = createContext();
 
 export const Carousel = ({ children }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const [itemWidth, setItemWidth] = useState(0);
-  // const carouselRef = useRef(null);
+  const [itemWidth, setItemWidth] = useState(0);
+  const carouselRef = useRef(null);
   const touchStartRef = useRef(null);
   const touchEndRef = useRef(null);
 
@@ -55,20 +55,19 @@ export const Carousel = ({ children }) => {
 
   console.log(currentIndex);
 
-  // useEffect(() => {
-  //   if (carouselRef.current) {
-  //     setItemWidth(carouselRef.current.clientWidth);
-  //   }
-  // }, []);
-  // console.log(carouselRef)
-
+  useEffect(() => {
+    if (carouselRef.current) {
+      setItemWidth(carouselRef.current.clientWidth);
+    }
+  }, []);
+  console.log(carouselRef.current);
   return (
     <div 
       className={styles.carousel}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      // style={{ transform: `translateX(-${currentIndex * itemWidth}px)` }}
-      // ref={carouselRef}
+      style={{ transform: `translateX(-${currentIndex * itemWidth}px)` }}
+      ref={carouselRef}
     >
       <CarouselContext.Provider 
         value={currentIndex}

@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import styles from "../Home/Home.module.scss";
 import PlusButton from "@/components/PlusButton/PlusButton"
 import BottomBar from "@/components/BottomBar/BottomBar"
-import NotificationIcon from "@/assets/icons/NotificationIcon";
+import Noti from "@/components/Noti/Noti";
 import MapApi from "@/apis/MapApis/MapApi";
 import PostItem from "@/components/PostItem/PostItem";
 import FriendIcon from "@/assets/icons/FriendIcon";
 import Carousel from "@/components/Carousel/Carousel"
-import CarouselContent from "@/components/Carousel/CarouselContent"
 import CarouselItem from "@/components/Carousel/CarouselItem"
 
 const Home = () => {
@@ -65,7 +64,7 @@ const Home = () => {
                     <br />
                     어디로 떠나시나요?
                 </p>
-                <NotificationIcon />
+                <Noti />
             </header>
             <div className={styles.contents}>
                 <div className={styles.mapContainer}>

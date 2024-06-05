@@ -105,7 +105,9 @@
                 box-sizing: border-box;
 
                 div{
+                    pointer-events:none;
                     width: 100%;
+
                     input {
                         padding-right:42px;
                     }
@@ -116,6 +118,7 @@
                         display: none;
                     }
                 }
+                
                 svg {
                     position: absolute;
                     width: 15px;
