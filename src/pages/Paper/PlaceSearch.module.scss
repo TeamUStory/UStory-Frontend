@@ -1,0 +1,59 @@
+@import '@/assets/styles/colors.scss';
+
+.allContainer {
+    min-width: 320px;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    
+    .ContentsContainer{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+
+        padding: 67px 20px 20px 20px;
+        box-sizing: border-box;
+
+        .container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 15px;
+
+            box-sizing: border-box;
+            border-radius: 20px;
+            border: 1px solid $black4;
+            background-color: $white1;
+            height: 100%;
+
+            #map {
+                // padding: ;
+            }
+            
+            .searchContainer{
+                display: flex;
+                width: 100%;    
+                align-items: center;
+
+                div {
+                    width: 100%;
+                    label {
+                        display: none;
+                    }
+                    input {
+                        width: 100%;
+                        padding-right: 52px;
+                    }
+                }
+                button {
+                    position: absolute;
+                    padding: 0;
+                    right: 52px;
+                }
+            }
+        }
+    }
+}
