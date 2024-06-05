@@ -1,6 +1,6 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 
-axios.defaults.baseURL = 'http://34.64.93.16:8080';
+axios.defaults.baseURL = 'http://15.164.24.133:8080';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 5000;
