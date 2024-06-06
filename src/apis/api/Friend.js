@@ -1,4 +1,3 @@
-import { api } from "../index"
 
 export default {
   /**
@@ -7,10 +6,10 @@ export default {
    * @param friendId 친구 ID
    */
   deleteFriend(friendId) {
-    return api({
+    return {
       url: `/friend/${friendId}`,
       method: "delete"
-    })
+    }
   },
 
   /**
@@ -19,11 +18,11 @@ export default {
    * @param nickname 친구 닉네임
    */
   searchUser(nickname) {
-    return api({
+    return {
       url: `/friend/search`,
       method: "get",
       params: nickname
-    })
+    }
   },
 
   /**
@@ -31,10 +30,10 @@ export default {
    * @summeray 친구 요청 목록 조회
    */
   getFriendRequestList() {
-    return api({
+    return {
       url: `/friend/received`,
       method: "get"
-    })
+    }
   },
 
   /**
@@ -45,11 +44,11 @@ export default {
    * @param accepted 수락 여부 (boolean)
    */
   postFriendRespond(senderNickname, receiverNickname, accepted) {
-    return api({
+    return {
       url: `/friend/approve`,
       method: "post",
       params: senderNickname, receiverNickname, accepted
-    })
+    }
   },
 
   /**
@@ -58,10 +57,10 @@ export default {
    * @param userData 친구 요청할 사용자 데이터
    */
   postFriendRequest(userData) {
-    return api({
+    return {
       url: `/friend`,
       method: "post",
       data: userData
-    })
+    }
   }
 }

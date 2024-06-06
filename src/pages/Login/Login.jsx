@@ -8,45 +8,39 @@ import Button from "@/components/Button/Button";
 import SocialLogin from "./SocialLogin"
 import { useNavigate } from "react-router-dom";
 import User from "@/apis/api/User";
-import axios from 'axios';
+import useAxios from "@/hooks/useAxios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { fetchData, data, err } = useAxios();
   const navigate = useNavigate();
 
   // 로그인 클릭
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    const userData = {
-      loginEmail: email,
-      password: password
+    
+    if (!email || !password) {
+      setError("* 이메일과 비밀번호를 입력해주세요.");
+      return;
     }
 
-    // 빈 칸 체크
-    if (!email || !password) return setError("* 이메일 혹은 비밀번호를 입력해 주세요.");
+    const userData = { loginEmail: email, password: password };
+    fetchData(User.postLogin(userData), () => setError("* 이메일 또는 비밀번호를 확인해 주세요."));
+  };
 
-    try {
-      const response = await User.postLogin(userData);
-      const { accessToken } = response.data;
-
-      if (accessToken) {
-
-        // Axios 기본 헤더에 Authorization 설정
-        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        
-        // 로그인 성공 시 메인 페이지로 이동
-        navigate('/');
-      } else {
-        setError('* 이메일 혹은 비밀번호를 확인해 주세요.');
-      }
-    } catch (error) {
-      console.error('Error during login:', error);
-      setError('* 이메일 혹은 비밀번호를 확인해 주세요.');
+  useEffect(() => {
+    if (data?.accessToken) {
+      const accessToken = data.accessToken;
+      localStorage.setItem('accessToken', accessToken);
+      navigate('/');
     }
-  }
+
+    if (data?.accessToken === null) {
+      setError("* 이메일 또는 비밀번호를 확인해 주세요.");
+    }
+  }, [data, navigate]);
 
   useEffect(() => {
     if (email || password) setError("");

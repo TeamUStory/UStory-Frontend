@@ -1,4 +1,3 @@
-import { api } from "../index"
 
 export default {
   /**
@@ -7,10 +6,10 @@ export default {
    * @param paperId 페이퍼 아이디
    */
   deleteBookmark(paperId) {
-    return api({
+    return {
       url: `/papers/${paperId}/bookmark`,
       method: "delete"
-    })
+    }
   },
 
   /**
@@ -19,10 +18,10 @@ export default {
    * @param paperId 페이퍼 아이디
    */
   getBookmarkPaper(paperId){
-    return api({
+    return {
       url: `/papers/${paperId}/bookmark`,
       method: "get"
-    })
+    }
   },
 
   /**
@@ -30,10 +29,10 @@ export default {
    * @summeray 북마크된 페이퍼 전체 조회
    */
   getBookmarkPaperList(){
-    return api({
+    return {
       url: "/papers/bookmarks",
       method: "get"
-    })
+    }
   },
 
   /**
@@ -42,9 +41,9 @@ export default {
    * @param paperId 페이퍼 아이디
    */
   postBookmark(paperId){
-    return api({
+    return{
       url: `/papers/${paperId}/bookmark`,
       method: "post"
-    })  
+    }
   }
 }

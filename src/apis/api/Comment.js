@@ -1,4 +1,3 @@
-import { api } from "../index"
 
 export default {
   /**
@@ -7,10 +6,10 @@ export default {
    * @param commentId 코멘트 ID
    */
   deleteComment(commentId) {
-    return api({
+    return {
       url: `/comment/${commentId}`,
       method: "delete"
-    })
+    }
   },
 
   /**
@@ -19,10 +18,10 @@ export default {
    * @param paperId 페이퍼 ID
    */
   getAllComment(paperId) {
-    return api({
+    return {
       url: `/comment/paper/${paperId}`,
       method: "get"
-    })
+    }
   },
 
   /**
@@ -32,10 +31,10 @@ export default {
    * @param commentId 코멘트 ID
    */
   getComment(paperId, commentId) {
-    return api({
+    return {
       url: `/comment/paper/${paperId}/comment/${commentId}`,
       method: "get"
-    })
+    }
   },
 
   /**
@@ -45,11 +44,11 @@ export default {
    * @param paperId 페이퍼 ID
    */
   postComment(commentData) {
-    return api({
+    return {
       url: "/comment",
       method: "post",
       data: commentData
-    })
+    }
   },
 
   /**
@@ -59,10 +58,10 @@ export default {
    * @param commentData 코멘트 데이터 (내용)
    */
   putComment(commentId, commentData) {
-    return api({
+    return {
       url: `/comment/${commentId}`,
       method: "put",
       data: commentData
-    })
+    }
   }
 }
