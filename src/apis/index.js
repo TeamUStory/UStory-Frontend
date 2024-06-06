@@ -1,6 +1,6 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 
-axios.defaults.baseURL = 'http://34.64.93.16:8080';
+axios.defaults.baseURL = 'http://15.164.24.133:8080';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 5000;
@@ -10,6 +10,14 @@ export const api = axios.create();
 // reject 했을때, error가 useAXios로 넘어가지 않을 시 -> throw Err 변경
 // 요청
 api.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem('accessToken'); // 쿠키 이름이 'accessToken'이라고 가정
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+
   (req) => {
     if (req.data instanceof FormData) {
       req.headers['Content-Type'] = 'multipart/form-data';

@@ -1,4 +1,3 @@
-import { api } from "../index"
 
 export default {
   /**
@@ -7,10 +6,10 @@ export default {
    * @param paperId 페이퍼 ID
    */
   deletePaper(paperId) {
-    return api({
+    return {
       url: `/papers/${paperId}`,
       method: "delete"
-    })
+    }
   },
 
   /**
@@ -19,10 +18,10 @@ export default {
    * @param paperId 페이퍼 ID
    */
   getPaperDetail(paperId) {
-    return api({
+    return {
       url: `/papers/${paperId}`,
       method: "get"
-    })
+    }
   },
 
   /**
@@ -31,11 +30,11 @@ export default {
    * @param requestTime 요청 날짜 {YYYY}-{MM}-{DD}T{HH}:{mm}:{SS}
    */
   getPaperList(requestTime) {
-    return api({
+    return {
       url: `/papers/written`,
       method: "get",
       params: requestTime
-    })
+    }
   },
 
   /**
@@ -43,10 +42,10 @@ export default {
    * @summeray 유저와 관련된 모든 리스트 조회
    */
   getPaperListAll() {
-    return api({
+    return {
       url: `/papers/map`,
       method: "get"
-    })
+    }
   },
 
   /**
@@ -56,11 +55,11 @@ export default {
    * @param requestTime 요청 날짜 {YYYY}-{MM}-{DD}T{HH}:{mm}:{SS}
    */
   getPaperListByDiary(diaryId, requestTime) {
-    return api({
+    return {
       url: `/papers/diary/${diaryId}`,
       method: "get",
       params: requestTime
-    })
+    }
   },
 
   /**
@@ -68,10 +67,10 @@ export default {
    * @summeray 유저가 작성한 모든 페이퍼의 갯 수 조회
    */
   getPaperCount() {
-    return api({
+    return {
       url: `/papers/count`,
       method: "get"
-    })
+    }
   },
 
   /**
@@ -80,11 +79,11 @@ export default {
    * @param paperData 페이퍼 데이터
    */
   postPaper(paperData) {
-    return api({
+    return {
       url: "/papers",
       method: "post",
       data: paperData
-    })
+    }
   },
 
   /**
@@ -94,10 +93,10 @@ export default {
    * @param paperData 페이퍼 데이터
    */
   putPaper(paperId, paperData) {
-    return api({
+    return {
       url: `/papers/${paperId}`,
       method: "put",
       data: paperData
-    })
+    }
   }
 }
