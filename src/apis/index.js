@@ -5,26 +5,11 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 5000;
 
-const getCookie = (name) => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-  return null;
-};
-
 export const api = axios.create();
 
 // reject 했을때, error가 useAXios로 넘어가지 않을 시 -> throw Err 변경
 // 요청
 api.interceptors.request.use(
-  (config) => {
-    const accessToken = getCookie('accessToken'); // 쿠키 이름이 'accessToken'이라고 가정
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-
   (req) => {
     if (req.data instanceof FormData) {
       req.headers['Content-Type'] = 'multipart/form-data';
