@@ -1,4 +1,3 @@
-import { api } from "../index"
 
 export default {
   /**
@@ -7,11 +6,11 @@ export default {
    * @param userData 사용자 데이터 (id)
    */
   deleteUser(userData) {
-    return api({
+    return {
       url: "/user",
       method: "delete",
       data: userData
-    })
+    }
   },
 
   /**
@@ -20,11 +19,11 @@ export default {
    * @param nickname 닉네임
    */
   searchUser(nickname) {
-    return api({
+    return {
       url: "/user/search",
       method: "get",
       params: nickname
-    })
+    }
   },
 
   /**
@@ -32,10 +31,10 @@ export default {
    * @summeray 마이페이지에서 사용자 정보 조회
    */
   getUser() {
-    return api({
+    return {
       url: "/user/my-page",
       method: "get"
-    })
+    }
   },
 
   /**
@@ -44,11 +43,11 @@ export default {
    * @param userData 사용자 데이터
    */
   postUser(userData) {
-    return api({
-      url: "/user",
+    return {
+      url: "/user/sign-up",
       method: "post",
       data: userData,
-    })
+    }
   },
 
   /**
@@ -57,11 +56,11 @@ export default {
    * @param userData 사용자 데이터 (닉네임)
    */
   postNickname(userData) {
-    return api({
-      url: "/user/validate-nickname",
+    return {
+      url: "/user/sign-up/validate-nickname",
       method: "post",
       data: userData
-    })
+    }
   },
 
   /**
@@ -70,11 +69,11 @@ export default {
    * @param userData 사용자 데이터 (이메일)
    */
   postEmail(userData) {
-    return api({
+    return {
       url: "/user/send-validate",
       method: "post",
       data: userData
-    })
+    }
   },
 
   /**
@@ -83,11 +82,11 @@ export default {
    * @param userData 사용자 데이터
    */
   putUser(userData) {
-    return api({
+    return {
       url: "/user",
       method: "put",
       data: userData,
-    })
+    }
   },
 
   /**
@@ -96,11 +95,11 @@ export default {
    * @param userData 사용자 데이터 (이메일, 비밀번호)
    */
   postLogin(userData) {
-    return api({
+    return {
       url: "/user/login",
       method: "post",
       data: userData,
-    })
+    }
   },
 
   /**
@@ -108,9 +107,9 @@ export default {
    * @summeray 로그아웃
    */
   postLogout() {
-    return api({
+    return {
       url: "/user/logout",
       method: "post",
-    })
+    }
   }
 }

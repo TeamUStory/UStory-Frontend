@@ -1,4 +1,3 @@
-import { api } from "../index"
 
 export default {
   /**
@@ -7,10 +6,10 @@ export default {
    * @param diaryId 다이어리 ID
    */
   deleteDiary(diaryId) {
-    return api({
+    return {
       url: `/diary/${diaryId}`,
       method: "delete"
-    })
+    }
   },
 
   /**
@@ -19,10 +18,10 @@ export default {
    * @param diaryId 다이어리 ID
    */
   getDiaryDetail(diaryId) {
-    return api({
+    return {
       url: `/diary/${diaryId}`,
       method: "get"
-    })
+    }
   },
 
   /**
@@ -31,11 +30,11 @@ export default {
    * @param requestTime 요청 날짜 {YYYY}-{MM}-{DD}T{HH}:{mm}:{SS}
    */
   getDiaryList(requestTime) {
-    return api({
+    return {
       url: "/diary",
       method: "get",
       params: requestTime
-    })
+    }
   },
 
   /**
@@ -44,10 +43,10 @@ export default {
    * @param diaryId 다이어리 ID
    */
   getDiaryExit(diaryId) {
-    return api({
+    return {
       url: `/diary/${diaryId}/exit`,
       method: "get"
-    })
+    }
   },
 
   /**
@@ -55,10 +54,10 @@ export default {
    * @summeray 홈 페이지 용 최신 다이어리 6개 불러오기
    */
   getHomeDiary() {
-    return api({
+    return {
       url: "/diary/home",
       method: "get"
-    })
+    }
   },
 
   /**
@@ -66,10 +65,10 @@ export default {
    * @summeray 유저가 속한 다이어리 총 갯 수 불러오기
    */
   getUserDiaryCount() {
-    return api({
+    return {
       url: `/diary/count`,
       method: "get"
-    })
+    }
   },
 
   /**
@@ -78,11 +77,11 @@ export default {
    * @param diaryData 다이어리 데이터  
    */
   postDiary(diaryData) {
-    return api({
+    return {
       url: "/diary",
       method: "post",
       data: diaryData
-    })
+    }
   },
   
   /**
@@ -92,10 +91,10 @@ export default {
    * @param diaryData 다이어리 데이터
    */
   putDiary(diaryId, diaryData) {
-    return api({
+    return {
       url: `/diary/${diaryId}`,
       method: "put",
       data: diaryData
-    })
+    }
   }
 }
