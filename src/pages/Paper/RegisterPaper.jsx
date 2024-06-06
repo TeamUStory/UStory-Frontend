@@ -8,7 +8,7 @@ import Calender from '@/components/Calender/Calender';
 import ArrowIcon from '@/assets/icons/ArrowIcon'
 import Button from '@/components/Button/Button'
 import Modal from '@/components/Modal/Modal';
-import MapApi from '@/apis/api/MapApi';
+import MapApi from '@/apis/MapApis/MapApi';
 import PlaceMark from '@/assets/icons/PlaceMark';
 
 const RegisterPaper = () => {

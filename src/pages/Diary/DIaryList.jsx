@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './DiaryList.module.scss';
 import CirclePlusIcon from '@/assets/icons/CirclePlusIcon';
-import NotificationIcon from '@/assets/icons/NotificationIcon';
+import Noti from '@/components/Noti/Noti';
 import PlusButton from '@/components/PlusButton/PlusButton';
 import PostItem from '@/components/PostItem/PostItem';
 import BottomBar from '@/components/BottomBar/BottomBar';
@@ -76,7 +76,7 @@ const DiaryList = () => {
                     <p>다이어리</p>
                     <Button type="button" variant="inactive" label={<CirclePlusIcon fill="#FB8176" />} onClick={() => navigate('/register/diary')} />
                 </div>
-                <NotificationIcon />
+                <Noti />
                 <div className={styles.tabMenu}>
                     {categories.map((category, index) => (
                         <button

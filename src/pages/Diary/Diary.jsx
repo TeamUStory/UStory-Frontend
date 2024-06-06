@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Diary.module.scss';
 import ArrowIcon from '@/assets/icons/ArrowIcon';
-import NotificationIcon from '@/assets/icons/NotificationIcon';
+import Noti from '@/components/Noti/Noti';
 import CirclePlusIcon from '@/assets/icons/CirclePlusIcon';
 import MessageIcon from '@/assets/icons/MessageIcon';
 import MoreIcon from '@/assets/icons/MoreIcon';
@@ -64,7 +64,7 @@ const Diary = () => {
                 <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={() => navigate(-1)} />
                 <div className={styles.rightHeader}>
                     <button onClick={() => navigate(0)} >
-                        <NotificationIcon />
+                        <Noti />
                     </button>
                     <button className={styles.moreIcon} onClick={toggleMenu} >
                         <MoreIcon stroke="black" />

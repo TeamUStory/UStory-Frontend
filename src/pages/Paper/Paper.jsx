@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Paper.module.scss';
 import Button from '@/components/Button/Button';
 import ArrowIcon from '@/assets/icons/ArrowIcon';
-import NotificationIcon from '@/assets/icons/NotificationIcon';
+import Noti from '@/components/Noti/Noti';
 import MoreIcon from '@/assets/icons/MoreIcon';
 import DiaryIcon from '@/assets/icons/DiaryIcon';
 import CalenderIcon from '@/assets/icons/CalenderIcon';
 import PlaceMark from '@/assets/icons/PlaceMark';
 import PlaceSaveIcon from '@/assets/icons/PlaceSaveIcon';
 import CommentIcon from '@/assets/icons/CommentIcon';
-import MapApi from '@/apis/api/MapApi';
+import MapApi from '@/apis/MapApis/MapApi';
 import InputField from '@/components/InputField/InputField';
 import MessageIcon from '@/assets/icons/MessageIcon';
 import Modal from '@/components/Modal/Modal';
@@ -67,7 +67,7 @@ const Paper = () => {
                 <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={() => navigate(-1)} />
                 <div className={styles.rightHeader}>
                     <button onClick={() => navigate(0)} >
-                        <NotificationIcon />
+                        <Noti />
                     </button>
                     <button className={styles.moreIcon} onClick={toggleMenu} >
                         <MoreIcon stroke="black" />
