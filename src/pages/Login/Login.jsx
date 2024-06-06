@@ -8,6 +8,7 @@ import Button from "@/components/Button/Button";
 import SocialLogin from "./SocialLogin"
 import { useNavigate } from "react-router-dom";
 import User from "@/apis/api/User";
+import axios from 'axios';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -27,28 +28,23 @@ const Login = () => {
     // 빈 칸 체크
     if (!email || !password) return setError("* 이메일 혹은 비밀번호를 입력해 주세요.");
 
-    try{
+    try {
       const response = await User.postLogin(userData);
-      const success = response.data;
+      const { accessToken } = response.data;
 
-      // 비번 일치하지 않을 때 (추후 예외 처리 예정)
-      if(success.accessToken || success.refreshToken === null) {
-        setError("* 이메일 혹은 비밀번호를 확인해 주세요.");
+      if (accessToken) {
+
+        // Axios 기본 헤더에 Authorization 설정
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        
+        // 로그인 성공 시 메인 페이지로 이동
+        navigate('/');
+      } else {
+        setError('* 이메일 혹은 비밀번호를 확인해 주세요.');
       }
-
-      // 이메일 일치하지 않을 때 (추후 예외 처리 예정)
-      if(success.status === 500) {
-        setError("* 이메일 혹은 비밀번호를 확인해 주세요.");
-      }
-
-      // 토큰 넘어왔을 때만 로그인
-      if(success.accessToken) {
-        navigate("/");
-      }
-
     } catch (error) {
-      console.log(error);
-      setError("* 이메일 혹은 비밀번호를 확인해 주세요.");
+      console.error('Error during login:', error);
+      setError('* 이메일 혹은 비밀번호를 확인해 주세요.');
     }
   }
 
