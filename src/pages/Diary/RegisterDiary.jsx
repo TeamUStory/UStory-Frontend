@@ -1,34 +1,55 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import styles from './RegisterDiary.module.scss';
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
-import DiaryImageUpload from './DiaryImageUpload'
+import DiaryImageUpload from './DiaryImageUpload';
 import SelectBox from '@/components/SelectBox/SelectBox';
-import ArrowIcon from '@/assets/icons/ArrowIcon'
-import Button from '@/components/Button/Button'
+import ArrowIcon from '@/assets/icons/ArrowIcon';
+import Button from '@/components/Button/Button';
 import Modal from '@/components/Modal/Modal';
+
+// 카테고리
+const categories = [  
+    { label: "개인", value: "INDIVIDUAL" },
+    { label: "연인", value: "COUPLE" },
+    { label: "가족", value: "FAMILY" },
+    { label: "친구", value: "FRIEND" },
+    { label: "어스", value: "US" }
+];
+
+// 마커 색깔
+const markerColors = [
+    { color: "RED", hexcode: "#FBB9C5" },
+    { color: "ORANGE", hexcode: "#FDD0B1" },
+    { color: "YELLOW", hexcode: "#F9EFC7" },
+    { color: "GREEN", hexcode: "#C3EDBF" },
+    { color: "BLUE", hexcode: "#B8DFE6" },
+    { color: "INDIGO", hexcode: "#A3C4F3" },
+    { color: "PURPLE", hexcode: "#C5BBDE" },
+    { color: "BLACK", hexcode: "#656565" },
+    { color: "GRAY", hexcode: "#DADADA" },
+    { color: "WHITE", hexcode: "#FFFFFF" },
+];
 
 const RegisterDiary = () => {
 
     const [selectedColor, setSelectedColor] = useState("");
+    const [members, setMembers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
-    const categories = [  
-        { label: "연인", value: "연인" },
-        { label: "가족", value: "가족" },
-        { label: "친구", value: "친구" },
-        { label: "어스", value: "어스" }
-    ];
-    const markerColors = ["#FBB9C5", "#FDD0B1", "#FBB9C5", "#FDD0B1", "#FBB9C5", "#FDD0B1", "#F9EFC7",  "#FBB9C5", "#FDD0B1", "#F9EFC7"];
-    const memebers = ["마자용", "그래용"];
+    useEffect(() => {
+        if (location.state && location.state.selectedMembers) {
+            setMembers(location.state.selectedMembers);
+        }
+    }, [location.state]);
 
-
-    const handleColorSelect = (color) => {
-        setSelectedColor(color);
+    const handleColorSelect = (hexcode) => {
+        setSelectedColor(hexcode);
     };
-
 
     const handleButtonClick = () => {
         setIsModalOpen(true);
@@ -53,12 +74,12 @@ const RegisterDiary = () => {
                     <p>마커 색상</p>
                     <p className={styles.information}>선택한 색상으로 지도에 마커가 생성됩니다.</p>
                     <div className={styles.colorButtons}>
-                        {markerColors.map((color, index) => (
+                        {markerColors.map(({ hexcode }, index) => (
                             <button
                                 key={index}
-                                className={selectedColor === color ? styles.selected : ''}
-                                style={{ backgroundColor: color }}
-                                onClick={() => handleColorSelect(color)}
+                                className={selectedColor === hexcode ? styles.selected : ''}
+                                style={{ backgroundColor: hexcode }}
+                                onClick={() => handleColorSelect(hexcode)}
                             ></button>
                         ))}
                     </div>
@@ -69,23 +90,23 @@ const RegisterDiary = () => {
                             <p>멤버 </p>
                             <p className={styles.information}>최대 10명까지</p>
                         </div>
-                        <Link to="/memberselect">
+                        <Link to="/friend/search">
                             <ArrowIcon fill="#000" />
                         </Link>
                     </div>
                     <div className={styles.selectedMembers}>
-                        {memebers.map((member, index) => (
+                        {members.map((member, index) => (
                             <div
                                 key={index}
                                 className={styles.selectedMember}
                             >{member}</div>
-                        ))}    
+                        ))}
                     </div>
                 </div>
                 <InputField
                     label="소개"
                     placeholder="다이어리 소개 입력"
-                    id='diaryIntroduction'
+                    id="diaryIntroduction"
                     style={{ width: '100%' }}
                 />
                 <Button label="기록하기" variant="disabled" onClick={handleButtonClick} />
@@ -93,7 +114,7 @@ const RegisterDiary = () => {
                     <Modal closeFn={closeModal}>
                         <Modal.Icon>
                             <img src="/src/assets/images/completedImage.png" alt="완료" />
-                        </Modal.Icon> 
+                        </Modal.Icon>
                         <Modal.Body>
                             <p>다이어리 추가가 완료되었습니다.</p>
                         </Modal.Body>
@@ -105,6 +126,10 @@ const RegisterDiary = () => {
             </div>
         </div>
     );
+};
+
+RegisterDiary.propTypes = {
+    selectedMembers: PropTypes.array
 }
 
 export default RegisterDiary;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './BottomBar.module.scss';
 import HomeIcon from '../../assets/icons/HomeIcon';
 import PageListIcon from '../../assets/icons/PageListIcon';
@@ -9,54 +9,44 @@ import MyPageIcon from '../../assets/icons/MyPageIcon';
 const BottomBar = () => {
     const location = useLocation();
     const [selectedIcon, setSelectedIcon] = useState('');
+    const navigate = useNavigate();
 
+    
     useEffect(() => {
-        switch (location.pathname) {
-            case '/':
-                setSelectedIcon('home');
-                break;
-            case '/mypage/pagelist':
-                setSelectedIcon('pageList');
-                break;
-            case '/diarylist':
-                setSelectedIcon('diary');
-                break;
-            case '/myPage':
-                setSelectedIcon('myPage');
-                break;
-            default:
-                setSelectedIcon('');
-                break;
-        }
+        setSelectedIcon(mapPathnameToIconValue[location.pathname] || "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
+    
+    const mapPathnameToIconValue = {
+        "/": "home",
+        "/mypage/pagelist": "pageList",
+        "/diary": "diaryList",
+        "/mypage":"myPage"
+    };
+    const handleIconClick = (iconName, path) => {
+        setSelectedIcon(iconName);
+        navigate(path);
+    };
 
     return (
         <div className={styles.bottomBar}>
             <div className={styles.line}></div>
             <div className={styles.iconContainer}>
-                <Link to="/">
-                    <div className={`${styles.iconWrapper} ${selectedIcon === 'home' ? styles.selected : ''}`} onClick={() => setSelectedIcon('home')}>
-                        <HomeIcon color={selectedIcon === 'home' ? '#FB8176' : 'black'} alt="홈화면" />
-                    </div>
-                </Link>
-                <Link to="/mypage/pagelist">
-                    <div className={`${styles.iconWrapper} ${selectedIcon === 'pageList' ? styles.selected : ''}`} onClick={() => setSelectedIcon('pageList')}>
-                        <PageListIcon color={selectedIcon === 'pageList' ? '#FB8176' : 'black'} alt="내가 기록한 장소" />
-                    </div>
-                </Link>
-                <Link to="/diarylist">
-                    <div className={`${styles.iconWrapper} ${selectedIcon === 'diary' ? styles.selected : ''}`} onClick={() => setSelectedIcon('diary')}>
-                        <DiaryIcon color={selectedIcon === 'diary' ? '#FB8176' : 'black'} alt="다이어리" />
-                    </div>
-                </Link>
-                <Link to="/myPage">
-                    <div className={`${styles.iconWrapper} ${selectedIcon === 'myPage' ? styles.selected : ''}`} onClick={() => setSelectedIcon('myPage')}>
-                        <MyPageIcon color={selectedIcon === 'myPage' ? '#FB8176' : 'black'} alt="마이페이지" />
-                    </div>
-                </Link>
+                <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('home', '/')}>
+                    <HomeIcon color={selectedIcon === 'home' ? '#FB8176' : 'black'} bgColor={selectedIcon === 'home' ? '#F2B1AB45' : 'white'} alt="홈화면" />
+                </div>
+                <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('pageList', `/mypage/pagelist`)}>
+                    <PageListIcon color={selectedIcon === 'pageList' ? '#FB8176' : 'black'} bgColor={selectedIcon === 'pageList' ? '#F2B1AB45' : 'white'} alt="내가 기록한 장소" />
+                </div>
+                <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('diaryList', '/diary')}>
+                    <DiaryIcon color={selectedIcon === 'diaryList' ? '#FB8176' : 'black'} bgColor={selectedIcon === 'diaryList' ? '#F2B1AB45' : 'white'} alt="다이어리" />
+                </div>
+                <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('myPage', '/mypage')}>
+                    <MyPageIcon color={selectedIcon === 'myPage' ? '#FB8176' : 'black'} bgColor={selectedIcon === 'myPage' ? '#F2B1AB45' : 'white'} alt="마이페이지" />
+                </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default BottomBar;

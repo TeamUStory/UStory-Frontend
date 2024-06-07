@@ -23,7 +23,7 @@ const Noti = lazy(() => import('./pages/Noti/Noti'));
 const Friends = lazy(() => import('./pages/Friends/Friends'));
 const AddFriend = lazy(() => import('./pages/Friends/AddFriend'));
 const SelectDiary = lazy(() => import('./pages/Paper/SelectDiary'));
-const Paper = lazy(() => import('./pages/Paper/Paper'));
+const PaperPage = lazy(() => import('./pages/Paper/PaperPage'));
 const EditPaper = lazy(() => import('./pages/Paper/EditPaper'));
 const PlaceSearch = lazy(() => import('./pages/Paper/PlaceSearch'));
 
@@ -33,12 +33,12 @@ function App() {
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route path='/' element={<Home/>} />
-        <Route path='/diarylist' element={<DiaryList />} />
+        <Route path='/diary' element={<DiaryList />} />
         <Route path='/register/diary' element={<RegisterDiary />} />
-        <Route path='/memberselect' element={<AddMember/> } />
-        <Route path='/diary' element={<Diary />} />
+        <Route path='/friend/search' element={<AddMember/> } />
+        <Route path='/diary/:id' element={<Diary />} />
         <Route path='/editdiary' element={<EditDiary />} />
-        <Route path='/diary/pagelist' element={<DiaryPageList/>} />
+        <Route path='/papers/diary/:id' element={<DiaryPageList/>} />
         <Route path='/register/paper' element={<RegisterPaper />} />
         <Route path='/login' element={<Login/>} />
         <Route path='/signup' element={<SignUp />} />
@@ -51,8 +51,8 @@ function App() {
         <Route path='/noti' element={<Noti />} />
         <Route path='/friends' element={<Friends />} />
         <Route path='/friends/add' element={<AddFriend />} /> 
-        <Route path='/diaryselect' element={<SelectDiary />} /> 
-        <Route path='/paper' element={<Paper />} /> 
+        <Route path='/diary/select' element={<SelectDiary />} /> 
+        <Route path='/papers/:paperId' element={<PaperPage />} /> 
         <Route path='/editpaper' element={<EditPaper />} />
         <Route path='/search/place' element={<PlaceSearch />} />
       </Routes>
