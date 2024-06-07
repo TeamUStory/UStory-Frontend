@@ -28,10 +28,15 @@ export default {
    * @method GET
    * @summeray 북마크된 페이퍼 전체 조회
    */
-  getBookmarkPaperList(){
+  getBookmarkPaperList(params){
     return {
       url: "/papers/bookmarks",
-      method: "get"
+      method: "get",
+      params: {
+        page: 1,
+        size: 20,
+        ...params
+      }
     }
   },
 

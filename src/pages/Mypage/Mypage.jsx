@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Mypage.module.scss';
 import FriendIcon from '@/assets/icons/FriendIcon';
@@ -12,22 +12,52 @@ import LogoutIcon from "@/assets/icons/LogoutIcon"
 import Modal from "@/components/Modal/Modal"
 import BanImg from '@/assets/images/ban.png';
 import Noti from '@/components/Noti/Noti';
+import useAxios from '@/hooks/useAxios';
+import User from '@/apis/api/User';
+import completedImage from '@/assets/images/completedImage.png';
 
 const Mypage = () => {
   const [isLogouModal, setIsLogoutModal] = useState(false)
+  const [logoutSuccess, setLogoutSuccess] = useState(false);
+  const { fetchData: fetchUserData, data: userData } = useAxios();
+  const { fetchData: fetchLogoutData, data: logoutData } = useAxios();
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
 
-  const user = {
-    nickname: '나는 깜냥이 ',
-    name: '홍길동',
-    propfileImg: '',
-    introSelf: '',
-    writeLocation: 0,
-    myDiary: 0,
-    useSaveList:[
-      
-    ]
-  }
+  // 마이페이지 유저 정보 가져오기
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchUserData(User.getUser());
+    }
+    fetchData();
+  }, [fetchUserData])
+
+  useEffect(() => {
+    if (userData) {
+      setUser(userData);
+    }
+  }, [userData])
+
+  // 로그아웃
+  // const handleLogout = async () => {
+  //   await fetchLogoutData(User.postLogout())
+  //   setLogoutSuccess(true);
+  // }
+
+  // useEffect(() => {
+  //   fetchLogoutData()
+  // }, [fetchLogoutData])
+
+  // const handleLastLogout = () => {
+  //   // localStorage.removeItem('accessToken');
+  // }
+
+  // useEffect(() => {
+  //   if(logoutData) {
+  //     // navigate("/login");
+  //     console.log("로그아웃 성공")
+  //   }
+  // },[logoutData])
 
   return (
     <>
@@ -42,8 +72,8 @@ const Mypage = () => {
       <div className={styles.mypageWrap}>
         <div className={styles.wrap}>
           <ProfileBox user={user}/>
-          <MyRecord user={user}/>
-          <SaveList user={user}/>
+          <MyRecord />
+          <SaveList />
         </div>
       </div>
       <BottomBar />
@@ -53,7 +83,16 @@ const Mypage = () => {
           <Modal.Icon><img src={BanImg} alt='cancelImage' /></Modal.Icon>
           <Modal.Body>로그아웃 하시겠습니까?</Modal.Body>
           <Modal.Button>
-            <Button type="button" label="로그아웃 하기" variant="active" onClick={() => navigate("/login")}/>
+            <Button type="button" label="로그아웃 하기" variant="active" onClick={handleLogout}/>
+          </Modal.Button>
+        </Modal>
+      )}
+      {logoutSuccess && (
+        <Modal closeFn={() => navigate("/login")}>
+          <Modal.Icon><img src={completedImage} alt='cancelImage' /></Modal.Icon>
+          <Modal.Body>로그아웃 되었습니다.</Modal.Body>
+          <Modal.Button>
+            <Button type="button" label="확인" variant="active" onClick={handleLastLogout}/>
           </Modal.Button>
         </Modal>
       )}

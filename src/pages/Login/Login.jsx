@@ -27,7 +27,7 @@ const Login = () => {
     }
 
     const userData = { loginEmail: email, password: password };
-    fetchData(User.postLogin(userData), () => setError("* 이메일 또는 비밀번호를 확인해 주세요."));
+    await fetchData(User.postLogin(userData), () => setError("* 이메일 또는 비밀번호를 확인해 주세요."));
   };
 
   useEffect(() => {
