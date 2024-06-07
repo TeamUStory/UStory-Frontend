@@ -326,3 +326,20 @@
   height: 80vh;
   width: 100%;
 }
+
+// 정보 수정
+.certified{
+  width: 100%;
+}
+
+.error{
+  font-size: 13px;
+  color: $wrong-color;
+  margin-top: 10px;
+}
+
+.success{
+  font-size: 13px;
+  color: $ok-color;
+  margin-top: 10px;
+}
