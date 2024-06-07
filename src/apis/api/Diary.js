@@ -29,11 +29,11 @@ export default {
    * @summeray 자신이 속한 다이어리 목록 불러오기
    * @param requestTime 요청 날짜 {YYYY}-{MM}-{DD}T{HH}:{mm}:{SS}
    */
-  getDiaryList(requestTime) {
+  getDiaryList(params) {
     return {
       url: "/diary",
       method: "get",
-      params: requestTime
+      params: {...params}
     }
   },
 

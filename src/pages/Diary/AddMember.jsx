@@ -1,75 +1,123 @@
 import React, { useEffect, useState } from 'react';
-import styles from './AddMember.module.scss'
+import { useNavigate } from 'react-router-dom';
+import styles from './AddMember.module.scss';
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
-import SearchIcon from '@//assets/icons/SearchIcon';
+import SearchIcon from '@/assets/icons/SearchIcon';
 import RadioButton from '@/components/RadioButton/RadioButton';
 import Button from '@/components/Button/Button';
 import NoResult from '@/components/NoResult/NoResult';
-import SadIcon from '../../assets/icons/SadIcon';
+import SadIcon from '@/assets/icons/SadIcon';
+import useAxios from "@/hooks/useAxios";
+import Friend from '@/apis/api/Friend';
 
 const AddMember = () => {
-    // 라디오 버튼의 체크 상태를 관리하는 상태
-    const [isChecked, setIsChecked] = useState(false);
-    const [memberExist, setMemberExist] = useState(false);
+    const navigate = useNavigate();
 
-    const members = [
-        { nickName: '메타몽', name: '김영희', src: '/src/assets/images/basicMemberImage.png' },
-        { nickName: '피카츄', name: '김철수', src: '/src/assets/images/basicMemberImage.png' },
-        { nickName: '이브이', name: '난사람', src: '/src/assets/images/basicMemberImage.png' },
-    ];
+    const [selectedMembers, setSelectedMembers] = useState([]);
+    const [members, setMembers] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
 
-    const handleRadioButtonClick = () => {
-        setIsChecked(!isChecked);
+    const { data: friendData, fetchData: fetchFriendList } = useAxios();
+    
+    // 닉네임으로 친구 검색
+    const fetchFriend = async (nickname) => {
+        const requestTime = new Date().toISOString().split('.')[0];
+        const params = {requestTime, nickname};
+        await fetchFriendList(Friend.searchUser(params));
     };
 
     useEffect(() => {
-        setMemberExist(false);
-    },[])
+        fetchFriend('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (friendData && friendData.length > 0) {
+            setMembers(friendData);
+        } else {
+            setMembers([]);
+        }
+    }, [friendData]);
+
+    const handleRadioButtonClick = (nickname) => {
+        setSelectedMembers((prevSelectedMembers) => {
+            const isSelected = prevSelectedMembers.includes(nickname);
+            if (isSelected) {
+                return prevSelectedMembers.filter((member) => member !== nickname);
+            } else if (prevSelectedMembers.length < 10) {
+                return [...prevSelectedMembers, nickname];
+            }
+            return prevSelectedMembers;
+        });
+    };
+
+    const handleInputChange = (e) => {
+        if(e.target.value == ""){
+            fetchFriend('');
+        }
+        setSearchValue(e.target.value);
+    };
+    
+    const handleSearchClick = () => {
+        fetchFriend(searchValue);
+    };
+    
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            fetchFriend(searchValue);
+        }
+    };
+
+    const handleAddClick = () => {
+        navigate('/register/diary',{state : {selectedMembers}});
+    }
+
+    console.log(selectedMembers);
 
     return (
         <div className={styles.allContainer}>
             <SubHeader pageTitle="멤버 선택하기" />
-            {memberExist ? (
-                <div className={styles.contentsContainer}>
+            <div className={styles.contentsContainer}>
                 <div className={styles.container}>
                     <div className={styles.membersSearchContainer}>
                         <div className={styles.searchBox}>
-                            <InputField placeholder="검색" />
-                            <SearchIcon />
+                            <InputField placeholder="검색" value={searchValue} onChange={handleInputChange} onKeyPress={handleKeyPress} />
+                            <SearchIcon onClick={handleSearchClick} />
                         </div>
                         <div className={styles.membersContainer}>
-                            {members.map((member, index) => (
-                                <React.Fragment key={index}>
-                                    <div className={styles.memberContainer} >
-                                        <div className={styles.memberProfile}>
-                                            <img src='/src/assets/images/basicMemberImage.png' alt='멤버 기본이미지' />
-                                            <div className={styles.information}>
-                                                <p>{member.nickName}</p>
-                                                <p className={styles.memberName}>@{member.name}</p>
+                            {members.length > 0 ? (
+                                members.map((member, index) => (
+                                    <React.Fragment key={index}>
+                                        <div className={styles.memberContainer} >
+                                            <div className={styles.memberProfile}>
+                                                <img src={member.profileImgUrl} alt={member.nickname} />
+                                                <div className={styles.information}>
+                                                    <p>{member.nickname}</p>
+                                                    <p className={styles.memberName}>@{member.name}</p>
+                                                </div>
                                             </div>
+                                            <RadioButton 
+                                                checked={selectedMembers.includes(member.nickname)} 
+                                                onChange={() => handleRadioButtonClick(member.nickname)}
+                                                disabled={selectedMembers.length >= 10 && !selectedMembers.includes(member.nickname)}
+                                            />
                                         </div>
-                                        <RadioButton checked={isChecked} onChange={handleRadioButtonClick} />
-                                    </div>
-                                    {index < members.length - 1 && <hr />}
-                                </React.Fragment>
-                            ))}
-                            
+                                        {index < members.length - 1 && <hr />}
+                                    </React.Fragment>
+                                ))
+                            ) : (
+                                <div className={styles.noResult}>
+                                    <NoResult icon={<SadIcon stroke="#616161" />} message="앗, 친구 목록에 친구가 없어요!" />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
-                <Button label="선택완료" variant={"active"} onChange ={()=><div></div>}/>
+                <Button label="선택완료" variant="active" onClick={handleAddClick} />
             </div>
-            ) : (
-                <div className={styles.noResult}>
-                    <div className={styles.noResultContainer}>
-                        <NoResult icon={<SadIcon stroke="#616161" />} message="앗, 친구 목록에 친구가 없어요!" />
-                    </div>
-                    <Button label="선택 완료" onChange ={()=><div></div>} variant="disabled" />
-                </div>
-            )}
         </div>
-    )
+    );
 }
 
 export default AddMember;

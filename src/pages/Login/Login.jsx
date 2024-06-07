@@ -14,7 +14,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { fetchData, data, err } = useAxios();
+  const { fetchData, data } = useAxios();
   const navigate = useNavigate();
 
   // 로그인 클릭
