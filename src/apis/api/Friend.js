@@ -1,3 +1,4 @@
+
 export default {
   /**
    * @method DELETE
@@ -52,7 +53,7 @@ export default {
    */
   postFriendRespond(data) {
     return {
-      url: `/friend/approve`,
+      url: `/friend/approve`,
       method: "post",
       data: { ...data }
     }

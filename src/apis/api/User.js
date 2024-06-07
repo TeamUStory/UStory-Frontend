@@ -3,26 +3,23 @@ export default {
   /**
    * @method DELETE
    * @summeray 사용자 탈퇴
-   * @param userData 사용자 데이터 (id)
    */
-  deleteUser(userData) {
+  deleteUser() {
     return {
       url: "/user",
-      method: "delete",
-      data: userData
+      method: "delete"
     }
   },
 
   /**
    * @method GET
    * @summeray 닉네임으로 전체 사용자 검색
-   * @param nickname 닉네임
    */
   searchUser(nickname) {
     return {
       url: "/user/search",
       method: "get",
-      params: nickname
+      params: { nickname }
     }
   },
 
@@ -40,65 +37,72 @@ export default {
   /**
    * @method POST
    * @summeray 회원가입
-   * @param userData 사용자 데이터
    */
-  postUser(userData) {
+  postUser(data) {
     return {
       url: "/user/sign-up",
       method: "post",
-      data: userData,
+      data: { ...data }
     }
   },
 
   /**
    * @method POST
    * @summeray 닉네임 중복 확인 및 유효성 검사
-   * @param userData 사용자 데이터 (닉네임)
    */
-  postNickname(userData) {
+  postNickname(data) {
     return {
-      url: "/user/sign-up/validate-nickname",
+      url: "/user/validate-nickname",
       method: "post",
-      data: userData
+      data: { ...data }
     }
   },
 
   /**
    * @method POST
    * @summeray 이메일 검증을 위한 인증 코드 전송
-   * @param userData 사용자 데이터 (이메일)
    */
-  postEmail(userData) {
+  postEmail(data) {
     return {
-      url: "/user/send-validate",
+      url: "/user/sign-up/send-validate",
       method: "post",
-      data: userData
+      data: { ...data }
+    }
+  },
+
+  /**
+   * @method POST
+   * @summeray 이메일 인증 코드 검증
+   */
+  postEmailCode(data) {
+    return {
+      url: "/user/sign-up/verify-validate",
+      method: "post",
+      data: { ...data }
     }
   },
 
   /**
    * @method PUT
    * @summeray 사용자 정보 수정
-   * @param userData 사용자 데이터
    */
-  putUser(userData) {
+  putUser(data) {
     return {
       url: "/user",
       method: "put",
-      data: userData,
+      data: { ...data }
     }
   },
 
   /**
    * @method POST
    * @summeray 로그인
-   * @param userData 사용자 데이터 (이메일, 비밀번호)
    */
-  postLogin(userData) {
+  postLogin(data) {
     return {
       url: "/user/login",
       method: "post",
-      data: userData,
+      data: { ...data }
     }
   },
 
