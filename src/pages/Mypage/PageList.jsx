@@ -9,6 +9,7 @@ import BottomBar from '@/components/BottomBar/BottomBar';
 import PlusButton from '@/components/PlusButton/PlusButton';
 import useAxios from '@/hooks/useAxios';
 import Paper from '@/apis/api/Paper';
+import { request } from 'express';
 
 const PageList = () => {
   const { data, fetchData } = useAxios();
@@ -17,7 +18,10 @@ const PageList = () => {
 
   // 유저 저장 기록 리스트 조회하기
   useEffect(() => {
-    fetchData(Paper.getPaperList());
+    const size = 20;
+    const page = 1;
+    const requestTime = new Date().toISOString().split('.')[0];
+    fetchData(Paper.getPaperList(size, page, requestTime ));
   }, [fetchData]);
 
   useEffect(() => {

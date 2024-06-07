@@ -12,11 +12,12 @@ import useAxios  from '../../hooks/useAxios';
 
 const SignUp = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const [nicknameValid, setNicknameValid] = useState(false);
-  const [emailValid, setEmailValid] = useState(false);
+  const [nicknameValid, setNicknameValid] = useState(false); // 닉네임 중복 체크 성공 여부
+  const [emailValid, setEmailValid] = useState(false); // 이메일 인증 성공 여부
   const [nicknameButtonDisabled, setNicknameButtonDisabled] = useState(true);
   const [emailButtonDisabled, setEmailButtonDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const { fetchData: fetchNicknameData, data: nicknameData } = useAxios(); // 닉네임 중복 체크
   const { fetchData: fetchEmailData, data: emailData } = useAxios(); // 이메일 인증 요청
   const { fetchData: fetchSignup, data: signUpData } = useAxios(); // 회원가입
@@ -25,6 +26,7 @@ const SignUp = () => {
   const nickname = watch('nickname');
   const email = watch('email');
 
+  // 닉네임, 이메일 버튼 활성화 로직
   useEffect(() => {
     if (nickname) {
       setNicknameButtonDisabled(false);
@@ -43,14 +45,14 @@ const SignUp = () => {
 
   }, [nickname, email]);
 
-  // 닉네임 유효성 검사 로직
+  // 닉네임 유효성 검사 
   const handleNicknameValidation = async () => {
     const userData = { nickname: nickname };
 
     await fetchNicknameData(User.postNickname(userData));
 
+    // 에러메세지 사라지기
     if(nicknameValid === false) {
-      // 에러메세지 사라지기
       setErrorMessage("");  
     }
   };
@@ -64,6 +66,10 @@ const SignUp = () => {
       } else {
         setNicknameValid(true);
       }
+
+      if(setEmailValid) {
+        setErrorMessage("* 닉네임 확인은 필수입니다.");  
+      }
     }
   }, [nicknameData])
 
@@ -72,7 +78,7 @@ const SignUp = () => {
     const userData = { email: email };
 
     // if(!/^\S+@\S+$/.test(email)) {
-    //   console.log("이메일 형식이 아닙니다.")
+      
     // }
 
     await fetchEmailData(User.postEmail(userData));
@@ -84,6 +90,11 @@ const SignUp = () => {
       startTimer(180)
     } else {
       setEmailValid(false);
+    }
+
+    if(emailData && emailData.isSuccess === false) {
+      setEmailValid(false);
+      setEmailErrorMessage("* 이미 사용 중인 이메일입니다.");
     }
   }, [emailData])
 
@@ -106,7 +117,7 @@ const SignUp = () => {
                   type="text"
                   placeholder="닉네임"
                   label="닉네임"
-                  {...register('nickname', { required: "* 닉네임을 입력해 주세요." })}
+                  {...register('nickname')}
                 />
               </div>
               {nicknameButtonDisabled ?
@@ -114,8 +125,11 @@ const SignUp = () => {
                 : <Button type="button" label="확인" variant="active" onClick={handleNicknameValidation}/>
               }
             </div>
-            {<p className={styles.error}>{errorMessage}</p>}
-            {nicknameValid && <p className={styles.success}>* 사용 가능한 닉네임입니다.</p>}
+            {nicknameValid ?
+              <p className={styles.success}>* 사용 가능한 닉네임입니다.</p>
+              :
+              <p className={styles.error}>{errorMessage}</p>
+            }
             <InputField
               type="text"
               placeholder="이름"
@@ -160,16 +174,8 @@ const SignUp = () => {
                   type="email"
                   placeholder="이메일"
                   label="이메일"
-                  {...register('email', {
-                    required: "* 이메일을 입력해 주세요.",
-                    pattern: {
-                      value: /^\S+@\S+$/i,
-                      message: "* 유효한 이메일 주소를 입력해 주세요."
-                    }
-                    
-                  })}
+                  {...register('email')}
                 />
-                {errors.email && <p className={styles.error}>{errors.email.message}</p>}
               </div>
               {emailButtonDisabled ? 
                 <Button type="button" label="인증 요청" variant="disabled"/>
@@ -177,6 +183,7 @@ const SignUp = () => {
                 <Button type="button" label="인증 요청" variant="active" onClick={handleEmailValidation}/>
               }
             </div>
+            {!emailValid && <p className={styles.error}>{emailErrorMessage}</p>}
             <div className={styles.certified} style={{ display: emailValid ? "flex" : "none" }}>
               <div className={styles.inputBox} style={{ marginTop: "-10px" }}>
                 <InputField

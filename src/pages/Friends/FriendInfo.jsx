@@ -6,10 +6,10 @@ const FriendInfo = ({ FriendData }) => {
   return(
     <div className={styles.friendInfo}>
       <p className={styles.img}>
-        <img src={FriendData.profileImg} alt={FriendData.name} />
+        <img src={FriendData.profileImgUrl} alt={FriendData.name} />
       </p>
       <div className={styles.text}>
-        <p className={styles.nickName}>{FriendData.nickName}</p>
+        <p className={styles.nickName}>{FriendData.nickname}</p>
         <p className={styles.name}>@{FriendData.name}</p>
       </div>
     </div>
