@@ -8,33 +8,68 @@ import PostItem from '@/components/PostItem/PostItem';
 import BottomBar from '@/components/BottomBar/BottomBar';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import Button from '@/components/Button/Button';
+import useAxios from "@/hooks/useAxios";
+import Diary from "@/apis/api/Diary";
+
+// 카테고리 배열
+const categories = [
+    { ko: "개인", en: "INDIVIDUAL" },
+    { ko: "연인", en: "COUPLE" },
+    { ko: "친구", en: "FRIEND" },
+    { ko: "가족", en: "FAMILY" },
+    { ko: "어스", en: "US" }
+];
 
 const DiaryList = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState(null);
+    const [diaryItems, setDiaryItems] = useState([]);
 
-    // 카테고리 배열
-    const categories = ["개인", "연인","친구","가족", "어스"];
+    const { data:diaryData, fetchData:fetchDiaryData} = useAxios();
 
     // 카테고리 선택
     const handleTabClick = (category) => {
-        setActiveTab(category);
+        if (activeTab === category) {
+            setActiveTab(null);
+        } else {
+            setActiveTab(category);
+        }
+    };
+    const fetchDiaryList = async (category) => {
+        const requestTime = new Date().toISOString().split('.')[0];
+        const params = category ? { requestTime, diaryCategory: category.en } : { requestTime };
+        await fetchDiaryData(Diary.getDiaryList(params));
     };
 
-    // 다이어리 배열
-    const initialPostItems = [
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 05', link: '/diary', subText: '개인', borderColor: 'black' },
-    ];
+    useEffect(() => {
+        fetchDiaryList(activeTab);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeTab]);  
+
+    useEffect(() => {
+        if(diaryData) {
+            setDiaryItems(diaryData);
+        }
+        
+    }, [diaryData]);
+
+    // console.log(diaryItems);
+  
+    useEffect(() => {
+        fetchDiaryList(activeTab);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeTab]);   
+
 
     // 현재 보여지는 포스트 상태
     const pageSize = 4;
-    const [postItems, setPostItems] = useState(initialPostItems.slice(0, pageSize));
+    const [postItems, setPostItems] = useState([]);
+
+    useEffect(() => {
+        setPostItems(diaryItems.slice(0, pageSize));
+    }, [diaryItems]);
+
+    console.log(postItems)
 
     // 감지할 요소
     const loaderRef = useRef(null);
@@ -44,14 +79,13 @@ const DiaryList = () => {
     const loadMorePosts = () => {
         setPostItems((prevPostItems) => {
             const currentLength = prevPostItems.length;
-            const newPosts = initialPostItems.slice(currentLength, currentLength + pageSize);
+            const newPosts = diaryItems.slice(currentLength, currentLength + pageSize);
             return [...prevPostItems, ...newPosts];
         });
     };
 
     // 감지 요소가 보이면 포스트 불러오기
     useEffect(() => {
-        
         if (isIntersecting) {
             loadMorePosts();
         }
@@ -69,6 +103,7 @@ const DiaryList = () => {
     // 2개씩 나뉜 다이어리 모음
     const groupedPostItems = makeArray(postItems, 2);
 
+    // console.log(groupedPostItems);
     return (
         <div className={styles.container}>
             <header className={styles.header}>
@@ -84,7 +119,7 @@ const DiaryList = () => {
                             className={activeTab === category ? styles.active : styles.tab}
                             onClick={() => handleTabClick(category)}
                         >
-                            {category}
+                            {category.ko}
                         </button>
                     ))}
                 </div>
@@ -95,11 +130,10 @@ const DiaryList = () => {
                         {group.map((postItem, idx) => (
                             <PostItem
                                 key={idx}
-                                image={postItem.image}
-                                title={postItem.title}
-                                link={postItem.link}
-                                subText={postItem.subText}
-                                borderColor={postItem.borderColor}
+                                image={postItem.imgUrl}
+                                title={postItem.name}
+                                link={`/diary/${postItem.id}`}
+                                subText={postItem.diaryCategory}
                             />
                         ))}
                     </div>

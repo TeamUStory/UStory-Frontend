@@ -33,10 +33,10 @@ function App() {
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route path='/' element={<Home/>} />
-        <Route path='/diarylist' element={<DiaryList />} />
+        <Route path='/diary' element={<DiaryList />} />
         <Route path='/register/diary' element={<RegisterDiary />} />
         <Route path='/memberselect' element={<AddMember/> } />
-        <Route path='/diary' element={<Diary />} />
+        <Route path='/diary/:id' element={<Diary />} />
         <Route path='/editdiary' element={<EditDiary />} />
         <Route path='/diary/pagelist' element={<DiaryPageList/>} />
         <Route path='/register/paper' element={<RegisterPaper />} />

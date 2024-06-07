@@ -1,45 +1,56 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import styles from "../Home/Home.module.scss";
-import PlusButton from "@/components/PlusButton/PlusButton"
-import BottomBar from "@/components/BottomBar/BottomBar"
+import PlusButton from "@/components/PlusButton/PlusButton";
+import BottomBar from "@/components/BottomBar/BottomBar";
 import Noti from "@/components/Noti/Noti";
 import MapApi from "@/apis/MapApis/MapApi";
 import PostItem from "@/components/PostItem/PostItem";
 import FriendIcon from "@/assets/icons/FriendIcon";
-import Carousel from "@/components/Carousel/Carousel"
-import CarouselItem from "@/components/Carousel/CarouselItem"
+import Carousel from "@/components/Carousel/Carousel";
+import CarouselItem from "@/components/Carousel/CarouselItem";
+import Diary from "@/apis/api/Diary";
+import Paper from "@/apis/api/Paper";
+import useAxios from "@/hooks/useAxios";
 
 const Home = () => {
     const navigate = useNavigate();
-    const [isPostItems, setIsPostItems] = useState(false);
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const postItems = [
-        { image: '/src/assets/images/place.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/place.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/place.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/place.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/place.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/place.png', title: '껑냥이들 01', link: '/paper', subText: '개인', borderColor: 'black' },
-    ];
+    const [diaryItems, setDiaryItems] = useState([]);
+    const [paperItems, setPaperItems] = useState([]);
 
-    const DiaryItems = [
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 02', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 03', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 04', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 05', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 06', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 02', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 03', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 04', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 05', subText: '개인', borderColor: 'black' },
-        { image: '/src/assets/images/diaryBasicImage.png', title: '껑냥이들 06', subText: '개인', borderColor: 'black' },
-    ]
+    const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
+    const { data: paperData, fetchData: fetchPaperData } = useAxios();  
     
-    // 다이어리를 3개로 나누는 함수
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchDiaryData(Diary.getHomeDiary());
+
+            const requestTime = new Date().toISOString().split('.')[0];
+            const size = 6;
+            const page = 1;
+    
+            const params = { requestTime, page, size };
+            await fetchPaperData(Paper.getPaperList(params));
+
+            console.log(requestTime);
+        };
+        fetchData();
+    }, [fetchDiaryData, fetchPaperData]);
+
+    useEffect(() => {
+        if (diaryData) {
+            setDiaryItems(diaryData);
+        }
+    }, [diaryData]);
+
+    useEffect(() => {
+        if (paperData) {
+            setPaperItems(paperData);
+        }
+    }, [paperData]);
+    console.log(diaryItems[0]);
+
+
     const makeArray = (array, size) => {
         return array.reduce((acc, _, i) => {
             if (i % size === 0) acc.push(array.slice(i, i + size));
@@ -47,15 +58,10 @@ const Home = () => {
         }, []);
     };
 
-    // 2개씩 나뉜 다이어리 그룹
-    const newDiaryItems = makeArray(DiaryItems, 3);
+    const newDiaryItems = makeArray(diaryItems, 3);
 
-    useEffect(() => {
-        setIsPostItems(postItems.length > 0);
-    },[postItems]);
+    const isPostItems = paperItems.length > 0;
 
-
-    
     return (
         <div className={styles.container}>
             <header className={styles.header}>
@@ -71,42 +77,42 @@ const Home = () => {
                     <MapApi />
                 </div>
                 <div className={styles.diaryContainer}>
-                  <p>내가 속한 다이어리를<br/>확인해보세요!</p>
-                  <div className={styles.diaryList}>
+                    <p>내가 속한 다이어리를<br/>확인해보세요!</p>
+                    <div className={styles.diaryList}>
                     <Carousel>
-                        {newDiaryItems.map((diaryItems, groupIndex) => {
-                          return (
-                            <CarouselItem key={groupIndex}>
-                                {diaryItems.map((diary, index) => (
-                                  <button key={diary.title} onClick={() => navigate('/diary')}>
-                                    <div className={styles.diaryItem}>
-                                      <img src={diary.image} alt={diary.title} />
-                                      <div className={styles.diaryContent}>
-                                        <p className={styles.diaryName}>{diary.title}</p>
-                                        <p className={styles.diaryCategory}>{diary.subText}</p>
-                                      </div>
-                                    </div>
-                                    {index !== diaryItems.length - 1 && <hr />}
-                                  </button>
-                                ))}
-                            </CarouselItem>
-                          );
-                        })}
-                    </Carousel>
-                  </div>
+                            {newDiaryItems.map((group, groupIndex) => (
+                                <CarouselItem key={groupIndex} index={groupIndex}> 
+                                    {group.map((diary, index) => (
+                                        <div key={diary.id}>
+                                            <button onClick={() => navigate(`/diary/${diary.id}`)}>
+                                                <div className={styles.diaryItem}>
+                                                    <img src={diary.imgUrl} alt={diary.name} />
+                                                    <div className={styles.diaryContent}>
+                                                        <p className={styles.name}>{diary.name}</p>
+                                                        <p className={styles.diaryCategory}>{diary.diaryCategory}</p>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                            {index !== group.length - 1 && <hr />}
+                                        </div>
+                                    ))}
+                                </CarouselItem>
+                            ))}
+                        </Carousel>
+                    </div>
                 </div>
                 <div className={styles.recordContainer}>
                     <p>나만의 기록일지</p>
                     {isPostItems ? (
                         <div className={styles.recordsList}>
-                            {postItems.map((postitem, idx) => (
+                            {paperItems.map((postitem, idx) => (
                                 <PostItem
                                     key={idx}
-                                    image={postitem.image}
+                                    image={postitem.thumbnailImageUrl}
                                     title={postitem.title}
-                                    link={postitem.link}
-                                    subText={postitem.subText}
-                                    borderColor={postitem.borderColor}
+                                    link={`/papers/${postitem.paperId}`}
+                                    subText={postitem.diaryName}
+                                    // borderColor={postitem.borderColor}
                                 >
                                     <FriendIcon stroke="#AAAAAA" />
                                 </PostItem>
@@ -124,7 +130,7 @@ const Home = () => {
                 <BottomBar />
             </footer>
         </div>
-    )
-}
+    );
+};
 
 export default Home;

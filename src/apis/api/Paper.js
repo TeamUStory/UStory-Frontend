@@ -29,11 +29,11 @@ export default {
    * @summeray 유저 작성 페이퍼 리스트 조회
    * @param requestTime 요청 날짜 {YYYY}-{MM}-{DD}T{HH}:{mm}:{SS}
    */
-  getPaperList(requestTime) {
+  getPaperList(params) {
     return {
       url: `/papers/written`,
       method: "get",
-      params: requestTime
+      params: { page: 1, size: 20,  ...params }
     }
   },
 
