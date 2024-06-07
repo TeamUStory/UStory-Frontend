@@ -31,8 +31,6 @@ const Home = () => {
     
             const params = { requestTime, page, size };
             await fetchPaperData(Paper.getPaperList(params));
-
-            console.log(requestTime);
         };
         fetchData();
     }, [fetchDiaryData, fetchPaperData]);
@@ -112,7 +110,6 @@ const Home = () => {
                                     title={postitem.title}
                                     link={`/papers/${postitem.paperId}`}
                                     subText={postitem.diaryName}
-                                    // borderColor={postitem.borderColor}
                                 >
                                     <FriendIcon stroke="#AAAAAA" />
                                 </PostItem>

@@ -113,7 +113,7 @@ const Diary = () => {
                                 <Button type="button" label={<CirclePlusIcon fill="#F2B1AB" />} onClick={()=> navigate("/register/paper")}/>
                             </div>
                             <div className={styles.right}>
-                                <Link to="/diary/pagelist">
+                                <Link to="/paper/diary/:id">
                                     <p>전체 보기</p>
                                     <ArrowIcon fill="black" />
                                 </Link>

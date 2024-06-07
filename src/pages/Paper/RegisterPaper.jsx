@@ -13,6 +13,7 @@ import PlaceMark from '@/assets/icons/PlaceMark';
 
 const RegisterPaper = () => {
     const navigate = useNavigate();
+    // const location = useLocation();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,7 +23,7 @@ const RegisterPaper = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        navigate('/paper')
+        navigate(`/papers`)
     };
 
     const handleRegisterClick = () => {
@@ -41,8 +42,8 @@ const RegisterPaper = () => {
                 />
                 <div className={styles.diarySelect}>
                     <div className={styles.title}>
-                            <p>다이어리</p>
-                        <Button type="button" variant="inactive" label={<ArrowIcon fill="#000"/>} onClick={()=> navigate('/diaryselect')} />
+                        <p>다이어리</p>
+                        <Button type="button" variant="inactive" label={<ArrowIcon fill="#000"/>} onClick={()=> navigate('/diary/select')} />
                     </div>
                     <div className={styles.selectedDiary}>
                         깡냥꽁냥

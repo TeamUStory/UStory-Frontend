@@ -21,12 +21,12 @@ const EditPaper = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        navigate('/paper')
+        navigate(`/papers/`)
     };
 
     const handleRegisterClick = () => {
         closeModal();
-        navigate('/paper');
+        navigate(`/papers/`);
     }
 
     return (

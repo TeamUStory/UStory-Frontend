@@ -35,6 +35,7 @@ const DiaryList = () => {
             setActiveTab(category);
         }
     };
+    
     const fetchDiaryList = async (category) => {
         const requestTime = new Date().toISOString().split('.')[0];
         const params = category ? { requestTime, diaryCategory: category.en } : { requestTime };
@@ -53,12 +54,6 @@ const DiaryList = () => {
         
     }, [diaryData]);
 
-    // console.log(diaryItems);
-  
-    useEffect(() => {
-        fetchDiaryList(activeTab);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeTab]);   
 
 
     // 현재 보여지는 포스트 상태
