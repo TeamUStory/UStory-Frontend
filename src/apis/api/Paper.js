@@ -3,7 +3,6 @@ export default {
   /**
    * @method DELETE
    * @summeray 페이퍼 삭제
-   * @param paperId 페이퍼 ID
    */
   deletePaper(paperId) {
     return {
@@ -15,7 +14,6 @@ export default {
   /**
    * @method GET
    * @summeray 페이퍼 상세 조회
-   * @param paperId 페이퍼 ID
    */
   getPaperDetail(paperId) {
     return {
@@ -32,12 +30,7 @@ export default {
     return {
       url: `/papers/written`,
       method: "get",
-      params: {
-        page: 1,
-        size: 20,
-        requestTime: new Date().toISOString().split('.')[0],
-        ...params
-      }
+      params: { ...params }
     }
   },
 
@@ -56,13 +49,12 @@ export default {
    * @method GET
    * @summeray 다이어리에 포함된 페이퍼 리스트 조회
    * @param diaryId 다이어리 ID
-   * @param requestTime 요청 날짜 {YYYY}-{MM}-{DD}T{HH}:{mm}:{SS}
    */
-  getPaperListByDiary(diaryId, requestTime) {
+  getPaperListByDiary(diaryId, params) {
     return {
       url: `/papers/diary/${diaryId}`,
       method: "get",
-      params: requestTime
+      params: { ...params }
     }
   },
 
@@ -80,13 +72,12 @@ export default {
   /**
    * @method POST
    * @summeray 페이퍼 생성
-   * @param paperData 페이퍼 데이터
    */
-  postPaper(paperData) {
+  postPaper(data) {
     return {
       url: "/papers",
       method: "post",
-      data: paperData
+      data: { ...data }
     }
   },
 
@@ -94,13 +85,12 @@ export default {
    * @method PUT
    * @summeray 페이퍼 수정
    * @param paperId 페이퍼 ID
-   * @param paperData 페이퍼 데이터
    */
-  putPaper(paperId, paperData) {
+  putPaper(paperId, data) {
     return {
       url: `/papers/${paperId}`,
       method: "put",
-      data: paperData
+      data: { ...data }
     }
   }
 }

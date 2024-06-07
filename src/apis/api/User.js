@@ -4,24 +4,22 @@ export default {
    * @method DELETE
    * @summeray 사용자 탈퇴
    */
-  deleteUser(data) {
+  deleteUser() {
     return {
       url: "/user",
-      method: "delete",
-      data: { ...data }
+      method: "delete"
     }
   },
 
   /**
    * @method GET
    * @summeray 닉네임으로 전체 사용자 검색
-   * @param nickname 닉네임
    */
   searchUser(nickname) {
     return {
       url: "/user/search",
       method: "get",
-      params: nickname
+      params: { nickname }
     }
   },
 
@@ -54,7 +52,7 @@ export default {
    */
   postNickname(data) {
     return {
-      url: "/user/sign-up/validate-nickname",
+      url: "/user/validate-nickname",
       method: "post",
       data: { ...data }
     }
@@ -66,7 +64,19 @@ export default {
    */
   postEmail(data) {
     return {
-      url: "/user/send-validate",
+      url: "/user/sign-up/send-validate",
+      method: "post",
+      data: { ...data }
+    }
+  },
+
+  /**
+   * @method POST
+   * @summeray 이메일 인증 코드 검증
+   */
+  postEmailCode(data) {
+    return {
+      url: "/user/sign-up/verify-validate",
       method: "post",
       data: { ...data }
     }
