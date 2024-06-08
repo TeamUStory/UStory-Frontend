@@ -1,4 +1,6 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
+import JWT from '@/apis/api/JWT';
+import useAxios from '@/hooks/useAxios';
 
 axios.defaults.baseURL = 'http://15.164.24.133:8080';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -11,7 +13,8 @@ export const api = axios.create();
 // 요청
 api.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem('accessToken'); // 쿠키 이름이 'accessToken'이라고 가정
+    const accessToken = localStorage.getItem('accessToken'); 
+
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -51,6 +54,8 @@ api.interceptors.response.use(
         console.error('BadRequest - 400');
       } else if (err.response && err.response.status === HttpStatusCode.Unauthorized) {
         console.error('Unauthorized - 401');
+        const { fetchData } = useAxios();
+        fetchData(JWT.refresh())
       } else if (err.response && err.response.status === HttpStatusCode.InternalServerError) {
         console.error('Internal Server Error - 500');
       } else if (err.response && err.response.status === HttpStatusCode.NotFound) {
