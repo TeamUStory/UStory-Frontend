@@ -73,8 +73,6 @@ const AddMember = () => {
         navigate('/register/diary',{state : {selectedMembers}});
     }
 
-    console.log(selectedMembers);
-
     return (
         <div className={styles.allContainer}>
             <SubHeader pageTitle="멤버 선택하기" />

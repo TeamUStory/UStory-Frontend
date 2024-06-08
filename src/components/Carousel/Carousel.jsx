@@ -39,11 +39,7 @@ export const Carousel = ({ children }) => {
   };
 
   const handleNext = () => {
-    // console.log('handleNext');
-    // console.log(Math.ceil(React.Children.count(children) / 3) - 1, currentIndex);
-    // console.log(React.Children.count(children));
     const CarouselItems = Children.toArray(children);
-    // console.log(Children.toArray(children));
 
     if (currentIndex === CarouselItems.length - 1) {
       return;
@@ -52,8 +48,7 @@ export const Carousel = ({ children }) => {
     setCurrentIndex(currentIndex + 1);
   };
 
-  // console.log(currentIndex);
-
+  console.log(currentIndex);
   return (
     <div 
       className={styles.carousel}

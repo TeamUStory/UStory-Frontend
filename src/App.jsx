@@ -7,7 +7,7 @@ const Home = lazy(() => import('./pages/Home/Home'));
 const DiaryList = lazy(() => import('./pages/Diary/DIaryList'));
 const RegisterDiary = lazy(() => import('./pages/Diary/RegisterDiary'));
 const AddMember = lazy(() => import('./pages/Diary/AddMember'));
-const Diary = lazy(() => import('./pages/Diary/Diary'));
+const DiaryDetail = lazy(() => import('./pages/Diary/DiaryDetail'));
 const EditDiary = lazy(() => import('./pages/Diary/EditDiary'));
 const DiaryPageList = lazy(() => import('./pages/Diary/DiaryPageList'));
 const RegisterPaper = lazy(() => import('./pages/Paper/RegisterPaper'));
@@ -36,7 +36,7 @@ function App() {
         <Route path='/diary' element={<DiaryList />} />
         <Route path='/register/diary' element={<RegisterDiary />} />
         <Route path='/friend/search' element={<AddMember/> } />
-        <Route path='/diary/:id' element={<Diary />} />
+        <Route path='/diary/:id' element={<DiaryDetail />} />
         <Route path='/editdiary' element={<EditDiary />} />
         <Route path='/papers/diary/:id' element={<DiaryPageList/>} />
         <Route path='/register/paper' element={<RegisterPaper />} />

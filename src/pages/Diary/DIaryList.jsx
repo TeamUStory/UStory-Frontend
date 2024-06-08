@@ -64,8 +64,6 @@ const DiaryList = () => {
         setPostItems(diaryItems.slice(0, pageSize));
     }, [diaryItems]);
 
-    console.log(postItems)
-
     // 감지할 요소
     const loaderRef = useRef(null);
     const isIntersecting = useInfiniteScroll(loaderRef);
@@ -98,7 +96,6 @@ const DiaryList = () => {
     // 2개씩 나뉜 다이어리 모음
     const groupedPostItems = makeArray(postItems, 2);
 
-    // console.log(groupedPostItems);
     return (
         <div className={styles.container}>
             <header className={styles.header}>

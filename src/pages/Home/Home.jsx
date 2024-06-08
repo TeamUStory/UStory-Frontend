@@ -21,6 +21,7 @@ const Home = () => {
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
     const { data: paperData, fetchData: fetchPaperData } = useAxios();  
     
+    // 다이어리 리스트, 페이퍼리스트 정보 조회
     useEffect(() => {
         const fetchData = async () => {
             await fetchDiaryData(Diary.getHomeDiary());
@@ -35,20 +36,21 @@ const Home = () => {
         fetchData();
     }, [fetchDiaryData, fetchPaperData]);
 
+    // 다이어리 리스트 정보 저장
     useEffect(() => {
         if (diaryData) {
             setDiaryItems(diaryData);
         }
     }, [diaryData]);
 
+    // 페이퍼 리스트 정보 저장
     useEffect(() => {
         if (paperData) {
             setPaperItems(paperData);
         }
     }, [paperData]);
-    console.log(diaryItems[0]);
 
-
+    // 배열을 원하는 갯수로 나누는 함수
     const makeArray = (array, size) => {
         return array.reduce((acc, _, i) => {
             if (i % size === 0) acc.push(array.slice(i, i + size));
