@@ -19,6 +19,8 @@ import Paper from '../../apis/api/Paper';
 import Comment from '@/apis/api/Comment';
 import BookMark from '@/apis/api/BookMark';
 import useAxios from '@/hooks/useAxios';
+import Carousel from "@/components/Carousel/Carousel";
+import CarouselItem from "@/components/Carousel/CarouselItem";
 
 const commentsData = [
     { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' },
@@ -34,11 +36,13 @@ const PaperPage = () => {
     const [isSaveIconFilled, setIsSaveIconFilled] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isCommetOpen, setCommentOpen] = useState(0);
-    const [pageDetail, setPageDetail] = useState([]);
+    const [pageDetail, setPageDetail] = useState({});
+    const [images, setImages] = useState([]);
 
     const { data:pageData, fetchData:fetchPageData} = useAxios();
-    const { data:commentData, fetchData:fetchCommentData} = useAxios();
+    const { data:bookmarkData, fetchData:fetchBookmarkData} = useAxios();
 
+    // paper 상세 정보 조회
     useEffect(() => {
         const fetchPage = async () => {
             await fetchPageData(Paper.getPaperDetail(paperId));
@@ -46,14 +50,14 @@ const PaperPage = () => {
         fetchPage()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchPageData]);
-        
+    
+    // paperDetail 정보 저장
     useEffect(() => {
         if (pageData){
             setPageDetail(pageData);
+            setImages(pageData.imageUrls);
         }
     }, [pageData]);
-
-    console.log(pageData);
     
     // header에 있는 moreIcon
     const toggleMenu = () => {
@@ -69,7 +73,6 @@ const PaperPage = () => {
         }
     };
 
-
     // 저장 버튼
     const handleSaveIconClick = () => {
         setIsSaveIconFilled(!isSaveIconFilled);
@@ -83,15 +86,14 @@ const PaperPage = () => {
     useEffect(() => {
         setCommentOpen(false);
     },[])
+    console.log(images);
 
     return (
         <div className={styles.allContainer}>
             <div className={styles.header}>
                 <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={() => navigate(-1)} />
                 <div className={styles.rightHeader}>
-                    <button onClick={() => navigate(0)} >
-                        <Noti />
-                    </button>
+                    <Noti />
                     <button className={styles.moreIcon} onClick={toggleMenu} >
                         <MoreIcon stroke="black" />
                     </button>
@@ -105,9 +107,33 @@ const PaperPage = () => {
             </div>
             <div className={styles.contentsContainer}>
                 <p className={styles.pageName}>{pageDetail.title}</p>
-                <div className={styles.imagesContainer}>
-                    <img src={pageDetail.thumbnailImageUrl} alt={pageDetail.title} />
-                </div>
+
+                <Carousel>
+                    {pageDetail.unlocked ? (
+                        <>
+                        <CarouselItem index={0}>
+                            <div className={styles.thumbnailImageContainer}>
+                                <img src={pageDetail.thumbnailImageUrl} alt={pageDetail.title} />
+                            </div>
+                        </CarouselItem>
+                        {images.map((imageUrl, index) => (
+                            <CarouselItem key={index} index={index+1}>
+                                <div className={styles.imagesContainer}>
+                                    <img src={imageUrl} alt={`Image ${index}`} />
+                                </div>
+                            </CarouselItem>
+                        ))}
+                        </>
+                    ) : (
+                        <CarouselItem index={0}>
+                            <div className={styles.thumbnailImageContainer}>
+                                <img src={pageDetail.thumbnailImageUrl} alt={pageDetail.title} />
+                            </div>
+                        </CarouselItem>
+                    )}
+                </Carousel>
+
+
                 <div className={styles.contents}>
                     <div className={styles.left}>
                         <div className={styles.diary}>

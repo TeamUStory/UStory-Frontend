@@ -1,7 +1,7 @@
 @import '@/assets/styles/colors.scss';
 
 .allContainer {
-  
+    touch-action: pan-x;
     .header {
         display: flex;
         justify-content: space-between;
@@ -88,6 +88,11 @@
             font-weight: bold;
             color: $black1;
 
+        }
+
+        .thumbnailImageContainer img {
+            text-align: center;
+            width: 100%;
         }
 
         .imagesContainer img {
