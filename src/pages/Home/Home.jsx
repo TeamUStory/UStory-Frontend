@@ -1,11 +1,65 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import styles from "../Home/Home.module.scss";
-import PlusButton from "@/components/PlusButton/PlusButton"
-import BottomBar from "@/components/BottomBar/BottomBar"
-import NotificationIcon from "@/assets/icons/NotificationIcon";
-import MapApi from "@/apis/api/MapApi";
-// import PostItem from "@/components/PostItem/PostItem";
+import PlusButton from "@/components/PlusButton/PlusButton";
+import BottomBar from "@/components/BottomBar/BottomBar";
+import Noti from "@/components/Noti/Noti";
+import MapApi from "@/apis/MapApis/MapApi";
+import PostItem from "@/components/PostItem/PostItem";
+import FriendIcon from "@/assets/icons/FriendIcon";
+import Carousel from "@/components/Carousel/Carousel";
+import CarouselItem from "@/components/Carousel/CarouselItem";
+import Diary from "@/apis/api/Diary";
+import Paper from "@/apis/api/Paper";
+import useAxios from "@/hooks/useAxios";
 
 const Home = () => {
+    const navigate = useNavigate();
+    const [diaryItems, setDiaryItems] = useState([]);
+    const [paperItems, setPaperItems] = useState([]);
+
+    const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
+    const { data: paperData, fetchData: fetchPaperData } = useAxios();  
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchDiaryData(Diary.getHomeDiary());
+
+            const requestTime = new Date().toISOString().split('.')[0];
+            const size = 6;
+            const page = 1;
+    
+            const params = { requestTime, page, size };
+            await fetchPaperData(Paper.getPaperList(params));
+        };
+        fetchData();
+    }, [fetchDiaryData, fetchPaperData]);
+
+    useEffect(() => {
+        if (diaryData) {
+            setDiaryItems(diaryData);
+        }
+    }, [diaryData]);
+
+    useEffect(() => {
+        if (paperData) {
+            setPaperItems(paperData);
+        }
+    }, [paperData]);
+    console.log(diaryItems[0]);
+
+
+    const makeArray = (array, size) => {
+        return array.reduce((acc, _, i) => {
+            if (i % size === 0) acc.push(array.slice(i, i + size));
+            return acc;
+        }, []);
+    };
+
+    const newDiaryItems = makeArray(diaryItems, 3);
+
+    const isPostItems = paperItems.length > 0;
+
     return (
         <div className={styles.container}>
             <header className={styles.header}>
@@ -14,7 +68,7 @@ const Home = () => {
                     <br />
                     어디로 떠나시나요?
                 </p>
-                <NotificationIcon />
+                <Noti />
             </header>
             <div className={styles.contents}>
                 <div className={styles.mapContainer}>
@@ -23,21 +77,49 @@ const Home = () => {
                 <div className={styles.diaryContainer}>
                     <p>내가 속한 다이어리를<br/>확인해보세요!</p>
                     <div className={styles.diaryList}>
-                        <div className={styles.diary}>
-                            <img src="src\assets\images\diaryBasicImage.png" alt="다이어리 이미지" />
-                            <div className={styles.diaryContent}>
-                                <p className={styles.diaryName}>기본 다이어리</p>
-                                <p className={styles.diaryCategory}>개인</p>
-                            </div>
-                        </div>
+                    <Carousel>
+                            {newDiaryItems.map((group, groupIndex) => (
+                                <CarouselItem key={groupIndex} index={groupIndex}> 
+                                    {group.map((diary, index) => (
+                                        <div key={diary.id}>
+                                            <button onClick={() => navigate(`/diary/${diary.id}`)}>
+                                                <div className={styles.diaryItem}>
+                                                    <img src={diary.imgUrl} alt={diary.name} />
+                                                    <div className={styles.diaryContent}>
+                                                        <p className={styles.name}>{diary.name}</p>
+                                                        <p className={styles.diaryCategory}>{diary.diaryCategory}</p>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                            {index !== group.length - 1 && <hr />}
+                                        </div>
+                                    ))}
+                                </CarouselItem>
+                            ))}
+                        </Carousel>
                     </div>
                 </div>
                 <div className={styles.recordContainer}>
                     <p>나만의 기록일지</p>
-                    <div className={styles.noRecordList}>
-                        <p>기록을 등록해보세요!</p>
-                    </div>
-                    {/* <PostItem /> */}
+                    {isPostItems ? (
+                        <div className={styles.recordsList}>
+                            {paperItems.map((postitem, idx) => (
+                                <PostItem
+                                    key={idx}
+                                    image={postitem.thumbnailImageUrl}
+                                    title={postitem.title}
+                                    link={`/papers/${postitem.paperId}`}
+                                    subText={postitem.diaryName}
+                                >
+                                    <FriendIcon stroke="#AAAAAA" />
+                                </PostItem>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className={styles.noRecordList}>
+                            <p>기록을 등록해보세요!</p>
+                        </div>
+                    )}
                 </div>
             </div>
             <PlusButton />
@@ -45,7 +127,7 @@ const Home = () => {
                 <BottomBar />
             </footer>
         </div>
-    )
-}
+    );
+};
 
 export default Home;

@@ -13,9 +13,9 @@ const ProfileBox = ({user}) => {
     <div className={styles.profileBox}>
       <div className={styles.profileInfoBox}>
         <div className={styles.profileImg}>
-          {user.propfileImg === '' ? <img src={ProfileImg} alt="profile image" />
+          {user.profileImgUrl === '' ? <img src={ProfileImg} alt="profile image" />
             :
-          <img src={user.propfileImg} alt="profile image" />}
+          <img src={user.profileImgUrl} alt="profile image" />}
         </div>
         <div className={styles.profileInfo}>
           <p className={styles.nickname}>
@@ -32,7 +32,7 @@ const ProfileBox = ({user}) => {
           <MessageIcon stroke="#1d1d1d" />
           {user.introSelf === '' ? <p className={styles.text}>자기소개가 없습니다.</p>
             :
-          <p className={styles.text}>{user.introSelf}</p>}
+          <p className={styles.text}>{user.profileDescription}</p>}
         </div>
       </div>
     </div>

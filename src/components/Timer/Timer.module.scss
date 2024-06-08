@@ -1,0 +1,13 @@
+@import "@/assets/styles/colors.scss";
+
+.timer{
+  font-size: 13px;
+  color: $black3;
+  margin-top: 10px;
+
+  svg{
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+}

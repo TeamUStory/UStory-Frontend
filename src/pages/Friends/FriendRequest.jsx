@@ -11,8 +11,8 @@ const FriendRequest = ({ RequestData }) => {
       {RequestData.length === 0 ? (
         <NoResult icon={<SadIcon stroke="#1d1d1d" strokeWidth={1.0}/>} message="새로운 친구 요청이 없습니다."/>
       ) : (
-        RequestData.map((request) => (
-          <div className={styles.list} key={request.id}>
+        RequestData.map((request, idx) => (
+          <div className={styles.list} key={idx}>
             <FriendInfo FriendData={request}/>
             <div className={styles.listBtnWrap}>
               <Button type="button" label="거절" variant="noFilled"/>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Diary.module.scss';
 import ArrowIcon from '@/assets/icons/ArrowIcon';
-import NotificationIcon from '@/assets/icons/NotificationIcon';
+import Noti from '@/components/Noti/Noti';
 import CirclePlusIcon from '@/assets/icons/CirclePlusIcon';
 import MessageIcon from '@/assets/icons/MessageIcon';
 import MoreIcon from '@/assets/icons/MoreIcon';
@@ -17,7 +17,7 @@ const Diary = () => {
     const navigate = useNavigate();    
     const [isPostItems, setIsPostItems] = useState(false);
     const [isToggle, setIsToggle] = useState(false);
-
+    
     const members = [
         { name: '메타몽', imgSrc: '/src/assets/images/basicMemberImage.png' },
         { name: '멤버2', imgSrc: '/src/assets/images/basicMemberImage.png' },
@@ -26,7 +26,7 @@ const Diary = () => {
         { name: '멤버5', imgSrc: '/src/assets/images/basicMemberImage.png' },
     ];
     
-    // 다이어리를 2개로 나누는 함수
+    // 멤버를 2개로 나누는 함수
     const makeArray = (array, size) => {
         return array.reduce((acc, _, i) => {
             if (i % size === 0) acc.push(array.slice(i, i + size));
@@ -34,7 +34,7 @@ const Diary = () => {
         }, []);
     };
     
-    // 2개씩 나뉜 다이어리 그룹
+    // 2개씩 나뉜 멤버 그룹
     const newMembers = makeArray(members, 2);
 
     // 장소 기록 배열
@@ -64,7 +64,7 @@ const Diary = () => {
                 <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={() => navigate(-1)} />
                 <div className={styles.rightHeader}>
                     <button onClick={() => navigate(0)} >
-                        <NotificationIcon />
+                        <Noti />
                     </button>
                     <button className={styles.moreIcon} onClick={toggleMenu} >
                         <MoreIcon stroke="black" />
@@ -110,10 +110,10 @@ const Diary = () => {
                         <div className={styles.title}>
                             <div className={styles.left}>
                                 <p>우리들의 기록</p>
-                                <Button type="button" label={<CirclePlusIcon fill="#F2B1AB" />}/>
+                                <Button type="button" label={<CirclePlusIcon fill="#F2B1AB" />} onClick={()=> navigate("/register/paper")}/>
                             </div>
                             <div className={styles.right}>
-                                <Link to="/diary/pagelist">
+                                <Link to="/paper/diary/:id">
                                     <p>전체 보기</p>
                                     <ArrowIcon fill="black" />
                                 </Link>

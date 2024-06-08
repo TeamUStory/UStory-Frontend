@@ -1,0 +1,13 @@
+@import '@/assets/styles/colors.scss';
+
+.loading{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background-color: $white1;
+  font-size: 16px;
+  color: $point-color1;
+  font-weight: 600;
+}

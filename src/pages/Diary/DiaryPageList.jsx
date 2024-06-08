@@ -5,7 +5,7 @@ import SubHeader from '@/components/SubHeader/SubHeader';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import PostItem from '../../components/PostItem/PostItem';
 import PlaceMark from '../../assets/icons/PlaceMark';
-import Calender from '../../components/Calender/Calender';
+import RangeCalender from '../../components/Calender/RangeCalender';
 
 const DiaryPageList = () => {
     // 기록 배열
@@ -59,9 +59,7 @@ const DiaryPageList = () => {
         <div className={styles.allContainer}>
             <SubHeader pageTitle="우리들의 기록" />
             <div className={styles.selectDate}>
-                <Calender />
-                <span>~</span>
-                <Calender />
+                <RangeCalender />
             </div>
             <div className={styles.pageList}>
                 {groupedPostItems.map((group, index) => (

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const DiaryIcon = ({ color, bgColor="white" }) => {
+const DiaryIcon = ({ color, bgColor }) => {
     return (
         <div
             style={{

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const MapApi = ({ width = '100%', height = '344px' }) => {
+const MapApi = ({ width = '100%', height = '344px', borderRadius = "20px" }) => {
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -42,7 +42,7 @@ const MapApi = ({ width = '100%', height = '344px' }) => {
         <div
             ref={containerRef}
             id="map"
-            style={{ width: width, height: height }}
+            style={{ width: width, height: height, borderRadius: borderRadius}}
         ></div>
     );
 };
@@ -50,6 +50,7 @@ const MapApi = ({ width = '100%', height = '344px' }) => {
 MapApi.propTypes = {
     width: PropTypes.string,
     height: PropTypes.string,
+    borderRadius: PropTypes.string
 };
 
 export default MapApi;
