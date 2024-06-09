@@ -36,7 +36,14 @@ const MapApi = ({ width = '100%', height = '344px', borderRadius = "20px" }) => 
                             new kakao.maps.Size(40, 40)
                         );
                         marker.setImage(markerImage);
-                        
+                        // marker.setClickable(true);
+
+                        // 마커 클릭 가능하도록 설정
+                        window.kakao.maps.event.addListener(marker, 'click', function() {
+                            alert("클릭 테스트");
+                            // displayInfowindow(marker, title);
+                        });
+
                         clusterer.addMarker(marker);
                     }
                     
@@ -44,8 +51,17 @@ const MapApi = ({ width = '100%', height = '344px', borderRadius = "20px" }) => 
                     addClusterMarker('https://i.namu.wiki/i/HkXddAbypRkTfnkC6Zg8tt7WgseYiFc8lqY3GI3p9YkcrW6NPS9Eo4iT3GudyOz6qr5IUwArV3DZu1IydH9YbA.webp', 37.23, 126.67);
                     addClusterMarker('https://i.namu.wiki/i/4c9RUCMb7AZfT1DL15AcE-ZBQ_K7oDSkS9tDBAsxD93X7ZWoETUhRxL07fy5WLzE1blO8R7lxzCRCeQJ230bLg.webp', 37.10, 126.50);
                     addClusterMarker('https://i.namu.wiki/i/lT2DdjdyqFE5IuD_9uuyusuGd7EpgisaYSuVb-lwdoVZFHf2yh0nD5aNe4aLz7prnXKp5MhJl5WbCRHZJ0DPVA.webp', 37.30, 126.77);
-
                     
+                     // 클러스터 클릭 가능하도록 설정
+                    kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
+                        // 현재 지도 레벨에서 1레벨 확대한 레벨
+                        var level = map.getLevel()-1;
+
+                        // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
+                        map.setLevel(level, {anchor: cluster.getCenter()});
+                    });
+
+
                     // // 크기를 변경한 이후에는 반드시 map.relayout 함수를 호출
                     // const relayout = () => {
                     //     map.relayout();
