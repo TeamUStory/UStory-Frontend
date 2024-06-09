@@ -17,7 +17,7 @@ import User from '@/apis/api/User';
 import completedImage from '@/assets/images/completedImage.png';
 
 const Mypage = () => {
-  const [isLogouModal, setIsLogoutModal] = useState(false)
+  const [isLogoutModal, setIsLogoutModal] = useState(false)
   const [logoutSuccess, setLogoutSuccess] = useState(false);
   const { fetchData: fetchUserData, data: userData } = useAxios();
   const { fetchData: fetchLogoutData, data: logoutData } = useAxios();
@@ -39,25 +39,17 @@ const Mypage = () => {
   }, [userData])
 
   // 로그아웃
-  // const handleLogout = async () => {
-  //   await fetchLogoutData(User.postLogout())
-  //   setLogoutSuccess(true);
-  // }
+  const handleLogout = async () => {
+    await fetchLogoutData(User.postLogout())
+    localStorage.removeItem('accessToken');
+    setLogoutSuccess(true);
+  }
 
-  // useEffect(() => {
-  //   fetchLogoutData()
-  // }, [fetchLogoutData])
-
-  // const handleLastLogout = () => {
-  //   // localStorage.removeItem('accessToken');
-  // }
-
-  // useEffect(() => {
-  //   if(logoutData) {
-  //     // navigate("/login");
-  //     console.log("로그아웃 성공")
-  //   }
-  // },[logoutData])
+  useEffect(() => {
+    if(logoutData) {
+      navigate("/login");
+    }
+  },[logoutData,navigate])
 
   return (
     <>
@@ -78,12 +70,12 @@ const Mypage = () => {
       </div>
       <BottomBar />
       <PlusButton />
-      {isLogouModal && (
+      {isLogoutModal && (
         <Modal closeFn={() => setIsLogoutModal(false)}>
           <Modal.Icon><img src={BanImg} alt='cancelImage' /></Modal.Icon>
           <Modal.Body>로그아웃 하시겠습니까?</Modal.Body>
           <Modal.Button>
-            <Button type="button" label="로그아웃 하기" variant="active" onClick={handleLogout}/>
+            <Button type="button" label="로그아웃 하기" variant="active" onClick={() => setLogoutSuccess(true)}/>
           </Modal.Button>
         </Modal>
       )}
@@ -92,7 +84,7 @@ const Mypage = () => {
           <Modal.Icon><img src={completedImage} alt='cancelImage' /></Modal.Icon>
           <Modal.Body>로그아웃 되었습니다.</Modal.Body>
           <Modal.Button>
-            <Button type="button" label="확인" variant="active" onClick={handleLastLogout}/>
+            <Button type="button" label="확인" variant="active" onClick={handleLogout}/>
           </Modal.Button>
         </Modal>
       )}
