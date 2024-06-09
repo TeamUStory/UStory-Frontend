@@ -1,6 +1,7 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 import JWT from '@/apis/api/JWT';
 import useAxios from '@/hooks/useAxios';
+import { useEffect } from 'react';
 
 axios.defaults.baseURL = 'http://15.164.24.133:8080';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -16,7 +17,7 @@ api.interceptors.request.use(
     const accessToken = localStorage.getItem('accessToken'); 
 
     if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      config.headers.Authorization = `${accessToken}`;
     }
     return config;
   },
@@ -54,8 +55,15 @@ api.interceptors.response.use(
         console.error('BadRequest - 400');
       } else if (err.response && err.response.status === HttpStatusCode.Unauthorized) {
         console.error('Unauthorized - 401');
-        const { fetchData } = useAxios();
+
+        // 토큰 만료 시 재발급 api 요청 후 localStorage에 저장
+        const { fetchData, data } = useAxios();
         fetchData(JWT.refresh())
+        useEffect(() => {
+          if (data) {
+            localStorage.setItem('accessToken', data);
+          }
+        }, [data])
       } else if (err.response && err.response.status === HttpStatusCode.InternalServerError) {
         console.error('Internal Server Error - 500');
       } else if (err.response && err.response.status === HttpStatusCode.NotFound) {
