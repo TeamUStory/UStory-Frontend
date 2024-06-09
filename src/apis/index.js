@@ -1,6 +1,4 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
-import JWT from '@/apis/api/JWT';
-import useAxios from '@/hooks/useAxios';
 
 axios.defaults.baseURL = 'http://15.164.24.133:8080';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -54,8 +52,16 @@ api.interceptors.response.use(
         console.error('BadRequest - 400');
       } else if (err.response && err.response.status === HttpStatusCode.Unauthorized) {
         console.error('Unauthorized - 401');
-        const { fetchData } = useAxios();
-        fetchData(JWT.refresh())
+
+        // 토큰 만료 시 재발급 api
+        try {
+          const newAccessToken = refresh();
+          err.config.headers.Authorization = `Bearer ${newAccessToken}`
+          return api.request(err.config);
+        } catch (tokenError) {
+          return Promise.reject(tokenError);
+        }
+        
       } else if (err.response && err.response.status === HttpStatusCode.InternalServerError) {
         console.error('Internal Server Error - 500');
       } else if (err.response && err.response.status === HttpStatusCode.NotFound) {
@@ -69,3 +75,15 @@ api.interceptors.response.use(
     return Promise.reject(err);
   }
 );
+
+// 엑세스 토큰 재발급
+export const refresh = async () => {
+  try {
+    const res = await api.post('/jwt/re-issue');
+    localStorage.setItem('accessToken', res);
+    return res;
+  }catch (err) {
+    console.error('토큰 재발급 실패');
+    throw err
+  }
+};

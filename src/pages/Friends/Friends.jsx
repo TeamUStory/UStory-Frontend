@@ -16,8 +16,11 @@ const Friends = () => {
 
   // 친구 목록 데이터 가져오기
   useEffect(() => {
+    const size = 10;
+    const page = 1;
+    const requestTime = new Date().toISOString().split('.')[0];
     const fetchData =  async () => {
-      await fetchFirendsData(Friend.searchUser())
+      await fetchFirendsData(Friend.searchUser({size, page, requestTime}))
     }
     fetchData();
   }, [fetchFirendsData])
@@ -30,8 +33,12 @@ const Friends = () => {
 
   // 친구 요청 데이터 가져오기
   useEffect(() => {
+    const size = 10;
+    const page = 1;
+    const requestTime = new Date().toISOString().split('.')[0];
+
     const fetchData = async () => {
-      await fetchRequestData(Friend.getFriendRequestList())
+      await fetchRequestData(Friend.getFriendRequestList({size, page, requestTime}))
     }
     fetchData();
   }, [fetchRequestData])
