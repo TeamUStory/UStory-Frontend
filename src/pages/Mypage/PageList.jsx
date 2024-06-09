@@ -9,7 +9,6 @@ import BottomBar from '@/components/BottomBar/BottomBar';
 import PlusButton from '@/components/PlusButton/PlusButton';
 import useAxios from '@/hooks/useAxios';
 import Paper from '@/apis/api/Paper';
-import { request } from 'express';
 
 const PageList = () => {
   const { data, fetchData } = useAxios();
@@ -21,7 +20,11 @@ const PageList = () => {
     const size = 20;
     const page = 1;
     const requestTime = new Date().toISOString().split('.')[0];
-    fetchData(Paper.getPaperList(size, page, requestTime ));
+    fetchData(Paper.getPaperList({
+      size: size,
+      page: page,
+      requestTime: requestTime
+    }));
   }, [fetchData]);
 
   useEffect(() => {
@@ -49,7 +52,7 @@ const PageList = () => {
                   image={item.thumbnailImageUrl}
                   title={item.title}
                   subText={item.store}
-                  link={`/paper/${item.paperId}`}
+                  link={`/papers/${item.paperId}`}
                 />
               ))}
           </div>
