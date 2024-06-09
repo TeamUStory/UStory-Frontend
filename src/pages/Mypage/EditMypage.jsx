@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import styles from './Mypage.module.scss';
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
@@ -19,9 +20,12 @@ const EditMypage = () => {
   const [nicknameButtonDisabled, setNicknameButtonDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [editSuccess, setEditSuccess] = useState(false);
+  const [password, setPassword] = useState("");
   const { fetchData: fetchUserData, data: userData } = useAxios();
   const { fetchData: fetchNicknameData, data: nicknameData } = useAxios();
   const { fetchData: fetchEditUser, data: editUserData } = useAxios();
+  const { fetchData: fetchDeleteUser, data: deleteUserData } = useAxios();
+  const navigator = useNavigate();
 
   const nickname = watch('nickname');
 
@@ -95,6 +99,22 @@ const EditMypage = () => {
     setModalOpen(false);
     setLastWithdrawal(false);
   }
+
+  // 찐탈퇴
+  const handleLastWithdrawal = async () => {
+    if(userData.password === password) {
+      const deleteUser = async () => {
+        await fetchDeleteUser(User.deleteUser());
+      };
+      deleteUser();
+    }
+  }
+
+  useEffect(() => {
+    if (deleteUserData) {
+      navigator('/login');
+    }
+  }, [deleteUserData, navigator]);
 
   return(
     <>
@@ -170,10 +190,10 @@ const EditMypage = () => {
           <Modal.Icon><img src={BanImg} alt="ban" /></Modal.Icon>
           <Modal.Body>
             <p>비밀번호를 입력하면 탈퇴가 완료됩니다.</p>
-            <input type="password" placeholder='비밀번호 입력' className={styles.input} />
+            <input type="password" placeholder='비밀번호 입력' className={styles.input} value={password} onChange={(e) => setPassword(e.target.value)}/>
           </Modal.Body>
           <Modal.Button>
-            <Button type="button" label="탈퇴하기" variant="active" onClick={() => console.log("찐탈퇴")}/>
+            <Button type="button" label="탈퇴하기" variant="active" onClick={handleLastWithdrawal}/>
           </Modal.Button>
         </Modal>
       )}
