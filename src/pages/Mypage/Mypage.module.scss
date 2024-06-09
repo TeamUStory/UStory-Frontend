@@ -3,7 +3,7 @@
 .mypageHeader{
   flex-direction: row;
   justify-content: space-between;
-  z-index: 10000;
+  z-index: 1000;
 
   background: $white1;
   display: flex;
@@ -325,4 +325,21 @@
 .noWrap{
   height: 80vh;
   width: 100%;
+}
+
+// 정보 수정
+.certified{
+  width: 100%;
+}
+
+.error{
+  font-size: 13px;
+  color: $wrong-color;
+  margin-top: 10px;
+}
+
+.success{
+  font-size: 13px;
+  color: $ok-color;
+  margin-top: 10px;
 }

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const PlaceMark = ({color}) => {
+const PlaceMark = ({color ="#AAAAAA"}) => {
 
     return (
         <svg width="25" height="30" viewBox="0 0 25 30" fill="none" xmlns="http://www.w3.org/2000/svg">

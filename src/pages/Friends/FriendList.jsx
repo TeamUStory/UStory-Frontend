@@ -30,10 +30,10 @@ const FriendList = ({ FriendData }) => {
       {FriendData.length === 0 ? (
         <NoResult icon={<SadIcon stroke="#1d1d1d" strokeWidth={1.0}/>} message="등록된 친구가 없습니다."/>
       ) : (
-        FriendData.map((friend) => (
-          <div className={styles.list} key={friend.id}>
+        FriendData.map((friend, idx) => (
+          <div className={styles.list} key={idx}>
             <FriendInfo FriendData={friend}/>
-            <MoreBtn onClick={() => handleMore(friend.id)} isActive={activeId === friend.id}/>
+            <MoreBtn onClick={() => handleMore(idx)} isActive={activeId === idx}/>
           </div>
         ))
       )}

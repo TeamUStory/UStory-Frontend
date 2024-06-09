@@ -9,22 +9,9 @@
         width: 100%;
         min-width: 320px;
         max-width: 480px;
-        height: 84px;
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
 
         box-sizing: border-box;
-        padding: 27px 22px;
-        gap: 10px;
-
-
-        span {
-            font-size: 14px;
-            font-weight: 500;
-            color: $black3;
-        }
+        padding: 20px;
     }   
 
     .pageList {
@@ -58,4 +45,15 @@
 
     }
 
+}
+
+// 달력 위치 커스텀
+.react-datepicker__tab-loop{
+  position: static !important;
+}
+
+.react-datepicker-popper {
+  top: 0px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
 }
