@@ -90,14 +90,17 @@
 
         }
 
-        .thumbnailImageContainer img {
-            text-align: center;
-            width: 100%;
-        }
+        .allImageContainer {
+            overflow:hidden;
 
-        .imagesContainer img {
-            text-align: center;
-            width: 100%;
+            .thumbnailImageContainer img {
+                width: 100%;
+            }
+            
+            .imagesContainer img {
+                text-align: center;
+                width: 100%;
+            }
         }
         
         .contents {

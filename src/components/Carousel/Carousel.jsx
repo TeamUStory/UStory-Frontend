@@ -48,7 +48,6 @@ export const Carousel = ({ children }) => {
     setCurrentIndex(currentIndex + 1);
   };
 
-  console.log(currentIndex);
   return (
     <div 
       className={styles.carousel}

@@ -22,15 +22,10 @@ import useAxios from '@/hooks/useAxios';
 import Carousel from "@/components/Carousel/Carousel";
 import CarouselItem from "@/components/Carousel/CarouselItem";
 
-const commentsData = [
-    { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' },
-    { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' },
-    { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' }
-];
-
 const PaperPage = () => {
     const navigate = useNavigate();  
     const { paperId } = useParams(); 
+
     const [isToggle, setIsToggle] = useState(false);
     const [toggleIndex, setToggleIndex] = useState(null);
     const [isSaveIconFilled, setIsSaveIconFilled] = useState(false);
@@ -38,9 +33,11 @@ const PaperPage = () => {
     const [isCommetOpen, setCommentOpen] = useState(0);
     const [pageDetail, setPageDetail] = useState({});
     const [images, setImages] = useState([]);
+    const [commentList, setCommentList] = useState([]);
 
     const { data:pageData, fetchData:fetchPageData} = useAxios();
     const { data:bookmarkData, fetchData:fetchBookmarkData} = useAxios();
+    const { data:commentData, fetchData:fetchCommentData} = useAxios();
 
     // paper 상세 정보 조회
     useEffect(() => {
@@ -51,14 +48,69 @@ const PaperPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchPageData]);
     
-    // paperDetail 정보 저장
+    // paperDetail 정보 저장, 이미지 저장
     useEffect(() => {
         if (pageData){
             setPageDetail(pageData);
-            setImages(pageData.imageUrls);
+            if (pageData.unlocked) {
+                setImages([pageData.thumbnailImageUrl, ...pageData.imageUrls]);
+                setCommentOpen(true);
+            } else {
+                setImages([pageData.thumbnailImageUrl]);
+                setCommentOpen(false);
+            }
         }
     }, [pageData]);
     
+
+    // bookmark 정보 가져오기
+    const fetchBookmark = async () => {
+        await fetchBookmarkData(BookMark.getBookmarkPaper(paperId));
+    };
+
+    // 페이지 처음 실행됭때, bookmark 정보 가져옴
+    useEffect(() => {
+        fetchBookmark();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // bookmark 여부 저장
+    useEffect(() => {
+        if (bookmarkData) {
+            setIsSaveIconFilled(bookmarkData.bookmarked);
+        }
+    }, [bookmarkData]);
+
+    // bookmark 추가/해제 핸들러
+    const handleSaveIconClick = async () => {
+        if (isSaveIconFilled) {
+            await fetchBookmarkData(BookMark.deleteBookmark(paperId));
+        } else {
+            await fetchBookmarkData(BookMark.postBookmark(paperId));
+        }
+
+        await fetchBookmark();
+        setIsModalOpen(true);
+    };
+    
+
+    // Comment 불러오기
+    const fetchComment = async () => {
+        await fetchCommentData(Comment.getAllComment(paperId));
+    }
+
+    // 페이지 처음 실행시, 모든 comment 목록 불러옴
+    useEffect(() => {
+        fetchComment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    useEffect(() => {
+        if(commentData){
+            setCommentList(commentData);
+        }
+    },[commentData]);
+
     // header에 있는 moreIcon
     const toggleMenu = () => {
         setIsToggle(!isToggle);
@@ -67,18 +119,12 @@ const PaperPage = () => {
     // 코멘트에 있는 moreIcon
     const toggleMenu2 = (index) => {
         if (toggleIndex === index) {
-            setToggleIndex(null); // 이미 열려 있는 경우 닫기
+            setToggleIndex(null);
         } else {
-            setToggleIndex(index); // 다른 댓글의 메뉴 열기
+            setToggleIndex(index);
         }
     };
 
-    // 저장 버튼
-    const handleSaveIconClick = () => {
-        setIsSaveIconFilled(!isSaveIconFilled);
-        setIsModalOpen(true);
-    };
-    
     const closeModal = () => {
         setIsModalOpen(false);
     }
@@ -86,8 +132,8 @@ const PaperPage = () => {
     useEffect(() => {
         setCommentOpen(false);
     },[])
-    console.log(images);
 
+    console.log(commentList);
     return (
         <div className={styles.allContainer}>
             <div className={styles.header}>
@@ -108,32 +154,17 @@ const PaperPage = () => {
             <div className={styles.contentsContainer}>
                 <p className={styles.pageName}>{pageDetail.title}</p>
 
-                <Carousel>
-                    {pageDetail.unlocked ? (
-                        <>
-                        <CarouselItem index={0}>
-                            <div className={styles.thumbnailImageContainer}>
-                                <img src={pageDetail.thumbnailImageUrl} alt={pageDetail.title} />
-                            </div>
-                        </CarouselItem>
+                <div className={styles.allImageContainer}>
+                    <Carousel>
                         {images.map((imageUrl, index) => (
-                            <CarouselItem key={index} index={index+1}>
-                                <div className={styles.imagesContainer}>
+                            <CarouselItem key={index} index={index}>
+                                <div className={index === 0 ? styles.thumbnailImageContainer : styles.imagesContainer}>
                                     <img src={imageUrl} alt={`Image ${index}`} />
                                 </div>
                             </CarouselItem>
                         ))}
-                        </>
-                    ) : (
-                        <CarouselItem index={0}>
-                            <div className={styles.thumbnailImageContainer}>
-                                <img src={pageDetail.thumbnailImageUrl} alt={pageDetail.title} />
-                            </div>
-                        </CarouselItem>
-                    )}
-                </Carousel>
-
-
+                    </Carousel>
+                </div>
                 <div className={styles.contents}>
                     <div className={styles.left}>
                         <div className={styles.diary}>
@@ -161,17 +192,17 @@ const PaperPage = () => {
                 <hr />
                 <div className={styles.pharsesContainer}>
                     <MessageIcon stroke="#000" />
-                    <p>코멘트 (3)</p>
+                    <p>코멘트 ({commentList.length})</p>
                 </div>
                 {isCommetOpen ? (
                     <div className={styles. allCommentContainer}>
-                        {commentsData.map((comment, index) => (
+                        {commentList.map((comment, index) => (
                             <div className={styles.commentsContainer} key={index}>
                                 <img src="/src/assets/images/basic_profile.png" alt='기본 프로필' />
                                 <div className={styles.commentContainer}>
                                     <p className={styles.nickName}>{comment.nickName}</p>
                                     <p className={styles.date}>{comment.date}</p>
-                                    <p className={styles.comment}>{comment.comment}</p>
+                                    <p className={styles.comment}>{comment.content}</p>
                                 </div>
                                 <button className={styles.moreIcon} onClick={() => toggleMenu2(index)} >
                                     <MoreIcon stroke="black" />
@@ -187,7 +218,7 @@ const PaperPage = () => {
                     </div>
                 ) : (
                     <div className={styles. allCommentContainer}>
-                        {commentsData.map((comment, index) => (
+                        {commentList.map((comment, index) => (
                             <div className={styles.commentsContainer} key={index}>
                                 <img src="/src/assets/images/basic_profile.png" alt='기본 프로필' />
                                 <div className={styles.commentContainer}>
@@ -227,7 +258,11 @@ const PaperPage = () => {
                         <p>{isSaveIconFilled ? "장소 저장이 완료되었습니다." : "장소 저장이 취소되었습니다."}</p>
                     </Modal.Body>
                     <Modal.Button>
-                        <Button type="button" label={isSaveIconFilled ? "저장리스트 확인하기" : "확인"} variant="active" onClick={() => navigate('/mypage/savepagelist')} />
+                        {isSaveIconFilled ? (
+                            <Button  type="button"  label="저장리스트 확인하기" variant="active" onClick={() => navigate('/mypage/savepagelist')} />
+                            ) : (
+                            <Button type="button" label="확인" variant="active" onClick={() => setIsModalOpen(false)} />
+                        )}
                     </Modal.Button>
                 </Modal>
             )}

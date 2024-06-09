@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './RegisterPaper.module.scss'
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
@@ -13,7 +13,16 @@ import PlaceMark from '@/assets/icons/PlaceMark';
 
 const RegisterPaper = () => {
     const navigate = useNavigate();
-    // const location = useLocation();
+    const location = useLocation();
+    
+    const [diary, setDiary] = useState('');
+
+    // 선택한 다이어리 불러오기
+    useEffect(() => {
+        if (location.state && location.state.selectedDiary){
+            setDiary(location.state.selectedDiary);
+        }
+    }, [location.state]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -45,9 +54,9 @@ const RegisterPaper = () => {
                         <p>다이어리</p>
                         <Button type="button" variant="inactive" label={<ArrowIcon fill="#000"/>} onClick={()=> navigate('/diary/select')} />
                     </div>
-                    <div className={styles.selectedDiary}>
-                        깡냥꽁냥
-                    </div>
+                { diary && <div className={styles.selectedDiary}>
+                        {diary}
+                    </div>}
                 </div>
                 <ProfileUpload />
                 <div className={styles.selectDate}>

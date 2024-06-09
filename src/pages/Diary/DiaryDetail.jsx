@@ -102,7 +102,7 @@ const DiaryDetail = () => {
                 <div className={styles.contentsContainer}>
                     <div className={styles.introduction}>
                         <MessageIcon stroke="black" />
-                        <p>엄청난 먹부심이 있는자, 이 모임에 참가해랏</p>
+                        <p>{diaryDetail.description}</p>
                     </div>
                     <div className={styles.membersContainer}>
                         <p>멤버</p>

@@ -79,7 +79,7 @@ const Home = () => {
                 <div className={styles.diaryContainer}>
                     <p>내가 속한 다이어리를<br/>확인해보세요!</p>
                     <div className={styles.diaryList}>
-                    <Carousel>
+                        <Carousel>
                             {newDiaryItems.map((group, groupIndex) => (
                                 <CarouselItem key={groupIndex} index={groupIndex}> 
                                     {group.map((diary, index) => (
