@@ -33,7 +33,7 @@ const FriendList = ({ FriendData }) => {
         FriendData.map((friend, idx) => (
           <div className={styles.list} key={idx}>
             <FriendInfo FriendData={friend}/>
-            <MoreBtn onClick={() => handleMore(idx)} isActive={activeId === idx}/>
+            <MoreBtn onClick={() => handleMore(idx)} isActive={activeId === idx} friendNickname={friend.nickname}/>
           </div>
         ))
       )}
