@@ -9,7 +9,8 @@ const SocialLogin = () => {
       <span>또는</span>
       <div className="socialBtns">
         <Button type="button" label={<img src={Kakao} alt="kakao"/>}></Button>
-        <Button type="button" label={<img src={Naver} alt="kakao"/>}></Button>
+        {/* 추후 개발 예정 네이버 */}
+        {/* <Button type="button" label={<img src={Naver} alt="naver"/>}></Button> */} 
       </div>
     </div>
   );
