@@ -1,0 +1,16 @@
+@import "@/assets/styles/colors.scss";
+
+.carousel {
+  display: flex;
+  flex-direction: row;
+  touch-action: pan-x;
+  // overflow: hidden;
+  white-space: nowrap;
+}
+
+.carousel_item{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}

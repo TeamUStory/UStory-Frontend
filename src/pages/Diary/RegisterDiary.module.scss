@@ -50,8 +50,7 @@
                     padding: 0;
 
                     &.selected {
-                        border: 2px;
-                        color: $point-color1;
+                        border: 2px solid $point-color1;
                     }
                 }
             }

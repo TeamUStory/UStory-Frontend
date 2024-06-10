@@ -1,35 +1,59 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from './Paper.module.scss';
+import { useNavigate, useParams } from 'react-router-dom';
+import styles from './PaperPage.module.scss';
 import Button from '@/components/Button/Button';
 import ArrowIcon from '@/assets/icons/ArrowIcon';
-import NotificationIcon from '@/assets/icons/NotificationIcon';
+import Noti from '@/components/Noti/Noti';
 import MoreIcon from '@/assets/icons/MoreIcon';
 import DiaryIcon from '@/assets/icons/DiaryIcon';
 import CalenderIcon from '@/assets/icons/CalenderIcon';
 import PlaceMark from '@/assets/icons/PlaceMark';
 import PlaceSaveIcon from '@/assets/icons/PlaceSaveIcon';
 import CommentIcon from '@/assets/icons/CommentIcon';
-import MapApi from '@/apis/api/MapApi';
+import MapApi from '@/apis/MapApis/MapApi';
 import InputField from '@/components/InputField/InputField';
 import MessageIcon from '@/assets/icons/MessageIcon';
 import Modal from '@/components/Modal/Modal';
 import LoudSpeakerIcon from '@/assets/icons/LoudSpeakerIcon';
+import Paper from '../../apis/api/Paper';
+import Comment from '@/apis/api/Comment';
+import BookMark from '@/apis/api/BookMark';
+import useAxios from '@/hooks/useAxios';
 
+const commentsData = [
+    { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' },
+    { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' },
+    { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' }
+];
 
-const Paper = () => {
-    const navigate = useNavigate();    
+const PaperPage = () => {
+    const navigate = useNavigate();  
+    const { paperId } = useParams(); 
     const [isToggle, setIsToggle] = useState(false);
     const [toggleIndex, setToggleIndex] = useState(null);
     const [isSaveIconFilled, setIsSaveIconFilled] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isCommetOpen, setCommentOpen] = useState(false);
+    const [isCommetOpen, setCommentOpen] = useState(0);
+    const [pageDetail, setPageDetail] = useState([]);
 
-    const commentsData = [
-        { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' },
-        { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' },
-        { nickName: '껑냥이', date: '2024.06.01 (토)', comment: '너무너무 재미있었고, 오늘 진짜 존맛탱이어써' }
-    ];
+    const { data:pageData, fetchData:fetchPageData} = useAxios();
+    const { data:commentData, fetchData:fetchCommentData} = useAxios();
+
+    useEffect(() => {
+        const fetchPage = async () => {
+            await fetchPageData(Paper.getPaperDetail(paperId));
+        }
+        fetchPage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fetchPageData]);
+        
+    useEffect(() => {
+        if (pageData){
+            setPageDetail(pageData);
+        }
+    }, [pageData]);
+
+    console.log(pageData);
     
     // header에 있는 moreIcon
     const toggleMenu = () => {
@@ -66,7 +90,7 @@ const Paper = () => {
                 <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={() => navigate(-1)} />
                 <div className={styles.rightHeader}>
                     <button onClick={() => navigate(0)} >
-                        <NotificationIcon />
+                        <Noti />
                     </button>
                     <button className={styles.moreIcon} onClick={toggleMenu} >
                         <MoreIcon stroke="black" />
@@ -74,32 +98,31 @@ const Paper = () => {
                     {isToggle && (
                         <div className={styles.menuContainer}>
                             <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate("/editpaper")} />
-                            <button className={styles.exitButton}>나가기</button>
+                            <button className={styles.exitButton}>삭제하기</button>
                         </div>
                     )}
                 </div>
             </div>
             <div className={styles.contentsContainer}>
-                <p className={styles.pageName}>05.23 놀러갔던 페이지</p>
+                <p className={styles.pageName}>{pageDetail.title}</p>
                 <div className={styles.imagesContainer}>
-                    <img src="/src/assets/images/place.png" alt="여행 사진" />
+                    <img src={pageDetail.thumbnailImageUrl} alt={pageDetail.title} />
                 </div>
                 <div className={styles.contents}>
                     <div className={styles.left}>
                         <div className={styles.diary}>
                             <div className={styles.icon}>
-
                             <DiaryIcon color="#F2B1AB" bgColor="none" />
                             </div>
-                            <p>깡냥이들</p>
+                            <p>{pageDetail.diaryName}</p>
                         </div>
                         <div className={styles.date}>
                             <CalenderIcon color="#AAA" />
-                            <p>2024.05.23(목)</p>
+                            <p>{pageDetail.visitedAt}</p>
                         </div>
                         <div className={styles.place}>
                             <PlaceMark color="#AAA"  />
-                            <p>경기도 안양시 만안구</p>
+                            <p>{pageDetail.city}, {pageDetail.store}</p>
                         </div>
                     </div>
                     <div className={styles.right}>
@@ -138,23 +161,25 @@ const Paper = () => {
                     </div>
                 ) : (
                     <div className={styles. allCommentContainer}>
-                        <div className={styles.commentClosedContainer}>
-                            <img src="/src/assets/images/basic_profile.png" alt='기본 프로필' />
-                            <div className={styles.commentContainer}>
-                                <p className={styles.nickName}>껑냥이</p>
-                                <p className={styles.date}>2024.06.01 (토)</p>
-                                <p className={styles.textshadow}>asfs dfds fsd</p>
-                            </div>
-                            <button className={styles.moreIcon} onClick={toggleMenu} >
-                                <MoreIcon stroke="black" />
-                            </button>
-                            {isToggle && (
-                                <div className={styles.menuContainer}>
-                                    <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate("/editpaper")} />
-                                    <button className={styles.deleteButton}>삭제하기</button>
+                        {commentsData.map((comment, index) => (
+                            <div className={styles.commentsContainer} key={index}>
+                                <img src="/src/assets/images/basic_profile.png" alt='기본 프로필' />
+                                <div className={styles.commentContainer}>
+                                    <p className={styles.nickName}>{comment.nickName}</p>
+                                    <p className={styles.date}>{comment.date}</p>
+                                    <p className={styles.textshadow}>asfs dfds fsd</p>
                                 </div>
-                            )}
-                        </div>
+                                <button className={styles.moreIcon} onClick={() => toggleMenu2(index)} >
+                                    <MoreIcon stroke="black" />
+                                </button>
+                                {toggleIndex === index && (
+                                    <div className={styles.tapContainer}>
+                                        <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate("/editpaper")} />
+                                        <button className={styles.deleteButton}>삭제하기</button>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                         <div className={styles.commentClosed}>
                             <LoudSpeakerIcon color="#E60000" />
                             <p>모든 멤버가 코멘트를 등록해야<br/>기록 확인이 가능합니다.</p>
@@ -162,7 +187,7 @@ const Paper = () => {
                     </div>
                 )}
                 <div className={styles.sendComment}>
-                    <InputField placeholder="따뜻한 코멘트 한줄을 입력해주세요 :)"/>
+                    <InputField placeholder="코멘트 한줄 입력해주세요 :)"/>
                     <Button type="button" variant="active" label={<CommentIcon color="#fff" />}/>
                 </div>
             </div>
@@ -185,4 +210,4 @@ const Paper = () => {
     )
 }
 
-export default Paper;
+export default PaperPage;

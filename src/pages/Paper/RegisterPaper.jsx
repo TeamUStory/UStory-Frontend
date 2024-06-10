@@ -3,15 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import styles from './RegisterPaper.module.scss'
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
-import DiaryImageUpload from '@/components/DiaryImageUpload/DiaryImageUpload';
+import ProfileUpload from './ProfileUpload';
 import Calender from '@/components/Calender/Calender';
 import ArrowIcon from '@/assets/icons/ArrowIcon'
 import Button from '@/components/Button/Button'
 import Modal from '@/components/Modal/Modal';
-import MapApi from '@/apis/api/MapApi';
+import MapApi from '@/apis/MapApis/MapApi';
+import PlaceMark from '@/assets/icons/PlaceMark';
 
 const RegisterPaper = () => {
     const navigate = useNavigate();
+    // const location = useLocation();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -21,7 +23,7 @@ const RegisterPaper = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        navigate('/paper')
+        navigate(`/papers`)
     };
 
     const handleRegisterClick = () => {
@@ -31,7 +33,7 @@ const RegisterPaper = () => {
 
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="기록하기" />
+            <SubHeader pageTitle="기록하기" /> 
             <div className={styles.formContainer}>
                 <InputField
                     label="제목"
@@ -40,30 +42,34 @@ const RegisterPaper = () => {
                 />
                 <div className={styles.diarySelect}>
                     <div className={styles.title}>
-                            <p>다이어리</p>
-                        <Button type="button" variant="inactive" label={<ArrowIcon fill="#000"/>} onClick={()=> navigate('/diaryselect')} />
+                        <p>다이어리</p>
+                        <Button type="button" variant="inactive" label={<ArrowIcon fill="#000"/>} onClick={()=> navigate('/diary/select')} />
                     </div>
                     <div className={styles.selectedDiary}>
                         깡냥꽁냥
                     </div>
                 </div>
-                <DiaryImageUpload />
+                <ProfileUpload />
                 <div className={styles.selectDate}>
                     <p>날짜</p>
                     <Calender />    
                 </div>
                 <div className={styles.PlaceContainer}>
-                    <InputField
-                        label ="장소"
-                        placeholder="건물, 지번 또는 도로명 검색"
-                        className={styles.input}
-                    />
+                    <p>장소</p>
+                    <div className={styles.PlaceSearch} onClick={() => navigate("/search/place")}>
+                        <InputField
+                            placeholder="장소 검색"
+                            className={styles.input}
+                            disabled
+                        />
+                        <PlaceMark color = "#AAAAAA"/>
+                    </div>
                     <MapApi height="218px"/>
                 </div>
                 <div className={styles.commentContainer}>
                     <InputField 
                         label="코멘트"
-                        placeholder="장소에 대한  한 줄 코멘트 입력"
+                        placeholder="장소에 대한 한 줄 코멘트 입력"
                         className={styles.input}
                     />
                 </div>

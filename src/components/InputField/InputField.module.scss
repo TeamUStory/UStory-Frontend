@@ -28,10 +28,12 @@ input{
   &:focus{
     border: 1px solid $point-color1;
     outline: 1px solid $point-color1;
+    color: $black1;
   }
 
   &:active{
     border: 1px solid $point-color1;
     outline: 1px solid $point-color1;
+    color: $black1;
   }
 }
