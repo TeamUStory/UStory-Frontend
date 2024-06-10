@@ -31,7 +31,7 @@ const useAxios = () => {
         } finally {
             setLoading(false);  // 요청 완료 시 로딩 상태 설정
         }
-    }, [showBoundary]);
+    }, []);
 
     return { data, loading, fetchData };
 };
