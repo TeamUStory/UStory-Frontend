@@ -10,6 +10,7 @@ import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import Button from '@/components/Button/Button';
 import useAxios from "@/hooks/useAxios";
 import Diary from "@/apis/api/Diary";
+import { makeArray } from '@/utils/makeArray';
 
 // 카테고리 배열
 const categories = [
@@ -54,8 +55,6 @@ const DiaryList = () => {
         
     }, [diaryData]);
 
-
-
     // 현재 보여지는 포스트 상태
     const pageSize = 4;
     const [postItems, setPostItems] = useState([]);
@@ -84,14 +83,6 @@ const DiaryList = () => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isIntersecting]);
-
-    // 배열을 2개씩 나누는 함수
-    const makeArray = (array, size) => {
-        return array.reduce((acc, _, i) => {
-            if (i % size === 0) acc.push(array.slice(i, i + size));
-            return acc;
-        }, []);
-    };
 
     // 2개씩 나뉜 다이어리 모음
     const groupedPostItems = makeArray(postItems, 2);

@@ -14,6 +14,7 @@ import PlaceMark from '../../assets/icons/PlaceMark';
 import useAxios from "@/hooks/useAxios";
 import Diary from "@/apis/api/Diary";
 import Paper from '@/apis/api/Paper';
+import { makeArray } from '@/utils/makeArray';
 
 const DiaryDetail = () => {
     const navigate = useNavigate();    
@@ -56,14 +57,6 @@ const DiaryDetail = () => {
             setPaperList(paperData);
         }
     }, [paperData]);
-
-    // 배열을 원하는 갯수로 나누는 함수
-    const makeArray = (array, size) => {
-        return array.reduce((acc, _, i) => {
-            if (i % size === 0) acc.push(array.slice(i, i + size));
-            return acc;
-        }, []);
-    };
     
     // 2개씩 나뉜 멤버 그룹
     const newMembers = makeArray(diaryDetail.diaryFriends, 2);

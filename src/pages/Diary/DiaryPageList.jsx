@@ -10,7 +10,8 @@ import NoResult from '@/components/NoResult/NoResult';
 import Button from '@/components/Button/Button';
 import SadIcon from '@/assets/icons/SadIcon'; // SadIcon import 추가
 import useAxios from '@/hooks/useAxios';
-import Paper from '../../apis/api/Paper';
+import Paper from '@/apis/api/Paper';
+import { makeArray } from '@/utils/makeArray';
 
 const DiaryPageList = () => {
     const navigate = useNavigate();
@@ -91,14 +92,6 @@ const DiaryPageList = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isIntersecting]);
-
-    // 배열을 2개씩 나누는 함수
-    const makeArray = (array, size) => {
-        return array.reduce((acc, _, i) => {
-            if (i % size === 0) acc.push(array.slice(i, i + size));
-            return acc;
-        }, []);
-    };
 
     // 2개씩 나뉜 기록 모음
     const groupedPostItems = makeArray(postItems, 2);

@@ -21,7 +21,7 @@ const AddMember = () => {
     const { data: friendData, fetchData: fetchFriendList } = useAxios();
     
     // 닉네임으로 친구 검색
-    const fetchFriend = async (nickname) => {
+    const fetchFriend = async (nickname = "") => {
         const requestTime = new Date().toISOString().split('.')[0];
         const params = {requestTime, nickname};
         await fetchFriendList(Friend.searchUser(params));
@@ -29,7 +29,7 @@ const AddMember = () => {
 
     // 페이지 처음 실행될때, 친구들 목록 가져오기
     useEffect(() => {
-        fetchFriend('');
+        fetchFriend();
         const savedSelectedMembers = JSON.parse(localStorage.getItem('selectedMembers')) || [];
         setSelectedMembers(savedSelectedMembers);
     // eslint-disable-next-line react-hooks/exhaustive-deps

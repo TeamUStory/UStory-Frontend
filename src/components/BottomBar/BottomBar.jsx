@@ -6,27 +6,28 @@ import PageListIcon from '../../assets/icons/PageListIcon';
 import DiaryIcon from '../../assets/icons/DiaryIcon';
 import MyPageIcon from '../../assets/icons/MyPageIcon';
 
+const mapPathnameToIconValue = {
+    "/": "home",
+    "/mypage/pagelist": "pageList",
+    "/diary": "diaryList",
+    "/mypage":"myPage"
+};
+
 const BottomBar = () => {
     const location = useLocation();
     const [selectedIcon, setSelectedIcon] = useState('');
     const navigate = useNavigate();
-
+    
+    const handleIconClick = (iconName, path) => {
+        setSelectedIcon(iconName);
+        navigate(path);
+    };
     
     useEffect(() => {
         setSelectedIcon(mapPathnameToIconValue[location.pathname] || "");
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
     
-    const mapPathnameToIconValue = {
-        "/": "home",
-        "/mypage/pagelist": "pageList",
-        "/diary": "diaryList",
-        "/mypage":"myPage"
-    };
-    const handleIconClick = (iconName, path) => {
-        setSelectedIcon(iconName);
-        navigate(path);
-    };
 
     return (
         <div className={styles.bottomBar}>

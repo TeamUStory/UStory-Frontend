@@ -12,6 +12,7 @@ import CarouselItem from "@/components/Carousel/CarouselItem";
 import Diary from "@/apis/api/Diary";
 import Paper from "@/apis/api/Paper";
 import useAxios from "@/hooks/useAxios";
+import { makeArray } from '@/utils/makeArray';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -49,14 +50,6 @@ const Home = () => {
             setPaperItems(paperData);
         }
     }, [paperData]);
-
-    // 배열을 원하는 갯수로 나누는 함수
-    const makeArray = (array, size) => {
-        return array.reduce((acc, _, i) => {
-            if (i % size === 0) acc.push(array.slice(i, i + size));
-            return acc;
-        }, []);
-    };
 
     const newDiaryItems = makeArray(diaryItems, 3);
 
