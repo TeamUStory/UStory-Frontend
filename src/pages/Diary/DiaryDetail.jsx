@@ -28,6 +28,7 @@ const DiaryDetail = () => {
         color: '',
     });
     const [paperList, setPaperList] = useState([]);
+    const [members, setMembers] = useState([]);
 
     const { data: diaryData, fetchData:fetchDiaryData } = useAxios();
     const { data: paperData, fetchData:fetchPaperData } = useAxios();
@@ -48,7 +49,9 @@ const DiaryDetail = () => {
     useEffect(() => {
         if (diaryData){
             setDiaryDetail(diaryData);
+            setMembers(diaryDetail.diaryFriends);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [diaryData]);
     
     // paperList 저장
@@ -59,14 +62,14 @@ const DiaryDetail = () => {
     }, [paperData]);
     
     // 2개씩 나뉜 멤버 그룹
-    const newMembers = makeArray(diaryDetail.diaryFriends, 2);
+    const newMembers = makeArray(members);
 
     const isPostItems = paperList.length > 0;
 
     const toggleMenu = () => {
         setIsToggle(!isToggle);
     };
-    
+    console.log(diaryDetail.diaryFriends)
     return (
         <div className={styles.allContainer}>
             <div className={styles.header}>

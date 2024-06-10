@@ -10,7 +10,7 @@ import CalenderIcon from '@/assets/icons/CalenderIcon';
 import PlaceMark from '@/assets/icons/PlaceMark';
 import PlaceSaveIcon from '@/assets/icons/PlaceSaveIcon';
 import CommentIcon from '@/assets/icons/CommentIcon';
-import MapApi from '@/apis/MapApis/MapApi';
+import MapApiPlace from '@/apis/MapApis/MapApiPlace';
 import InputField from '@/components/InputField/InputField';
 import MessageIcon from '@/assets/icons/MessageIcon';
 import Modal from '@/components/Modal/Modal';
@@ -25,7 +25,8 @@ import CarouselItem from "@/components/Carousel/CarouselItem";
 const PaperPage = () => {
     const navigate = useNavigate();  
     const { paperId } = useParams(); 
-
+    
+    const [commentList, setCommentList] = useState([]);
     const [isToggle, setIsToggle] = useState(false);
     const [toggleIndex, setToggleIndex] = useState(null);
     const [isSaveIconFilled, setIsSaveIconFilled] = useState(false);
@@ -33,11 +34,17 @@ const PaperPage = () => {
     const [isCommetOpen, setCommentOpen] = useState(0);
     const [pageDetail, setPageDetail] = useState({});
     const [images, setImages] = useState([]);
-    const [commentList, setCommentList] = useState([]);
+    const [comment, setComment] = useState('');
+    const [editCommentId, setEditCommentId] = useState(null);
+    const [editCommentContent, setEditCommentContent] = useState('')
 
     const { data:pageData, fetchData:fetchPageData} = useAxios();
     const { data:bookmarkData, fetchData:fetchBookmarkData} = useAxios();
     const { data:commentData, fetchData:fetchCommentData} = useAxios();
+    const { fetchData:fetchCommentAddData} = useAxios();
+    const { fetchData:fetchCommentEditData} = useAxios();
+    const { fetchData:fetchCommentDeleteData} = useAxios();
+
 
     // paper 상세 정보 조회
     useEffect(() => {
@@ -93,8 +100,7 @@ const PaperPage = () => {
         setIsModalOpen(true);
     };
     
-
-    // Comment 불러오기
+   // Comment 불러오기
     const fetchComment = async () => {
         await fetchCommentData(Comment.getAllComment(paperId));
     }
@@ -110,7 +116,51 @@ const PaperPage = () => {
             setCommentList(commentData);
         }
     },[commentData]);
+    
+    const handleInputChange = (e) => {
+        setComment(e.target.value);
+    }
+        
+    // 코멘트 추가
+    const commentAddClick = async () => {
+        if (!comment) {
+            alert('코멘트를 입력해주세요.');
+            return ;
+        }
 
+        await fetchCommentAddData(Comment.postComment(paperId, comment));
+        
+        fetchComment();
+        setComment('');
+    }
+
+    // 코멘트 수정 버튼 클릭
+    const handleEditClick = (commentId, content) => {
+        setEditCommentId(commentId);
+        setEditCommentContent(content);
+        setToggleIndex(null);
+    }
+
+    // 코멘트 수정 사항 저장
+    const commentEditSaveClick = async () => {
+        if (!editCommentContent) {
+            alert('코멘트를 입력해주세요.');
+            return;
+        }
+
+        await fetchCommentEditData(Comment.putComment(editCommentId, editCommentContent));
+        
+        fetchComment();
+        setEditCommentId(null);
+        setEditCommentContent('');
+    }   
+
+    // 코멘트 삭제
+    const commentDeleteClick = async (commentId) => {
+        await fetchCommentDeleteData(Comment.deleteComment(commentId));
+        fetchComment();
+    }
+    
     // header에 있는 moreIcon
     const toggleMenu = () => {
         setIsToggle(!isToggle);
@@ -129,25 +179,26 @@ const PaperPage = () => {
         setIsModalOpen(false);
     }
 
-    useEffect(() => {
-        setCommentOpen(false);
-    },[])
+    console.log(typeof(pageDetail.coordinateX));
 
-    console.log(commentList);
     return (
         <div className={styles.allContainer}>
             <div className={styles.header}>
                 <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={() => navigate(-1)} />
                 <div className={styles.rightHeader}>
                     <Noti />
-                    <button className={styles.moreIcon} onClick={toggleMenu} >
-                        <MoreIcon stroke="black" />
-                    </button>
-                    {isToggle && (
-                        <div className={styles.menuContainer}>
-                            <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate("/editpaper")} />
-                            <button className={styles.exitButton}>삭제하기</button>
-                        </div>
+                    {pageDetail.isUpdatable === 1 && (
+                        <>
+                            <button className={styles.moreIcon} onClick={toggleMenu} >
+                                <MoreIcon stroke="black" />
+                            </button>
+                            {isToggle && (
+                                <div className={styles.menuContainer}>
+                                    <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate("/editpaper")} />
+                                    <button className={styles.exitButton}>삭제하기</button>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </div>
@@ -187,7 +238,7 @@ const PaperPage = () => {
                     </div>
                 </div>
                 <div className={styles.mapContainer}>
-                    <MapApi height="218px" />
+                    <MapApiPlace height="218px" coordinateX={pageDetail.coordinateX} coordinateY={pageDetail.coordinateY}/>
                 </div>
                 <hr />
                 <div className={styles.pharsesContainer}>
@@ -198,20 +249,34 @@ const PaperPage = () => {
                     <div className={styles. allCommentContainer}>
                         {commentList.map((comment, index) => (
                             <div className={styles.commentsContainer} key={index}>
-                                <img src="/src/assets/images/basic_profile.png" alt='기본 프로필' />
+                                <img src={comment.profileImg} alt={comment.userNickname} />
                                 <div className={styles.commentContainer}>
-                                    <p className={styles.nickName}>{comment.nickName}</p>
-                                    <p className={styles.date}>{comment.date}</p>
-                                    <p className={styles.comment}>{comment.content}</p>
+                                    <p className={styles.nickName}>{comment.userNickname}</p>
+                                    <p className={styles.date}>{comment.createdAt}</p>
+                                    {editCommentId === comment.id ? (
+                                        <div className={styles.commentEdit}>
+                                            <InputField 
+                                                value={editCommentContent} 
+                                                onChange={(e) => setEditCommentContent(e.target.value)} 
+                                            />
+                                            <Button type="button" variant="active" label="수정" onClick={commentEditSaveClick} />
+                                        </div>
+                                    ) : (
+                                        <p className={styles.comment}>{comment.content}</p>
+                                    )}
                                 </div>
-                                <button className={styles.moreIcon} onClick={() => toggleMenu2(index)} >
-                                    <MoreIcon stroke="black" />
-                                </button>
-                                {toggleIndex === index && (
-                                    <div className={styles.tapContainer}>
-                                        <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate("/editpaper")} />
-                                        <button className={styles.deleteButton}>삭제하기</button>
-                                    </div>
+                                {comment.isUpdatable === 1 && (
+                                    <>
+                                        <button className={styles.moreIcon} onClick={() => toggleMenu2(index)} >
+                                            <MoreIcon stroke="black" />
+                                        </button>
+                                        {toggleIndex === index && (
+                                            <div className={styles.tapContainer}>
+                                                <Button type="button" variant="inactive" label="수정하기" onClick={() => handleEditClick(comment.id, comment.content)} />
+                                                <button className={styles.deleteButton} onClick={() => commentDeleteClick(comment.id)}>삭제하기</button>
+                                            </div>
+                                        )}
+                                    </>
                                 )}
                             </div>
                         ))}
@@ -220,21 +285,12 @@ const PaperPage = () => {
                     <div className={styles. allCommentContainer}>
                         {commentList.map((comment, index) => (
                             <div className={styles.commentsContainer} key={index}>
-                                <img src="/src/assets/images/basic_profile.png" alt='기본 프로필' />
+                                <img src={comment.profileImg} alt={comment.userNickname} />
                                 <div className={styles.commentContainer}>
-                                    <p className={styles.nickName}>{comment.nickName}</p>
+                                    <p className={styles.nickName}>{comment.userNickname}</p>
                                     <p className={styles.date}>{comment.date}</p>
                                     <p className={styles.textshadow}>asfs dfds fsd</p>
                                 </div>
-                                <button className={styles.moreIcon} onClick={() => toggleMenu2(index)} >
-                                    <MoreIcon stroke="black" />
-                                </button>
-                                {toggleIndex === index && (
-                                    <div className={styles.tapContainer}>
-                                        <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate("/editpaper")} />
-                                        <button className={styles.deleteButton}>삭제하기</button>
-                                    </div>
-                                )}
                             </div>
                         ))}
                         <div className={styles.commentClosed}>
@@ -244,8 +300,8 @@ const PaperPage = () => {
                     </div>
                 )}
                 <div className={styles.sendComment}>
-                    <InputField placeholder="코멘트 한줄 입력해주세요 :)"/>
-                    <Button type="button" variant="active" label={<CommentIcon color="#fff" />}/>
+                    <InputField placeholder="코멘트 한줄 입력해주세요 :)" value={comment} onChange={handleInputChange}/>
+                    <Button type="button" variant="active" label={<CommentIcon color="#fff" />} onClick={commentAddClick}/>
                 </div>
             </div>
             {isModalOpen && (
