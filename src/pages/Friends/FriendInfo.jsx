@@ -9,7 +9,7 @@ const FriendInfo = ({ FriendData }) => {
         <img src={FriendData.profileImgUrl} alt={FriendData.name} />
       </p>
       <div className={styles.text}>
-        <p className={styles.nickName}>{FriendData.nickname}</p>
+        <p className={styles.nickName}>{FriendData.nickname || FriendData.senderNickname}</p>
         <p className={styles.name}>@{FriendData.name}</p>
       </div>
     </div>
