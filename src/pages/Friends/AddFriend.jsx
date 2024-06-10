@@ -22,7 +22,7 @@ const AddFriend = () => {
   const [modalMessage, setModalMessage] = useState('')
   const [selfAdd, setSelfAdd] = useState(false)
   const {fetchData: fetchSearchData, data: searchData} = useAxios();
-  const {fetchData: fetchAddFriend} = useAxios();
+  const {fetchData: fetchAddFriend, response} = useAxios();
 
   // 검색
   const handleSearch = async () => {
@@ -57,13 +57,18 @@ const AddFriend = () => {
         setIsModalOpen(true);
         setSelfAdd(true)
         setModalMessage("자기 자신은 친구 추가가 불가능합니다.")
-      }
+      } 
     })
-
-    // 성공 시
-    setIsModalOpen(true);
-    setModalMessage("친구 요청이 완료되었습니다.")
   }
+
+  useEffect(() => {
+    if(response) {
+      if(response.status === 204) {
+        setModalMessage("친구 추가가 완료되었습니다.")
+        setIsModalOpen(true)
+      }
+    }
+  }, [response])
   
   // 텍스트 입력 시 결과 사라지기
   useEffect(() => {
