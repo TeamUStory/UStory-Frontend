@@ -5,7 +5,7 @@ export default {
    * @summeray 알림 삭제
    * @param noticeId 알림 ID
    */
-  deleteFriend(noticeId) {
+  deleteNotice(noticeId) {
     return {
       url: `/notices/${noticeId}`,
       method: "delete"
@@ -16,10 +16,11 @@ export default {
    * @method GET
    * @summeray 사용자가 가진 모든 알림 조회 / type: 친구 or 기록 or 코멘트
    */
-  getNoticeList() {
+  getNoticeList(params) {
     return {
       url: `/notices`,
-      method: "get"
+      method: "get",
+      params: { ...params }
     }
   }
 }
