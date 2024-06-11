@@ -25,67 +25,49 @@ const DiaryList = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState(null);
     const [diaryItems, setDiaryItems] = useState([]);
-
-    const { data:diaryData, fetchData:fetchDiaryData} = useAxios();
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
 
     // 카테고리 선택
     const handleTabClick = (category) => {
-        if (activeTab === category) {
-            setActiveTab(null);
-        } else {
-            setActiveTab(category);
-        }
+        setActiveTab((prevTab) => (prevTab === category ? null : category));
+        setPage(1);
+        setDiaryItems([]);
     };
-    
-    const fetchDiaryList = async (category) => {
+
+    const fetchDiaryList = async (category, page) => {
+        setLoading(true);
         const requestTime = new Date().toISOString().split('.')[0];
-        const params = category ? { requestTime, diaryCategory: category.en } : { requestTime };
+        const params = category ? { requestTime, diaryCategory: category.en, page } : { requestTime, page };
         await fetchDiaryData(Diary.getDiaryList(params));
+        setLoading(false);
     };
 
     useEffect(() => {
-        fetchDiaryList(activeTab);
+        fetchDiaryList(activeTab, page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeTab]);  
+    }, [activeTab, page, fetchDiaryData]);
 
     useEffect(() => {
-        if(diaryData) {
-            setDiaryItems(diaryData);
+        if (diaryData) {
+            setDiaryItems((prevItems) => [...prevItems, ...diaryData]);
         }
-        
     }, [diaryData]);
-
-    // 현재 보여지는 포스트 상태
-    const pageSize = 4;
-    const [postItems, setPostItems] = useState([]);
-
-    useEffect(() => {
-        setPostItems(diaryItems.slice(0, pageSize));
-    }, [diaryItems]);
 
     // 감지할 요소
     const loaderRef = useRef(null);
     const isIntersecting = useInfiniteScroll(loaderRef);
 
-    // 그 다음 포스트를 불러오는 함수
-    const loadMorePosts = () => {
-        setPostItems((prevPostItems) => {
-            const currentLength = prevPostItems.length;
-            const newPosts = diaryItems.slice(currentLength, currentLength + pageSize);
-            return [...prevPostItems, ...newPosts];
-        });
-    };
-
-    // 감지 요소가 보이면 포스트 불러오기
+    // 감지 요소가 보이면 페이지 증가
     useEffect(() => {
-        if (isIntersecting) {
-            loadMorePosts();
+        if (isIntersecting && !loading) {
+            setPage((prevPage) => prevPage + 1);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isIntersecting]);
+    }, [isIntersecting, loading]);
 
     // 2개씩 나뉜 다이어리 모음
-    const groupedPostItems = makeArray(postItems, 2);
+    const groupedPostItems = makeArray(diaryItems, 2);
 
     return (
         <div className={styles.container}>
