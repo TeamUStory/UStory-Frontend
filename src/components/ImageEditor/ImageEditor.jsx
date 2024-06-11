@@ -4,7 +4,7 @@ import 'cropperjs/dist/cropper.css';
 import PropTypes from 'prop-types';
 import Button from '@/components/Button/Button';
 import Modal from '@/components/Modal/Modal';
-import './ImageEditor.scss';
+import styles from './ImageEditor.module.scss';
 
 const ImageEditor = ({ uploadedImage, closeModal, setCroppedImage }) => {
     const cropperRef = useRef(null);
@@ -25,7 +25,7 @@ const ImageEditor = ({ uploadedImage, closeModal, setCroppedImage }) => {
 
     return (
         <Modal closeFn={closeModal}>
-            <h2 >이미지 자르기</h2>
+            <h3 className={styles.title}>이미지 자르기</h3>
             <Modal.Body>
                 <div className='cropContainer'>
                     <Cropper
