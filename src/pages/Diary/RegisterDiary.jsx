@@ -34,13 +34,14 @@ const markerColors = [
 ];
 
 const RegisterDiary = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [selectedColor, setSelectedColor] = useState("");
     const [members, setMembers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const navigate = useNavigate();
-    const location = useLocation();
-
+    
+    // 선택한 멤버들 목록 불러오기
     useEffect(() => {
         if (location.state && location.state.selectedMembers) {
             setMembers(location.state.selectedMembers);

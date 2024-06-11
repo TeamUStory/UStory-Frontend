@@ -12,6 +12,7 @@ import CarouselItem from "@/components/Carousel/CarouselItem";
 import Diary from "@/apis/api/Diary";
 import Paper from "@/apis/api/Paper";
 import useAxios from "@/hooks/useAxios";
+import { makeArray } from '@/utils/makeArray';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Home = () => {
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
     const { data: paperData, fetchData: fetchPaperData } = useAxios();  
     
+    // 다이어리 리스트, 페이퍼리스트 정보 조회
     useEffect(() => {
         const fetchData = async () => {
             await fetchDiaryData(Diary.getHomeDiary());
@@ -35,26 +37,19 @@ const Home = () => {
         fetchData();
     }, [fetchDiaryData, fetchPaperData]);
 
+    // 다이어리 리스트 정보 저장
     useEffect(() => {
         if (diaryData) {
             setDiaryItems(diaryData);
         }
     }, [diaryData]);
 
+    // 페이퍼 리스트 정보 저장
     useEffect(() => {
         if (paperData) {
             setPaperItems(paperData);
         }
     }, [paperData]);
-    console.log(diaryItems[0]);
-
-
-    const makeArray = (array, size) => {
-        return array.reduce((acc, _, i) => {
-            if (i % size === 0) acc.push(array.slice(i, i + size));
-            return acc;
-        }, []);
-    };
 
     const newDiaryItems = makeArray(diaryItems, 3);
 
@@ -77,7 +72,7 @@ const Home = () => {
                 <div className={styles.diaryContainer}>
                     <p>내가 속한 다이어리를<br/>확인해보세요!</p>
                     <div className={styles.diaryList}>
-                    <Carousel>
+                        <Carousel>
                             {newDiaryItems.map((group, groupIndex) => (
                                 <CarouselItem key={groupIndex} index={groupIndex}> 
                                     {group.map((diary, index) => (

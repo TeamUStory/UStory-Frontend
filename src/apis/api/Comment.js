@@ -43,11 +43,12 @@ export default {
    * @param commentData 코멘트 데이터 (내용)
    * @param paperId 페이퍼 ID
    */
-  postComment(commentData) {
+  postComment(paperId, commentData) {
     return {
       url: "/comment",
       method: "post",
-      data: commentData
+      data: commentData,
+      params: { paperId }
     }
   },
 
