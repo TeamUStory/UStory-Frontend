@@ -1,7 +1,7 @@
 @import '@/assets/styles/colors.scss';
 
 .allContainer {
-  
+    touch-action: pan-x;
     .header {
         display: flex;
         justify-content: space-between;
@@ -90,9 +90,17 @@
 
         }
 
-        .imagesContainer img {
-            text-align: center;
-            width: 100%;
+        .allImageContainer {
+            overflow:hidden;
+
+            .thumbnailImageContainer img {
+                width: 100%;
+            }
+            
+            .imagesContainer img {
+                text-align: center;
+                width: 100%;
+            }
         }
         
         .contents {
@@ -183,7 +191,6 @@
             }
         }
 
-
         .allCommentContainer {
             display: flex;
             flex-direction: column;
@@ -191,7 +198,6 @@
 
             .commentsContainer {
                 display: flex;
-                align-items: center;
                 width: 100%;
                 box-sizing: border-box;
                 padding: 0 20px;
@@ -207,7 +213,9 @@
             
                 .commentContainer {
                     width: 100%;
-                    white-space: nowrap;
+                    display: flex;
+                    flex-direction: column;
+
                     .nickName {
                         font-size: 14px;
                         font-weight: 600;
@@ -219,9 +227,33 @@
                         color: $black3;
                     }
                     .comment {
+                        // width: 100%;
                         font-size: 14px;
                         font-weight: 500;
                         color: $black1;
+                    }
+                    .commentEdit {
+                        display: flex;
+                        gap: 10px;
+                        // width: 100%;
+                        align-items: center;
+                        justify-content: space-between;
+            
+                        box-sizing: border-box;
+                    
+                        div {
+                            width: 100%;
+                            input {
+                                width: 75%;
+                            }
+                            label{
+                              display: none;
+                            }
+                        }   
+                        
+                        button {
+                            padding: 12px;
+                        }
                     }
                     .textshadow {
                         text-shadow: 0px 0px 6px black;
@@ -242,7 +274,7 @@
             
                 .tapContainer {
                     position: absolute;
-                    top: 50px;
+                    top: 30px;
                     right: 20px;
                     display: flex;
                     flex-direction: column;

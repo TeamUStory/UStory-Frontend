@@ -7,7 +7,6 @@
     }
 
     .react-datepicker__input-container {
-        
         display: flex;
         align-items: center;
         
@@ -21,7 +20,18 @@
             position: absolute;
             right:17px;
             width: 20px;
-            pointer-events: none
+            pointer-events: none;
+        }
+        .react-datepicker__close-icon::after{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $point-color1;
+            position: absolute;
+            right: 40px;
+            top: 14px;
+            width: 14px;
+            height: 14px;
         }
     }
     
@@ -89,7 +99,6 @@
                 color: $black2;
               
             }
-            
         }
     }
 

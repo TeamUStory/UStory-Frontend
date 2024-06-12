@@ -4,6 +4,7 @@ import { useErrorBoundary } from 'react-error-boundary';
 import { api } from "@/apis/index";
 
 const useAxios = () => {
+    const [response, setResponse] = useState(null);  // API 요청 결과 데이터 저장
     const [data, setData] = useState(null);    // API 요청 결과 데이터 저장
     const [loading, setLoading] = useState(false);  // 로딩 상태 저장
     const { showBoundary } = useErrorBoundary();
@@ -16,6 +17,7 @@ const useAxios = () => {
 
         try {
             const response = await api.request(axiosParams);  // API 요청 수행
+            setResponse(response)
             setData(response.data);  // 응답 데이터 설정
         } catch (err) {
             if (isAxiosError(err)) {
@@ -33,7 +35,7 @@ const useAxios = () => {
         }
     }, []);
 
-    return { data, loading, fetchData };
+    return { response, data, loading, fetchData,  };
 };
 
 export default useAxios;

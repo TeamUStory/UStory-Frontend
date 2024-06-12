@@ -21,17 +21,21 @@ const AddMember = () => {
     const { data: friendData, fetchData: fetchFriendList } = useAxios();
     
     // 닉네임으로 친구 검색
-    const fetchFriend = async (nickname) => {
+    const fetchFriend = async (nickname = "") => {
         const requestTime = new Date().toISOString().split('.')[0];
         const params = {requestTime, nickname};
         await fetchFriendList(Friend.searchUser(params));
     };
 
+    // 페이지 처음 실행될때, 친구들 목록 가져오기
     useEffect(() => {
-        fetchFriend('');
+        fetchFriend();
+        const savedSelectedMembers = JSON.parse(localStorage.getItem('selectedMembers')) || [];
+        setSelectedMembers(savedSelectedMembers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // 친구 존재에 따라 친구들 리스트 추가
     useEffect(() => {
         if (friendData && friendData.length > 0) {
             setMembers(friendData);
@@ -40,20 +44,23 @@ const AddMember = () => {
         }
     }, [friendData]);
 
+    // 추가할 친구들 리스트 선택
     const handleRadioButtonClick = (nickname) => {
         setSelectedMembers((prevSelectedMembers) => {
             const isSelected = prevSelectedMembers.includes(nickname);
-            if (isSelected) {
-                return prevSelectedMembers.filter((member) => member !== nickname);
-            } else if (prevSelectedMembers.length < 10) {
-                return [...prevSelectedMembers, nickname];
-            }
-            return prevSelectedMembers;
+            const updatedMembers = isSelected 
+                ? prevSelectedMembers.filter((member) => member !== nickname)
+                : (prevSelectedMembers.length < 10 ? [...prevSelectedMembers, nickname] : prevSelectedMembers);
+            
+            // 선택한 멤버 localstorage에 저장
+            localStorage.setItem('selectedMembers', JSON.stringify(updatedMembers));
+            return updatedMembers;
         });
     };
 
+    // 검색어로 친구 검색
     const handleInputChange = (e) => {
-        if(e.target.value == ""){
+        if(e.target.value === ""){
             fetchFriend('');
         }
         setSearchValue(e.target.value);
@@ -69,11 +76,10 @@ const AddMember = () => {
         }
     };
 
+    // 추가할 친구 목록 다이어리 추가페이지에 넘겨주기
     const handleAddClick = () => {
         navigate('/register/diary',{state : {selectedMembers}});
     }
-
-    console.log(selectedMembers);
 
     return (
         <div className={styles.allContainer}>

@@ -50,18 +50,18 @@ const EditMypage = () => {
   },[fetchUserData])
 
   useEffect(() => {
-    if(userData) {
-      setValue('profileImgUrl', userData.nickname);
+    if (userData) {
+      setValue('profileImgUrl', userData.profileImgUrl);
       setValue('nickname', userData.nickname);
       setValue('name', userData.name);
       setValue('profileDescription', userData.profileDescription);
     }
+
   },[userData, setValue])
 
   // 닉네임 유효성 검사 로직
   const handleNicknameValidation = async () => {
     const userData = { nickname: nickname };
-
     await fetchNicknameData(User.postNickname(userData));
 
     if(nicknameValid === false) {
@@ -82,6 +82,17 @@ const EditMypage = () => {
     }
   }, [nicknameData])
 
+  // 받아온 유저 데이터에서 닉네임 입력에 변화가 없으면 인증 안해도 됨
+  useEffect(() => {
+    if(userData && nickname === userData.nickname) {
+      setNicknameValid(true);
+      setErrorMessage("");
+    } else if (userData && nickname !== userData.nickname) {
+      setNicknameValid(false);
+      setErrorMessage("* 닉네임이 변경되었습니다. 다시 확인해 주세요.");
+    }
+  }, [nickname, userData])
+
   // 정보 수정
   const onSubmit = async (data) => {
     await fetchEditUser(User.putUser(data));
@@ -89,7 +100,6 @@ const EditMypage = () => {
 
   useEffect(() => {
     if (editUserData) {
-      console.log(editUserData);
       setEditSuccess(true);
     }
   },[editUserData])
@@ -116,13 +126,19 @@ const EditMypage = () => {
     }
   }, [deleteUserData, navigator]);
 
+  // 프로필 이미지 업로드
+  const handleProfileUpload = (url) => {
+    setValue('profileImgUrl', url);
+  }
+
   return(
     <>
       <SubHeader pageTitle="정보 수정하기" />
       <div className={styles.editWrap}>
         <div className={styles.wrap}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <ProfileUpload />
+            {/* 이미지 업로드, 프리뷰 컴포넌트 */}
+            <ProfileUpload profileUrl={watch('profileImgUrl')} onUploadComplete={handleProfileUpload}/>
             <div className={styles.certified}>
               <div className={styles.inputBox}>
                 <InputField 
@@ -160,17 +176,16 @@ const EditMypage = () => {
               {!nicknameValid ? 
                 <Button type="button" 
                   onClick={() => setErrorMessage("* 닉네임 확인은 필수입니다.")} 
-                  label="수정하기" 
-                  variant={watch('nickname') && watch('name') && watch('profileDescription') ? "active" : "disabled"}
+                  label="수정하기"
+                  variant="active"
                 />
                 :
                 <Button 
                   type="submit" 
                   label="수정하기" 
-                  variant={watch('nickname') && watch('name') && watch('profileDescription') ? "active" : "disabled"}
+                  variant={watch('nickname') && watch('name') && watch('profileDescription') && watch('profileImgUrl') ? "active" : "disabled"}
                 />
               }
-              
               <button type='button' className={styles.withdrawal} onClick={() => setModalOpen(true)}>회원 탈퇴하기</button>
             </div>
           </form>

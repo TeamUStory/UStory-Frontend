@@ -7,8 +7,8 @@
   flex-wrap: wrap;
 
   .upload_box{
-    width: 30%;
-    height: auto;
+    width: 84px;
+    height: 84px;
     background: #F8F8F8;
     border-radius: 10px;
     border: 1px solid $black4;
@@ -37,10 +37,10 @@
 
 .image_preview {
   position: relative;
-  width: 30%;
-  height: auto;
+  width: 84px;
+  height: 84px;
 
-  .diary_image {
+  img {
     width: 100%;
     height: 100%;
     border-radius: 10px;
