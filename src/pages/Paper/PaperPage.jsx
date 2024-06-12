@@ -179,8 +179,6 @@ const PaperPage = () => {
         setIsModalOpen(false);
     }
 
-    console.log(typeof(pageDetail.coordinateX));
-
     return (
         <div className={styles.allContainer}>
             <div className={styles.header}>

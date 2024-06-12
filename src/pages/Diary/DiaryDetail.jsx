@@ -10,7 +10,7 @@ import PostItem from '@/components/PostItem/PostItem';
 import NoResult from '@/components/NoResult/NoResult';
 import Button from '@/components/Button/Button';
 import SadIcon from '@/assets/icons/SadIcon';
-import PlaceMark from '../../assets/icons/PlaceMark';
+import PlaceMark from '@/assets/icons/PlaceMark';
 import useAxios from "@/hooks/useAxios";
 import Diary from "@/apis/api/Diary";
 import Paper from '@/apis/api/Paper';
@@ -69,7 +69,7 @@ const DiaryDetail = () => {
     const toggleMenu = () => {
         setIsToggle(!isToggle);
     };
-    console.log(diaryDetail.diaryFriends)
+
     return (
         <div className={styles.allContainer}>
             <div className={styles.header}>
