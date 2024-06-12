@@ -28,7 +28,7 @@ const PlaceSearch = () => {
         setPlace(inputText)
     }
 
-    // SearchMapApi에서 
+    // SearchMapApi에서 placeinfo 받아오기
     const updatePlaceInfo = (newPlaceInfo) => {
         setPlaceInfo(newPlaceInfo);
     }

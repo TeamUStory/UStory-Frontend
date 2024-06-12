@@ -13,12 +13,11 @@ const ImageEditor = ({ uploadedImage, closeModal, setCroppedImage }) => {
         if (cropperRef.current) {
             const cropper = cropperRef.current.cropper;
             if (cropper && cropper.getCroppedCanvas) {
-                const croppedCanvas = cropper.getCroppedCanvas();
-                if (croppedCanvas) {
-                    const dataUrl = croppedCanvas.toDataURL();
-                    setCroppedImage(dataUrl);
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    const file = new File([blob], 'croppedImage.png', { type: 'image/png' });
+                    setCroppedImage(file);
                     closeModal();
-                }
+                }, 'image/png');
             }
         }
     };
