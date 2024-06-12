@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "start": "vite"
   },
-  "proxy": "http://api.ustory.me:8080",
+  "proxy": "https://api.ustory.me/api",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
     "axios": "^1.7.2",
