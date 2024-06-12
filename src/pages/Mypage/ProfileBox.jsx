@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './Mypage.module.scss';
 import Button from "@/components/Button/Button";
-import ProfileImg from '@/assets/images/basic_profile.png';
 import propTypes from 'prop-types';
 import MessageIcon from "@/assets/icons/MessageIcon"; 
 import ArrowIcon from "@/assets/icons/ArrowIcon";
@@ -13,9 +12,7 @@ const ProfileBox = ({user}) => {
     <div className={styles.profileBox}>
       <div className={styles.profileInfoBox}>
         <div className={styles.profileImg}>
-          {user.profileImgUrl === '' ? <img src={ProfileImg} alt="profile image" />
-            :
-          <img src={user.profileImgUrl} alt="profile image" />}
+          <img src={user.profileImgUrl} alt={"profile img"}/>
         </div>
         <div className={styles.profileInfo}>
           <p className={styles.nickname}>
