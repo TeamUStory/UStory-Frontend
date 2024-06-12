@@ -1,6 +1,6 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 
-axios.defaults.baseURL = 'http://15.164.24.133:8080';
+axios.defaults.baseURL = 'https://15.164.24.133/api/';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 5000;
@@ -46,7 +46,7 @@ api.interceptors.response.use(
   (res) => {
     return res;
   },
-  (err) => {
+  async (err) => {
     if (isAxiosError(err)) {
       if (err.response && err.response.status === HttpStatusCode.BadRequest) {
         console.error('BadRequest - 400');
@@ -54,9 +54,14 @@ api.interceptors.response.use(
         console.error('Unauthorized - 401');
         
         // 토큰 만료 시 재발급 api
-        const newAccessToken = refresh();
-        err.config.headers.Authorization = `Bearer ${String(newAccessToken)}`;
-        return api.request(err.config);
+        try {
+          const newAccessToken = await refresh();
+          err.config.headers.Authorization = `Bearer ${newAccessToken}`;
+          return api.request(err.config);
+        } catch (refreshErr) {
+          console.error('토큰 재발급 중 오류 발생', refreshErr);
+          return Promise.reject(refreshErr);
+        }
 
       } else if (err.response && err.response.status === HttpStatusCode.InternalServerError) {
         console.error('Internal Server Error - 500');
@@ -76,17 +81,17 @@ api.interceptors.response.use(
 export const refresh = async () => {
   try {
     const res = await api.post('/jwt/re-issue');
-    let newAccessToken = res.data;
+    
+    if (res?.data) {
+      let newAccessToken = res.data;
 
-    // "Bearer " 접두사 제거
-    if (newAccessToken.startsWith("Bearer ")) {
-      newAccessToken = newAccessToken.substring(7);
+      localStorage.setItem('accessToken', newAccessToken);
+      return newAccessToken;
+    } else {
+      throw new Error('No value present');
     }
-
-    localStorage.setItem('accessToken', newAccessToken);
-    return newAccessToken;
-  }catch (err) {
-    console.error('토큰 재발급 실패');
-    throw err
+  } catch (err) {
+    console.error('토큰 재발급 실패', err);
+    throw err;
   }
 };

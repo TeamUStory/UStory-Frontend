@@ -1,12 +1,10 @@
-import { useState } from "react";
 import DatePicker  from 'react-datepicker';
+import propTypes from 'prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Calender.scss';
 import CalenderIcon from "@/assets/icons/CalenderIcon";
 
-const RangeCalender = () => {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+const RangeCalender = ({ startDate, endDate, onDateChange }) => {
 
   return (
     <div>
@@ -14,8 +12,7 @@ const RangeCalender = () => {
         selected={startDate}
         onChange={(dates) => {
           const [start, end] = dates;
-          setStartDate(start);
-          setEndDate(end);
+          onDateChange(start, end);
         }}
         startDate={startDate}
         endDate={endDate}
@@ -26,9 +23,15 @@ const RangeCalender = () => {
         showIcon
         maxDate={new Date()}
         icon={<CalenderIcon color="#AAA"/>}
+        isClearable={true}
       />
     </div>
   );
 };
 
+RangeCalender.propTypes = {
+  startDate: propTypes.instanceOf(Date),
+  endDate: propTypes.instanceOf(Date),
+  onDateChange: propTypes.func
+};
 export default RangeCalender;

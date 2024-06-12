@@ -97,7 +97,14 @@ const SignUp = () => {
       return;
     }
 
-    await fetchEmailData(User.postEmail(userData));
+    await fetchEmailData(User.postEmail(userData),
+      (err) => {
+        if(err.response.status === 400) {
+          setEmailValid(false);
+          setEmailErrorMessage("* 이미 사용 중인 이메일입니다.");
+        }
+      }
+    );
 
     // 버튼 클릭 할 때 마다 10초 동안 비활성화
     setInterval(() => {
@@ -111,11 +118,6 @@ const SignUp = () => {
       startTimer(180)
     } else {
       setEmailValid(false);
-    }
-
-    if(emailData && emailData.isSuccess === false) {
-      setEmailValid(false);
-      setEmailErrorMessage("* 이미 사용 중인 이메일입니다.");
     }
   }, [emailData])
 

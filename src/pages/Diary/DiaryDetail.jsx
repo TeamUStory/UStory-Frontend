@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import styles from './Diary.module.scss';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import styles from './DiaryDetail.module.scss';
 import ArrowIcon from '@/assets/icons/ArrowIcon';
 import Noti from '@/components/Noti/Noti';
 import CirclePlusIcon from '@/assets/icons/CirclePlusIcon';
@@ -11,61 +11,71 @@ import NoResult from '@/components/NoResult/NoResult';
 import Button from '@/components/Button/Button';
 import SadIcon from '@/assets/icons/SadIcon';
 import PlaceMark from '../../assets/icons/PlaceMark';
+import useAxios from "@/hooks/useAxios";
+import Diary from "@/apis/api/Diary";
+import Paper from '@/apis/api/Paper';
+import { makeArray } from '@/utils/makeArray';
 
-
-const Diary = () => {
+const DiaryDetail = () => {
     const navigate = useNavigate();    
-    const [isPostItems, setIsPostItems] = useState(false);
+    const {id} = useParams();
     const [isToggle, setIsToggle] = useState(false);
+    const [diaryDetail, setDiaryDetail] = useState({
+        diaryFriends: [],
+        imgUrl: '',
+        name: '',
+        diaryCategory: '',
+        color: '',
+    });
+    const [paperList, setPaperList] = useState([]);
+    const [members, setMembers] = useState([]);
+
+    const { data: diaryData, fetchData:fetchDiaryData } = useAxios();
+    const { data: paperData, fetchData:fetchPaperData } = useAxios();
+
+    // 다이어리 상세, 페이지리스트 정보 조회
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchDiaryData(Diary.getDiaryDetail(id));
+            const params = {requestTime:new Date().toISOString().split('.')[0], size:2};
+            await fetchPaperData(Paper.getPaperListByDiary(id, params));
+        }
+
+        fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fetchDiaryData]);
+
+    // diaryDetail 정보 저장
+    useEffect(() => {
+        if (diaryData){
+            setDiaryDetail(diaryData);
+            setMembers(diaryDetail.diaryFriends);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [diaryData]);
     
-    const members = [
-        { name: '메타몽', imgSrc: '/src/assets/images/basicMemberImage.png' },
-        { name: '멤버2', imgSrc: '/src/assets/images/basicMemberImage.png' },
-        { name: '멤버3', imgSrc: '/src/assets/images/basicMemberImage.png' },
-        { name: '멤버4', imgSrc: '/src/assets/images/basicMemberImage.png' },
-        { name: '멤버5', imgSrc: '/src/assets/images/basicMemberImage.png' },
-    ];
-    
-    // 멤버를 2개로 나누는 함수
-    const makeArray = (array, size) => {
-        return array.reduce((acc, _, i) => {
-            if (i % size === 0) acc.push(array.slice(i, i + size));
-            return acc;
-        }, []);
-    };
+    // paperList 저장
+    useEffect(() => {
+        if(paperData){
+            setPaperList(paperData);
+        }
+    }, [paperData]);
     
     // 2개씩 나뉜 멤버 그룹
-    const newMembers = makeArray(members, 2);
+    const newMembers = makeArray(members);
 
-    // 장소 기록 배열
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const postItems = [
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 01', link: '/diary', subText: '개인', borderColor: 'black' },
-        { image: 'src/assets/images/diaryBasicImage.png', title: '껑냥이들 05', link: '/diary', subText: '개인', borderColor: 'black' },
-    ];
-
-    useEffect(() => {
-        setIsPostItems(postItems.length > 0);
-    },[postItems]);
-
+    const isPostItems = paperList.length > 0;
 
     const toggleMenu = () => {
         setIsToggle(!isToggle);
     };
-
+    console.log(diaryDetail.diaryFriends)
     return (
         <div className={styles.allContainer}>
             <div className={styles.header}>
                 <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={() => navigate(-1)} />
                 <div className={styles.rightHeader}>
-                    <button onClick={() => navigate(0)} >
-                        <Noti />
-                    </button>
+                    <Noti />
                     <button className={styles.moreIcon} onClick={toggleMenu} >
                         <MoreIcon stroke="black" />
                     </button>
@@ -77,18 +87,18 @@ const Diary = () => {
                     )}
                 </div>
             </div>
-            <div className={styles.background}>
+            <div className={styles.background} style={{ backgroundColor: diaryDetail.color }}>
                 <div className={styles.profile}>
-                    <img src='/src/assets/images/diaryBasicImage.png' alt='프로필' />
+                    <img src={diaryDetail.imgUrl} alt={diaryDetail.name} />
                     <div className={styles.introduction}>
-                        <p>껑냥이들</p>
-                        <p className={styles.category}>(친구)</p>
+                        <p>{diaryDetail.name}</p>
+                        <p className={styles.category}>({diaryDetail.diaryCategory})</p>
                     </div>
                 </div>
                 <div className={styles.contentsContainer}>
                     <div className={styles.introduction}>
                         <MessageIcon stroke="black" />
-                        <p>엄청난 먹부심이 있는자, 이 모임에 참가해랏</p>
+                        <p>{diaryDetail.description}</p>
                     </div>
                     <div className={styles.membersContainer}>
                         <p>멤버</p>
@@ -97,8 +107,8 @@ const Diary = () => {
                                 <div key={rowIndex} className={styles.memberRow}>
                                     {memberRow.map((member, memberIndex) => (
                                         <div key={memberIndex} className={styles.member}>
-                                            <img src={member.imgSrc} alt='프로필 기본이미지' />
-                                            <p>{member.name}</p>
+                                            <img src={member.profileImgUrl} alt={member.nickname} />
+                                            <p>{member.nickname}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -113,7 +123,7 @@ const Diary = () => {
                                 <Button type="button" label={<CirclePlusIcon fill="#F2B1AB" />} onClick={()=> navigate("/register/paper")}/>
                             </div>
                             <div className={styles.right}>
-                                <Link to="/paper/diary/:id">
+                                <Link to={`/papers/diary/${diaryDetail.id}`}>
                                     <p>전체 보기</p>
                                     <ArrowIcon fill="black" />
                                 </Link>
@@ -121,21 +131,21 @@ const Diary = () => {
                         </div>
                         <div className={styles.contents}>
                             {isPostItems ? (
-                                postItems.map((postitem, idx) => (
+                                paperList.map((postitem, idx) => (
                                     <PostItem
                                         key={idx}
-                                        image={postitem.image}
+                                        image={postitem.thumbnailImageUrl}
                                         title={postitem.title}
-                                        link={postitem.link}
-                                        subText={postitem.subText}
-                                        borderColor={postitem.borderColor}
+                                        link={`/papers/${postitem.paperId}`}
+                                        subText={postitem.store}
                                     >
                                         <PlaceMark color="#AAAAAA" />
                                     </PostItem>
                                 ))
                             ) : (
-                                <div className={styles.noResult}>
+                                <div className={styles.noResultContainer}>
                                     <NoResult icon={<SadIcon stroke="#616161" />} message="등록된 기록이 없습니다." />
+                                    <Button label="기록하기" variant="active" onClick={()=>navigate('/register/paper')}/>
                                 </div>
                             )}
                         </div>
@@ -146,4 +156,4 @@ const Diary = () => {
     );
 }
 
-export default Diary;
+export default DiaryDetail;

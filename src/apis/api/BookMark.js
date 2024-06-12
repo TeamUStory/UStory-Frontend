@@ -32,11 +32,7 @@ export default {
     return {
       url: "/papers/bookmarks",
       method: "get",
-      params: {
-        page: 1,
-        size: 20,
-        ...params
-      }
+      params: { ...params }
     }
   },
 
