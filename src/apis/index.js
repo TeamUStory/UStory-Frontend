@@ -1,6 +1,6 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 
-axios.defaults.baseURL = 'http://15.164.24.133/api';
+axios.defaults.baseURL = 'https://15.164.24.133/api/';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 5000;
@@ -82,7 +82,7 @@ export const refresh = async () => {
   try {
     const res = await api.post('/jwt/re-issue');
     
-    if (res && res.data) {
+    if (res?.data) {
       let newAccessToken = res.data;
 
       localStorage.setItem('accessToken', newAccessToken);

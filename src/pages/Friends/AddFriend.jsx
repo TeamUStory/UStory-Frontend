@@ -44,9 +44,7 @@ const AddFriend = () => {
   // 친구 요청
   const handleAdd = async () => {
 
-    await fetchAddFriend(Friend.postFriendRequest({
-      receiverNickname: searchResult.nickname
-    }), (err) => {
+    await fetchAddFriend(Friend.postFriendRequest({receiverNickname: searchResult.nickname}), (err) => {
       // 이미 있거나 요청한 경우
       if(err.response.status === 409) {
         setIsModalOpen(true);

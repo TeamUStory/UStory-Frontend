@@ -30,7 +30,6 @@ const ImageEditor = ({ uploadedImage, closeModal, setCroppedImage }) => {
                 <div className='cropContainer'>
                     <Cropper
                         ref={cropperRef}
-                        style={{ width: '100%' }}
                         zoomTo={1}
                         aspectRatio={1}
                         src={uploadedImage}
