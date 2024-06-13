@@ -45,7 +45,7 @@ function App() {
             <Route path='/register/diary' element={<RegisterDiary />} />
             <Route path='/friend/search' element={<AddMember/> } />
             <Route path='/diary/:id' element={<DiaryDetail />} />
-            <Route path='/editdiary' element={<EditDiary />} />
+            <Route path='/edit/diary/:id' element={<EditDiary />} />
             <Route path='/papers/diary/:id' element={<DiaryPageList/>} />
             <Route path='/register/paper' element={<RegisterPaper />} />
             <Route path='/mypage' element={<Mypage />} />
@@ -57,7 +57,7 @@ function App() {
             <Route path='/friends/add' element={<AddFriend />} /> 
             <Route path='/diary/select' element={<SelectDiary />} /> 
             <Route path='/papers/:paperId' element={<PaperPage />} /> 
-            <Route path='/editpaper' element={<EditPaper />} />
+            <Route path='/editpaper/:paperId' element={<EditPaper />} />
             <Route path='/search/place' element={<PlaceSearch />} />
           </>
         ): (
