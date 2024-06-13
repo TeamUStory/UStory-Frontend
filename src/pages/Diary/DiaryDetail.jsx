@@ -74,7 +74,7 @@ const DiaryDetail = () => {
 
     // 다이어리 나가기 버튼
     const handleExitClick = async () => {
-        await fetchExitDiaryData(Diary.getDiaryExit);
+        await fetchExitDiaryData(Diary.getDiaryExit(id));
         navigate('/diary');
     };
 
