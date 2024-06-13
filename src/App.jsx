@@ -58,7 +58,7 @@ function App() {
                         <Route path="/friend/search" element={<AddMember />} />
                         <Route path="/diary/:id" element={<DiaryDetail />} />
                         <Route path="/edit/diary/:id" element={<EditDiary />} />
-                        <Route
+                        <Route 
                             path="/papers/diary/:id"
                             element={<DiaryPageList />}
                         />
@@ -82,7 +82,7 @@ function App() {
                             element={<PaperPage />}
                         />
                         <Route
-                            path="/editpaper/:paperId"
+                            path="/edit/paper/:paperId"
                             element={<EditPaper />}
                         />
                         <Route path="/search/place" element={<PlaceSearch />} />
