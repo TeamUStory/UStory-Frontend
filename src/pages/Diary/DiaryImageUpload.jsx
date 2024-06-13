@@ -8,15 +8,21 @@ import useAxios from "@/hooks/useAxios";
 import S3Storage from "@/apis/api/S3Storage";
 import axios from "axios";
 
-const DiaryImageUpload = ({ onImageUrlChange }) => {
+const DiaryImageUpload = ({ onImageUrlChange, imgUrl }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+
   const [fileName, setFileName] = useState(null);
   const [presignedUrl, setPresignedUrl] = useState(null);
 
   const { data: presignedUrlData, fetchData: fetchPresignedUrlData } = useAxios();
+
+  // imgUrl로 업데이트
+  useEffect(() => {
+    setImageUrl(imgUrl);
+  }, [imgUrl]);
 
   // 로컬 스토리지에서 이미지 URL 불러오기
   useEffect(() => {
@@ -137,6 +143,7 @@ const DiaryImageUpload = ({ onImageUrlChange }) => {
 
 DiaryImageUpload.propTypes = {
   onImageUrlChange: PropTypes.func,
+  imgUrl: PropTypes.string
 };
 
 export default DiaryImageUpload;

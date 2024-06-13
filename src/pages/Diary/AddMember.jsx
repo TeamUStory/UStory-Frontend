@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './AddMember.module.scss';
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
@@ -12,6 +12,9 @@ import useAxios from "@/hooks/useAxios";
 import Friend from '@/apis/api/Friend';
 
 const AddMember = () => {
+    const location = useLocation();
+    const { diaryMembers = [],  id } = location.state || {};
+    
     const navigate = useNavigate();
 
     const [selectedMembers, setSelectedMembers] = useState([]);
@@ -23,21 +26,24 @@ const AddMember = () => {
     // 닉네임으로 친구 검색
     const fetchFriend = async (nickname = "") => {
         const requestTime = new Date().toISOString().split('.')[0];
-        const params = {requestTime, nickname};
+        const params = { requestTime, nickname };
         await fetchFriendList(Friend.searchUser(params));
     };
 
     // 페이지 처음 실행될때, 친구들 목록 가져오기
     useEffect(() => {
-        fetchFriend();
-        const savedSelectedMembers = JSON.parse(localStorage.getItem('selectedMembers')) || [];
-        setSelectedMembers(savedSelectedMembers);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        const initializeMembers = async () => {
+            await fetchFriend();
+            const savedSelectedMembers = JSON.parse(localStorage.getItem('selectedMembers')) || [];
+            setSelectedMembers([...new Set([...savedSelectedMembers])]);
+        };
+
+        initializeMembers();
+    }, [diaryMembers]);
 
     // 친구 존재에 따라 친구들 리스트 추가
     useEffect(() => {
-        if (friendData && friendData.length > 0) {
+        if (friendData) {
             setMembers(friendData);
         } else {
             setMembers([]);
@@ -46,11 +52,15 @@ const AddMember = () => {
 
     // 추가할 친구들 리스트 선택
     const handleRadioButtonClick = (nickname) => {
+        if (diaryMembers.includes(nickname)) {
+            return;
+        }
+
         setSelectedMembers((prevSelectedMembers) => {
             const isSelected = prevSelectedMembers.includes(nickname);
             const updatedMembers = isSelected 
                 ? prevSelectedMembers.filter((member) => member !== nickname)
-                : (prevSelectedMembers.length < 10 ? [...prevSelectedMembers, nickname] : prevSelectedMembers);
+                : (prevSelectedMembers.length + diaryMembers.length < 10 ? [...prevSelectedMembers, nickname] : prevSelectedMembers);
             
             // 선택한 멤버 localstorage에 저장
             localStorage.setItem('selectedMembers', JSON.stringify(updatedMembers));
@@ -78,7 +88,16 @@ const AddMember = () => {
 
     // 추가할 친구 목록 다이어리 추가페이지에 넘겨주기
     const handleAddClick = () => {
-        navigate('/register/diary',{state : {selectedMembers}});
+        const destinationPath = id
+            ? `/edit/diary/${id}`
+            : '/register/diary';
+        navigate(destinationPath, {
+            state: {
+                selectedMembers: selectedMembers,
+                diaryMembers: diaryMembers,
+                id: id
+            }
+        });
     }
 
     return (
@@ -95,7 +114,7 @@ const AddMember = () => {
                             {members.length > 0 ? (
                                 members.map((member, index) => (
                                     <React.Fragment key={index}>
-                                        <div className={styles.memberContainer} >
+                                        <div className={styles.memberContainer}>
                                             <div className={styles.memberProfile}>
                                                 <img src={member.profileImgUrl} alt={member.nickname} />
                                                 <div className={styles.information}>
@@ -104,9 +123,9 @@ const AddMember = () => {
                                                 </div>
                                             </div>
                                             <RadioButton 
-                                                checked={selectedMembers.includes(member.nickname)} 
+                                                checked={selectedMembers.includes(member.nickname) || diaryMembers.includes(member.nickname)} 
                                                 onChange={() => handleRadioButtonClick(member.nickname)}
-                                                disabled={selectedMembers.length >= 10 && !selectedMembers.includes(member.nickname)}
+                                                disabled={diaryMembers.includes(member.nickname)}
                                             />
                                         </div>
                                         {index < members.length - 1 && <hr />}
