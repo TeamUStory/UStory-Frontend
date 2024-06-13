@@ -9,7 +9,6 @@ import ImageEditor from '@/components/ImageEditor/ImageEditor';
 import S3Storage from '@/apis/api/S3Storage';
 
 const ProfileUpload = ({ profileUrl, onUploadComplete }) => {
-  const [previewShow, setPreviewShow] = useState(true);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,6 +34,15 @@ const ProfileUpload = ({ profileUrl, onUploadComplete }) => {
     await fetchData(S3Storage.getImageUrl(selectedFile.name));
   }; 
 
+  const handleCroppedImage = async (croppedFile) => {
+    setFile(croppedFile);
+    setIsModalOpen(false);
+
+    // Presigned URL 요청
+    await fetchData(S3Storage.getImageUrl(croppedFile.name));
+  };
+
+
   // Presigned URL 요청 후 데이터가 존재할 때 url만 추출
   useEffect(() => {
     if (data?.presignedUrl && file) {
@@ -46,13 +54,14 @@ const ProfileUpload = ({ profileUrl, onUploadComplete }) => {
       })
       .then(() => {
         const imgUrl = url.split('?')[0];
-        setCroppedImage(imgUrl)
         onUploadComplete(imgUrl)
       })
       .catch((error) => {
         console.log('error:', error);
       });
     }
+
+    // setCroppedImage(imgUrl)
   }, [data, file, onUploadComplete]);
 
   const closeModal = () => {
@@ -65,7 +74,7 @@ const ProfileUpload = ({ profileUrl, onUploadComplete }) => {
         <ImageEditor 
             uploadedImage={uploadedImage} 
             closeModal={closeModal} 
-            setCroppedImage={() => croppedImage} 
+            setCroppedImage={handleCroppedImage} 
         />
       ) : (
         <>
@@ -75,9 +84,6 @@ const ProfileUpload = ({ profileUrl, onUploadComplete }) => {
           </div>
           <div className={styles.profile_preview}>
             <img src={croppedImage || profileUrl} alt="Profile" className={styles.profile_image} />
-            {/* {croppedImage && 
-              <Button type="button" variant="inactive" label={<XIcon fill={"#616161"} stroke={"#616161"} />} onClick={profileDelete}/>
-            } */}
           </div>
         </>
       )}

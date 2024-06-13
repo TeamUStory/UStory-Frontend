@@ -1,45 +1,13 @@
 export default {
   /**
    * @method GET
-   * @summeray 카카오 로그인
+   * @summary 카카오 로그인
+   * @param {string} code - 카카오 인증 코드
    */
-  getKakaoLogin() {
+  getKakaoLogin(code) {
     return {
-      url: `/login/oauth2/code/kakao`,
-      method: "get"
-    }
-  },
-
-  /**
-   * @method GET
-   * @summeray 카카오 로그아웃
-   */
-  getKakaoLogout() {
-    return {
-      url: `/auth/logout`,
-      method: "get"
-    }
-  },
-
-  /**
-   * @method POST
-   * @summeray 카카오 로그인
-   */
-  postKakaoLogin() {
-    return {
-      url: `/login/oauth2/code/kakao`,
-      method: "post"
-    }
-  },
-
-  /**
-   * @method POST
-   * @summeray 카카오 로그아웃
-   */
-  postKakaoLogout() {
-    return {
-      url: `/auth/logout`,
-      method: "post"
-    }
-  },
-}
+      url: `/login/oauth2/code/kakao?code=${code}`,
+      method: "get",
+    };
+  }
+};
