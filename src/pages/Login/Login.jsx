@@ -77,7 +77,7 @@ const Login = () => {
           </form>
         </div>
         <div className={styles.bottomBtns}>
-          <Button label="비밀번호 찾기" variant="inactive"  onClick={() => navigate("/findpassword")}/>
+          <Button label="비밀번호 재설정" variant="inactive"  onClick={() => navigate("/findpassword")}/>
           <Button label="회원가입" variant="inactive" onClick={() => navigate("/signup")}/>
         </div>
         <SocialLogin />

@@ -27,6 +27,9 @@ const SelectDiary = lazy(() => import('./pages/Paper/SelectDiary'));
 const PaperPage = lazy(() => import('./pages/Paper/PaperPage'));
 const EditPaper = lazy(() => import('./pages/Paper/EditPaper'));
 const PlaceSearch = lazy(() => import('./pages/Paper/PlaceSearch'));
+// 추가
+const KakaoCallback = lazy(() => import('@/components/KakaoCallback/KakaoCallback'));
+const Error = lazy(() => import('@/components/Error/Error'));
 
 function App() {
   const { isLoggedIn } = useAuth();
@@ -34,6 +37,10 @@ function App() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
+        {/* 추가 */}
+        <Route path="/login/oauth2/code/kakao" element={<KakaoCallback /> } />
+        <Route path="*" element={<Error />} />
+        
         <Route path='/login' element={<Login/>} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/findpassword' element={<FindPassword />} />

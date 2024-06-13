@@ -30,7 +30,6 @@ const SignUp = () => {
 
   const nickname = watch('nickname');
   const email = watch('email');
-  const verificationCode = watch('verificationCode');
 
   // 닉네임, 이메일 버튼 활성화 로직
   useEffect(() => {
@@ -129,13 +128,6 @@ const SignUp = () => {
     }
   
   }, [email])
-
-  // 이메일 인증 코드 성공 시 input disabled 처리. 하지만 이메일 변경 시 다시 인증해야 함.
-  useEffect(() => {
-    if(codeSuccess) {
-      setEmailButtonDisabled(true);
-    }
-  }, [codeSuccess])
 
   const { timeLeft, isRunning, startTimer, resetTimer } = useTimer(180);
 

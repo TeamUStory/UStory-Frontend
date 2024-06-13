@@ -64,6 +64,7 @@ const AddFriend = () => {
       if(response.status === 204) {
         setModalMessage("친구 추가가 완료되었습니다.")
         setIsModalOpen(true)
+        console.log(response)
       }
     }
   }, [response])

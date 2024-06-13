@@ -84,7 +84,7 @@ export const refresh = async () => {
     
     if (res?.data) {
       let newAccessToken = res.data;
-
+      console.log('토큰 재발급 성공', newAccessToken);
       localStorage.setItem('accessToken', newAccessToken);
       return newAccessToken;
     } else {
