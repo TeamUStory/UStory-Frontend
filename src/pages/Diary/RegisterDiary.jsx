@@ -64,6 +64,7 @@ const RegisterDiary = () => {
         localStorage.removeItem("diaryImageURL");
         reset();
     },[])
+
     // 선택한 멤버들 목록 불러오기
     useEffect(() => {
         if (location.state && location.state.selectedMembers) {
@@ -114,10 +115,10 @@ const RegisterDiary = () => {
         const isFormValid = Object.values(watchAllFields).every(
             (value) => !!value
         );
-        if (isFormValid) {
-            setButtonActive("active");
-        } else {
+        if (!isFormValid) {
             setButtonActive("disabled");
+        } else {
+            setButtonActive("active");
         }
     }, [watchAllFields]);
 
