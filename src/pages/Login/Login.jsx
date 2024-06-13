@@ -37,8 +37,9 @@ const Login = () => {
       const accessToken = data.accessToken;
       localStorage.setItem('accessToken', accessToken);
       navigate('/');
+      window.location.reload();
     }
-
+    
     if (data?.accessToken === null) {
       setError("* 이메일 또는 비밀번호를 확인해 주세요.");
     }
