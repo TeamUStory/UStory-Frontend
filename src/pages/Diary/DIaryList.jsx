@@ -27,6 +27,7 @@ const DiaryList = () => {
     const [diaryItems, setDiaryItems] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
+
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
 
     // 카테고리 선택

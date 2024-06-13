@@ -17,81 +17,78 @@ const DiaryPageList = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const [paperItems, setPaperItems] = useState([]);
+    const [postItems, setPostItems] = useState([]);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const pageSize = 10; // Adjust the page size as needed
 
     const { data: paperData, fetchData: fetchPaperData } = useAxios();
 
     // 페이퍼 리스트 정보 불러오기
-    useEffect(() => {
-        const fetchData = async () => {
-            // startDate와 endDate가 있으면 날짜 형식에 맞게 포맷팅합니다.
-            let params = {};
-            if (startDate && endDate) {
-                const formattedStartDate = startDate.toLocaleDateString('zh-CN', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
-                });
-    
-                const formattedEndDate = endDate.toLocaleDateString('zh-CN', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
-                });
+    const fetchData = async () => {
+        setLoading(true);
+        let params = {};
+        if (startDate && endDate) {
+            const formattedStartDate = startDate.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
 
-                params = {
-                    requestTime: new Date().toISOString().split('.')[0],
-                    startDate: formattedStartDate,
-                    endDate: formattedEndDate
-                };
-            } else {
-                params = { requestTime: new Date().toISOString().split('.')[0] };
-            }
-    
-            await fetchPaperData(Paper.getPaperListByDiary(id, params));
-        };
-    
+            const formattedEndDate = endDate.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+
+            params = {
+                requestTime: new Date().toISOString().split('.')[0],
+                startDate: formattedStartDate,
+                endDate: formattedEndDate,
+                page,
+                size: pageSize,
+            };
+        } else {
+            params = { 
+                requestTime: new Date().toISOString().split('.')[0],
+                page,
+                size: pageSize,
+            };
+        }
+
+        await fetchPaperData(Paper.getPaperListByDiary(id, params));
+        setLoading(false);
+    };
+
+    useEffect(() => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fetchPaperData, startDate, endDate]);
+    }, [fetchPaperData, startDate, endDate, page]);
     
     // 페이퍼 리스트 저장
     useEffect(() => {
         if (paperData) {
-            setPaperItems(paperData);
+            setPaperItems((prevItems) => [...prevItems, ...paperData]);
         }
     }, [paperData]);
 
-    // 현재 보여지는 목록상태
-    const pageSize = 4;
-    const [postItems, setPostItems] = useState([]);
-
     // paperItems가 업데이트될 때 postItems 초기화
     useEffect(() => {
-        setPostItems(paperItems.slice(0, pageSize));
-    }, [paperItems]);
+        setPostItems(paperItems.slice(0, page * pageSize));
+    }, [paperItems, page]);
 
     // 감지할 요소
     const loaderRef = useRef(null);
     const isIntersecting = useInfiniteScroll(loaderRef);
 
-    // 다음 포스트를 불러오는 함수
-    const loadMorePosts = () => {
-        setPostItems((prevPostItems) => {
-            const currentLength = prevPostItems.length;
-            const newPosts = paperItems.slice(currentLength, currentLength + pageSize);
-            return [...prevPostItems, ...newPosts];
-        });
-    };
-
-    // 감지 요소가 보이면 포스트 불러오기
+    // 감지 요소가 보이면 페이지 증가
     useEffect(() => {
-        if (isIntersecting) {
-            loadMorePosts();
+        if (isIntersecting && !loading) {
+            setPage((prevPage) => prevPage + 1);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isIntersecting]);
+    }, [isIntersecting, loading]);
 
     // 2개씩 나뉜 기록 모음
     const groupedPostItems = makeArray(postItems, 2);
@@ -101,16 +98,18 @@ const DiaryPageList = () => {
     return (
         <div className={styles.allContainer}>
             <SubHeader pageTitle="우리들의 기록" />
-                <div className={styles.selectDate}>
+            <div className={styles.selectDate}>
                 <RangeCalender 
                     startDate={startDate}
                     endDate={endDate}
                     onDateChange={(start, end) => {
-                    setStartDate(start);
-                    setEndDate(end);
+                        setStartDate(start);
+                        setEndDate(end);
+                        setPage(1); // Reset page number on date change
+                        setPaperItems([]); // Clear paper items on date change
                     }}
                 />
-                </div>
+            </div>
             <div className={styles.pageList}>
                 {isPostItems ? (
                     groupedPostItems.map((group, index) => (
