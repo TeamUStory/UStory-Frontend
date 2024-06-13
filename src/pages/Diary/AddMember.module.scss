@@ -1,11 +1,11 @@
 @import "@/assets/styles/colors.scss";
 
 .allContainer {
+    max-width: 480px;
+    min-width: 320px;
+    
     
     .contentsContainer {
-        max-width: 480px;
-        min-width: 320px;
-        
         display: flex;
         flex-direction: column;
         gap: 37px;
