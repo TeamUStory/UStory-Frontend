@@ -20,6 +20,7 @@ const KakaoCallback = () => {
     if (data?.accessToken) {
       localStorage.setItem("accessToken", data.accessToken);
       navigate("/");
+      window.location.reload()
     }
   }, [data, navigate]);
 
