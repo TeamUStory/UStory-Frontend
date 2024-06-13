@@ -8,9 +8,9 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start": "HTTPS=true react-scripts start"
+    "start": "vite"
   },
-  "proxy": "http://15.164.24.133:8080",
+  "proxy": "https://api.ustory.me/api",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
     "axios": "^1.7.2",
@@ -18,25 +18,25 @@
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "node-sass": "^9.0.0",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "react-cropper": "^2.3.3",
     "react-datepicker": "^6.9.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.5",
     "react-router-dom": "^6.23.1",
     "vite-plugin-pwa": "^0.20.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
-    "@vitejs/plugin-react": "^4.3.0",
-    "eslint": "^8.57.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^9.4.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.34.2",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.4.6",
+    "eslint-plugin-react-refresh": "^0.4.7",
     "react-error-boundary": "^4.0.13",
-    "sass": "^1.77.2",
-    "vite": "^5.2.0"
+    "sass": "^1.77.5",
+    "vite": "^5.2.13"
   }
 }

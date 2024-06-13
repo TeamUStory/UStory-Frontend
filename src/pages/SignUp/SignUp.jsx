@@ -9,8 +9,6 @@ import User from "@/apis/api/User";
 import Timer from '@/components/Timer/Timer';
 import useTimer from '@/hooks/useSetInterval';
 import useAxios  from '@/hooks/useAxios';
-import basicProfile from "@/assets/images/basic_profile.png";
-import basicDiary from "@/assets/images/diaryBasicImage.png";
 import Modal from '@/components/Modal/Modal';
 import Congratulations from '@/assets/images/Congratulations.png';
 
@@ -159,9 +157,9 @@ const SignUp = () => {
         nickname: nickname,
         password: watch('password'),
         passwordCheck: watch('confirmPassword'),
-        profileImgUrl: basicProfile,
+        profileImgUrl: "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png",
         profileDescription: "자기소개가 없습니다.",
-        diaryImgUrl: basicDiary
+        diaryImgUrl: "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/diary-profile.png"
       }));
     } 
 

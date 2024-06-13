@@ -4,8 +4,11 @@ import Kakao from "@/assets/images/kakao.png";
 
 const SocialLogin = () => {
   const handleKakaoLogin = () => {
-    window.open("https://kauth.kakao.com/oauth/authorize?client_id=eab271dce70bcf6a5f89799f1f6ca6d5&redirect_uri=http://15.164.24.133:8080/login/oauth2/code/kakao&response_type=code", "_blank");
-  }
+    const REST_API_KEY = "eab271dce70bcf6a5f89799f1f6ca6d5";
+    const REDIRECT_URI = "http://localhost:5173/login/oauth2/code/kakao";
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+    window.location.href = KAKAO_AUTH_URL;
+  };
 
   return (
     <div className={styles.socialBox}>
@@ -15,11 +18,10 @@ const SocialLogin = () => {
           type="button" 
           label={<img src={Kakao} alt="kakao"/>} 
           onClick={handleKakaoLogin}
-          >
-        </Button>
+        />
       </div>
     </div>
   );
-}
+};
 
 export default SocialLogin;
