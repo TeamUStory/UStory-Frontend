@@ -15,7 +15,7 @@ import InputField from '@/components/InputField/InputField';
 import MessageIcon from '@/assets/icons/MessageIcon';
 import Modal from '@/components/Modal/Modal';
 import LoudSpeakerIcon from '@/assets/icons/LoudSpeakerIcon';
-import Paper from '../../apis/api/Paper';
+import Paper from '@/apis/api/Paper';
 import Comment from '@/apis/api/Comment';
 import BookMark from '@/apis/api/BookMark';
 import useAxios from '@/hooks/useAxios';
@@ -178,8 +178,6 @@ const PaperPage = () => {
     const closeModal = () => {
         setIsModalOpen(false);
     }
-
-    console.log(typeof(pageDetail.coordinateX));
 
     return (
         <div className={styles.allContainer}>

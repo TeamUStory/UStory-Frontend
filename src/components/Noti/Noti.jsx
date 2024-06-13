@@ -14,10 +14,8 @@ const Noti = () => {
   // 알림 로드
   useEffect(() => {
     const fetchNotiData = async () => {
-      const size = 10;
-      const page = 1;
       const requestTime = new Date().toISOString().split('.')[0];
-      await fetchData(Notice.getNoticeList({ size, page, requestTime }));
+      await fetchData(Notice.getNoticeList({ requestTime }));
     }
     fetchNotiData();
   }, [fetchData])

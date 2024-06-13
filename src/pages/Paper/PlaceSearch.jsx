@@ -5,10 +5,13 @@ import InputField from '@/components/InputField/InputField';
 import Button from '@/components/Button/Button';
 import SubHeader from '@/components/SubHeader/SubHeader';
 import SearchIcon from '../../assets/icons/SearchIcon';
+import { useNavigate } from 'react-router-dom';
 
 const PlaceSearch = () => {
+    const navigate = useNavigate();
     const [inputText, setInputText] = useState('')
     const [place, setPlace] = useState('')
+    const [placeInfo, setPlaceInfo] = useState({});
 
     const onChange = (e) => {
         setInputText(e.target.value)
@@ -24,19 +27,28 @@ const PlaceSearch = () => {
         e.preventDefault()
         setPlace(inputText)
     }
-    console.log(place);
+
+    // SearchMapApi에서 placeinfo 받아오기
+    const updatePlaceInfo = (newPlaceInfo) => {
+        setPlaceInfo(newPlaceInfo);
+    }
+
+    const handleAddClick = () => {
+        navigate('/register/paper',{state : {placeInfo}});
+    }
+
     return (
         <div className={styles.allContainer}>
             <SubHeader pageTitle="장소 검색하기" />
             <div className={styles.ContentsContainer}>
                 <div className={styles.container}>
-                    <SearchMapApi height="219px" searchPlace={place} />
                     <div className={styles.searchContainer}>
                         <InputField placeholder="검색" onChange={onChange} value={inputText} onKeyPress={handleKeyPress} />
                         <Button type="submit" label={<SearchIcon/>} variant={"inactive"} onClick={handleSubmit}/>
                     </div>
+                    <SearchMapApi height="219px" searchPlace={place} onUpdatePlaceInfo={updatePlaceInfo}/>
                 </div>
-                <Button type="Button" label="장소 선택" variant={"active"} onClick={() => <div></div>}/>
+                <Button type="Button" label="장소 선택" variant={"active"} onClick={handleAddClick}/>
             </div>
         </div>
     )

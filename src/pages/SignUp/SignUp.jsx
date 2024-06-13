@@ -131,6 +131,13 @@ const SignUp = () => {
 
   const { timeLeft, isRunning, startTimer, resetTimer } = useTimer(180);
 
+  // 이메일 인증요청 버튼 누를 때마다 타이머 초기화
+  useEffect(() => {
+    if(emailButtonDisabled) {
+      resetTimer();
+    }
+  }, [emailButtonDisabled, resetTimer])
+
   // 인증 코드 확인
   const handleVerify = async () => {
     const userData = { toEmail: email, authCode: watch('verificationCode') };
