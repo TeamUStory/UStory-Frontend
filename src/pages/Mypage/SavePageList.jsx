@@ -30,7 +30,6 @@ const SavePageList = () => {
   useEffect(() => {
     if (data) {
       setUseSaveList((prev) => [...prev, ...data]);
-      console.log(data);
     }
   }, [data]);
 

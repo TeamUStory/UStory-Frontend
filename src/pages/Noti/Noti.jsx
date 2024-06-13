@@ -31,32 +31,34 @@ const Noti = () => {
   // 초기 데이터 불러오기
   const fetchNotiData = async (page) => {
     setLoading(true);
-    const size = 10;
+    // const size = 10;
     const requestTime = new Date().toISOString().split('.')[0];
-    const response = await fetchNoti(Notice.getNoticeList({ size, page, requestTime }));
+    const response = await fetchNoti(Notice.getNoticeList({ requestTime }));
     if (response && response.length > 0) {
       setNotiList((prevList) => [...prevList, ...response]);
     }
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchNotiData(page);
-  }, [page]);
+  // useEffect(() => {
+  //   fetchNotiData(page);
+  //   console.log("page: ", page);
+  // }, [page]);
 
   // 데이터가 업데이트될 때 userSaveList 갱신
   useEffect(() => {
     if (notiData) {
-      setNotiList((prevList) => [...prevList, ...notiData]); // 기존 리스트에 새 데이터 추가
+      // setNotiList((prevList) => [...prevList, ...notiData]); // 기존 리스트에 새 데이터 추가
+      console.log("notiData: ", notiData);
     }
   }, [notiData]);
 
   // 페이지가 변경될 때마다 추가 데이터 불러오기
-  useEffect(() => {
-    if (intersecting && !loading) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  }, [intersecting, loading]);
+  // useEffect(() => {
+  //   if (intersecting && !loading) {
+  //     setPage((prevPage) => prevPage + 1);
+  //   }
+  // }, [intersecting, loading]);
 
   // 최신 알림 시간으로 로컬 스토리지 업데이트
   useEffect(() => {

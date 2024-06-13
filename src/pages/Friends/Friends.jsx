@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Friends.module.scss';
 import SubHeader from "@/components/SubHeader/SubHeader";
 import TabMenu from './TabMenu';
@@ -6,95 +6,68 @@ import FriendRequest from './FriendRequest';
 import FriendList from './FriendList';
 import useAxios from '@/hooks/useAxios';
 import Friend from '@/apis/api/Friend';
-import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 
 const Friends = () => {
   const [activeTab, setActiveTab] = useState("친구 목록");
-  const { fetchData: fetchFriendsData, data: friendsData, response: friendsResponse } = useAxios();
-  const { fetchData: fetchRequestData, data: requestData, response: requestResponse } = useAxios();
-  const [friendList, setFriendList] = useState([]);
-  const [requestList, setRequestList] = useState([]);
-  const [friendsPage, setFriendsPage] = useState(1);
-  const [requestsPage, setRequestsPage] = useState(1);
-  const [loadingFriends, setLoadingFriends] = useState(false);
-  const [loadingRequests, setLoadingRequests] = useState(false);
-
-  const friendsTargetEl = useRef(null);
-  const requestsTargetEl = useRef(null);
-
-  const friendsIntersecting = useInfiniteScroll(friendsTargetEl);
-  const requestsIntersecting = useInfiniteScroll(requestsTargetEl);
+  const {fetchData: fetchFirendsData, data: friendsData} = useAxios();
+  const {fetchData: fetchRequestData, data: requestData} = useAxios();
+  const [friendList, setFriendList] = useState([]); // 친구 목록
+  const [requestList, setRequestList] = useState([]); // 친구 요청 목록
 
   // 친구 목록 데이터 가져오기
   useEffect(() => {
     const size = 10;
+    const page = 1;
     const requestTime = new Date().toISOString().split('.')[0];
-    const fetchData = async () => {
-      setLoadingFriends(true);
-      await fetchFriendsData(Friend.searchUser({ size, page: friendsPage, requestTime }));
-      setLoadingFriends(false);
-    };
+    const fetchData =  async () => {
+      await fetchFirendsData(Friend.searchUser({size, page, requestTime}))
+    }
     fetchData();
-  }, [fetchFriendsData, friendsPage]);
+  }, [fetchFirendsData])
 
   useEffect(() => {
-    if (friendsData) {
-      setFriendList((prev) => [...prev, ...friendsData]);
+    if(friendsData) {
+      setFriendList(friendsData)
+      console.log(friendsData)
     }
-  }, [friendsData]);
-
-  useEffect(() => {
-    if (friendsIntersecting && !loadingFriends) {
-      setFriendsPage((prev) => prev + 1);
-    }
-  }, [friendsIntersecting, loadingFriends]);
+  }, [friendsData])
 
   // 친구 요청 데이터 가져오기
   useEffect(() => {
     const size = 10;
+    const page = 1;
     const requestTime = new Date().toISOString().split('.')[0];
+
     const fetchData = async () => {
-      setLoadingRequests(true);
-      await fetchRequestData(Friend.getFriendRequestList({ size, page: requestsPage, requestTime }));
-      setLoadingRequests(false);
-    };
+      await fetchRequestData(Friend.getFriendRequestList({size, page, requestTime}))
+    }
     fetchData();
-  }, [fetchRequestData, requestsPage]);
+  }, [fetchRequestData])
 
   useEffect(() => {
-    if (requestData) {
-      setRequestList((prev) => [...prev, ...requestData]);
+    if(requestData) {
+      setRequestList(requestData)
+      console.log(requestData)
     }
-  }, [requestData]);
+  }, [requestData])
 
-  useEffect(() => {
-    if (requestsIntersecting && !loadingRequests) {
-      setRequestsPage((prev) => prev + 1);
-    }
-  }, [requestsIntersecting, loadingRequests]);
-
-  return (
+  return(
     <>
       <SubHeader pageTitle="친구" />
       <div className={styles.friendWrap}>
         <div className={styles.wrap}>
-          <TabMenu FriendData={friendList} RequestData={requestList} activeTab={activeTab} setActiveTab={setActiveTab} />
+          <TabMenu FriendData={friendList} RequestData={requestList} activeTab={activeTab} setActiveTab={setActiveTab}/>
           <div className={styles.listWrap}>
-            {activeTab === "친구 목록" ? (
-              <>
-                <FriendList FriendData={friendList} />
-              </>
-            ) : (
-              <>
-                <FriendRequest RequestData={requestList} />
-              </>
+            {activeTab === "친구 목록" ? 
+              <FriendList FriendData={friendList}/>
+            : (
+              <FriendRequest RequestData={requestList}/>
             )}
-            <div ref={friendsTargetEl} style={{ height: 1 }}></div>
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }
 
 export default Friends;
