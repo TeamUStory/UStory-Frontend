@@ -17,6 +17,8 @@ const Login = () => {
   const { fetchData, data } = useAxios();
   const navigate = useNavigate();
 
+  useEffect(() => {}, [data]);
+
   // 로그인 클릭
   const handleLogin = async (e) => {
     e.preventDefault();

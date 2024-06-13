@@ -21,10 +21,11 @@ const EditMypage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [editSuccess, setEditSuccess] = useState(false);
   const [password, setPassword] = useState("");
+  const [pwCheck, setPwCheck] = useState(false);
   const { fetchData: fetchUserData, data: userData } = useAxios();
   const { fetchData: fetchNicknameData, data: nicknameData } = useAxios();
   const { fetchData: fetchEditUser, data: editUserData } = useAxios();
-  const { fetchData: fetchDeleteUser, data: deleteUserData } = useAxios();
+  const { fetchData: fetchDeleteUser, response: deleteUserData } = useAxios();
   const navigator = useNavigate();
 
   const nickname = watch('nickname');
@@ -113,16 +114,17 @@ const EditMypage = () => {
   // 찐탈퇴
   const handleLastWithdrawal = async () => {
     if(userData.password === password) {
-      const deleteUser = async () => {
-        await fetchDeleteUser(User.deleteUser());
-      };
-      deleteUser();
+      await fetchDeleteUser(User.deleteUser());
+      setPwCheck(false);
+    }  else if (userData.password !== password) {
+      setPwCheck(true);
     }
   }
 
   useEffect(() => {
-    if (deleteUserData) {
+    if (deleteUserData && deleteUserData.status === 200) {
       navigator('/login');
+      console.log(deleteUserData)
     }
   }, [deleteUserData, navigator]);
 
@@ -206,6 +208,7 @@ const EditMypage = () => {
           <Modal.Body>
             <p>비밀번호를 입력하면 탈퇴가 완료됩니다.</p>
             <input type="password" placeholder='비밀번호 입력' className={styles.input} value={password} onChange={(e) => setPassword(e.target.value)}/>
+            {pwCheck ? <span className={styles.error} style={{marginTop:"15px", display:"inline-block"}}>비밀번호가 틀렸습니다.</span> : null}
           </Modal.Body>
           <Modal.Button>
             <Button type="button" label="탈퇴하기" variant="active" onClick={handleLastWithdrawal}/>
