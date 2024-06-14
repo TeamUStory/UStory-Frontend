@@ -124,7 +124,9 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
                                 coordinateX: place.y,
                                 coordinateY: place.x,
                             };
-                            setPlaceInfo(newPlaceInfo);
+                            if (newPlaceInfo){
+                                setPlaceInfo(newPlaceInfo);
+                            }
                         });
                     })(marker, places[i]);
 

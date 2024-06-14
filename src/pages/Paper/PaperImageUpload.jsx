@@ -10,7 +10,7 @@ import useAxios from "@/hooks/useAxios";
 import S3Storage from "@/apis/api/S3Storage";
 import axios from "axios";
 
-const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail,  }) => {
+const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail  }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [uploadedImage, setUploadedImage] = useState(null);
     const [croppedImage, setCroppedImage] = useState(null);
@@ -103,8 +103,8 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail,  }) => {
                             localStorage.setItem("paperImageUrls", JSON.stringify(newUrls));
                             return newUrls;
                         });
-                        setCroppedImage(null); // reset croppedImage after upload
-                        setPresignedUrl(null); // reset presignedUrl after upload
+                        setCroppedImage(null);
+                        setPresignedUrl(null); 
                     } else {
                         console.error("이미지 업로드 실패:", response);
                     }
@@ -124,6 +124,7 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail,  }) => {
 
     // 썸네일 선택 처리
     const handleThumbnailClick = (url) => {
+
         if (thumbnailImageUrl === url) {
             // 이미 선택된 썸네일을 클릭한 경우 선택 해제
             setThumbnailImageUrl("");
@@ -183,6 +184,7 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail,  }) => {
 
     // 사진 삭제 처리
     const handleRemoveImage = (index) => {
+        
         const urlToRemove = imageUrls[index];
         setImageUrls((prevUrls) => {
             const newUrls = prevUrls.filter((_, idx) => idx !== index); // 이미지 목록에서 선택된 이미지 제외
@@ -225,10 +227,10 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail,  }) => {
                     {thumbnailImageUrl && (
                         <div className={styles.thumbnail}>
                             <img src={thumbnailImageUrl} alt={"Thumbnail"} />
-                            <button className={styles.deleteButton} onClick={() => handleRemoveImage(imageUrls.indexOf(thumbnailImageUrl))}>
+                            <button className={styles.deleteButton} type="button" onClick={() => handleRemoveImage(imageUrls.indexOf(thumbnailImageUrl))}>
                                 <XIcon stroke="#616161" />
                             </button>
-                            <button className={styles.crownButton} onClick={() => handleThumbnailClick(thumbnailImageUrl)}>
+                            <button className={styles.crownButton} type="button" onClick={() => handleThumbnailClick(thumbnailImageUrl)}>
                                 <CrownIcon fill={"#FB8176"} bgColor={"#fff"} />
                             </button>
                         </div>

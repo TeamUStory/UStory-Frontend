@@ -38,10 +38,10 @@ const RegisterPaper = () => {
 
     // 선택한 다이어리 불러오기
     useEffect(() => {
-        if (location.state && location.state.selectedDiary) {
+        if (location.state && location.state.selectedDiary && Object.keys(location.state.selectedDiary).length > 0) {
             setDiary(location.state.selectedDiary);
         }
-    }, [location.state]);
+    }, [location.state, setDiary]);
 
     // 장소 정보 불러오기
     useEffect(() => {
@@ -66,7 +66,8 @@ const RegisterPaper = () => {
     useEffect(() => {
         const formData = {
             title: watch("title"),
-            diary: diary.id,
+            diaryId: diary.id,
+            diaryName: diary.name,
             visitedAt: format(watch("visitedAt"), "yyyy/MM/dd"),
             city: placeInformation.address,
             store: placeInformation.store,
@@ -105,7 +106,7 @@ const RegisterPaper = () => {
         setIsModalOpen(true);
     };
 
-    // 다이어리 아이디 가져오기
+    // 페이퍼 아이디 가져오기
     useEffect(() => {
         if (paperNum) {
             setPaperId(paperNum.paperId);
@@ -125,15 +126,17 @@ const RegisterPaper = () => {
         localStorage.removeItem("placeInfo");
         localStorage.removeItem("paperImageUrls");
         localStorage.removeItem("thumbnailImageUrl");
+        localStorage.removeItem("selectedDiary");
     };
 
     const handleRegisterClick = () => {
-      setIsModalOpen(false);
-      reset();
-      localStorage.removeItem("paperFormData");
-      localStorage.removeItem("placeInfo");
-      localStorage.removeItem("paperImageUrls");
-      localStorage.removeItem("thumbnailImageUrl");
+        setIsModalOpen(false);
+        reset();
+        localStorage.removeItem("paperFormData");
+        localStorage.removeItem("placeInfo");
+        localStorage.removeItem("paperImageUrls");
+        localStorage.removeItem("thumbnailImageUrl");
+        localStorage.removeItem("selectedDiary");
     };
 
     const handlePlaceSearchClick = () => {
@@ -151,7 +154,7 @@ const RegisterPaper = () => {
                             <p>다이어리</p>
                             <Button type="button" variant="inactive" label={<ArrowIcon fill="#000" />} onClick={() => navigate("/diary/select")} />
                         </div>
-                        {diary && (
+                        {diary && Object.keys(diary).length > 0 && (
                             <div className={styles.selectedDiary}>
                                 <p>{diary.name}</p>
                             </div>

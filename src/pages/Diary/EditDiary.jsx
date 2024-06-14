@@ -69,28 +69,14 @@ const EditDiary = () => {
             setValue("description", diaryData.description);
 
             setValue("imgUrl", diaryData.imgUrl);
-            setValue(
-                "diaryCategory",
-                categories.find(
-                    (category) => category.label === diaryData.diaryCategory
-                )?.value || ""
-            );
+            setValue("diaryCategory", categories.find((category) => category.label === diaryData.diaryCategory)?.value || "");
 
-            setValue(
-                "color",
-                markerColors.find(
-                    (colors) => colors.hexcode === diaryData.color
-                )?.color
-            );
+            setValue("color", markerColors.find((colors) => colors.hexcode === diaryData.color)?.color);
 
             setSelectedColor(diaryData.color);
             setDiaryMemebers(diaryData.users.map((user) => user.nickname));
             setMembers(diaryData.users.map((user) => user.nickname));
-            setDiaryCategory(
-                categories.find(
-                    (category) => category.label === diaryData.diaryCategory
-                )?.value || ""
-            );
+            setDiaryCategory(categories.find((category) => category.label === diaryData.diaryCategory)?.value || "");
             setImgUrl(diaryData.imgUrl);
         }
     }, [diaryData]);
@@ -104,12 +90,8 @@ const EditDiary = () => {
     // 선택한 멤버들 목록 불러오기
     useEffect(() => {
         if (location.state && location.state.selectedMembers) {
-            const combinedMembers = [
-                ...diaryMembers,
-                ...location.state.selectedMembers,
-            ];
+            const combinedMembers = [...diaryMembers, ...location.state.selectedMembers];
             setMembers(combinedMembers);
-            console.log(combinedMembers);
         }
     }, [location.state, diaryMembers]);
 
@@ -139,10 +121,7 @@ const EditDiary = () => {
                 imgUrl: imgUrl,
                 users: members,
             };
-            return (
-                Object.values(formFields).every((value) => !!value) &&
-                members.length > 0
-            );
+            return Object.values(formFields).every((value) => !!value) && members.length > 0;
         };
 
         if (isFormValid()) {
@@ -158,7 +137,6 @@ const EditDiary = () => {
         localStorage.removeItem("selectedMembers");
         localStorage.removeItem("diaryImageURL");
         await fetchUpdatedDiaryData(Diary.putDiary(id, data));
-        console.log(data);
         setIsModalOpen(true);
         reset();
     };
@@ -173,15 +151,7 @@ const EditDiary = () => {
             imgUrl: imgUrl,
             users: members,
         };
-        console.log(formData);
-        if (
-            formData.name &&
-            formData.diaryCategory &&
-            formData.description &&
-            formData.color &&
-            formData.imgUrl &&
-            formData.users.length > 0
-        ) {
+        if (formData.name && formData.diaryCategory && formData.description && formData.color && formData.imgUrl && formData.users.length > 0) {
             handleSubmit(onSubmit)(formData);
         }
     };
@@ -196,16 +166,8 @@ const EditDiary = () => {
             <SubHeader pageTitle="다이어리 수정하기" />
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <InputField
-                        label="다이어리 이름"
-                        placeholder="다이어리 이름 입력"
-                        className={styles.input}
-                        {...register("name", { required: true })}
-                    />
-                    <DiaryImageUpload
-                        onImageUrlChange={handleImageUrl}
-                        imgUrl={imgUrl}
-                    />
+                    <InputField label="다이어리 이름" placeholder="다이어리 이름 입력" className={styles.input} {...register("name", { required: true })} />
+                    <DiaryImageUpload onImageUrlChange={handleImageUrl} imgUrl={imgUrl} />
                     <Controller
                         name="diaryCategory"
                         control={control}
@@ -232,30 +194,22 @@ const EditDiary = () => {
                         render={({ field }) => (
                             <div className={styles.markerColorSelect}>
                                 <p>마커 색상</p>
-                                <p className={styles.information}>
-                                    선택한 색상으로 지도에 마커가 생성됩니다.
-                                </p>
+                                <p className={styles.information}>선택한 색상으로 지도에 마커가 생성됩니다.</p>
                                 <div className={styles.colorButtons}>
-                                    {markerColors.map(
-                                        ({ color, hexcode }, index) => (
-                                            <button
-                                                type="button"
-                                                key={index}
-                                                className={
-                                                    selectedColor === hexcode
-                                                        ? styles.selected
-                                                        : ""
-                                                }
-                                                style={{
-                                                    backgroundColor: hexcode,
-                                                }}
-                                                onClick={() => {
-                                                    setSelectedColor(hexcode);
-                                                    field.onChange(color);
-                                                }}
-                                            ></button>
-                                        )
-                                    )}
+                                    {markerColors.map(({ color, hexcode }, index) => (
+                                        <button
+                                            type="button"
+                                            key={index}
+                                            className={selectedColor === hexcode ? styles.selected : ""}
+                                            style={{
+                                                backgroundColor: hexcode,
+                                            }}
+                                            onClick={() => {
+                                                setSelectedColor(hexcode);
+                                                field.onChange(color);
+                                            }}
+                                        ></button>
+                                    ))}
                                 </div>
                             </div>
                         )}
@@ -264,9 +218,7 @@ const EditDiary = () => {
                         <div className={styles.title}>
                             <div className={styles.phrases}>
                                 <p>멤버 </p>
-                                <p className={styles.information}>
-                                    최대 10명까지
-                                </p>
+                                <p className={styles.information}>최대 10명까지</p>
                             </div>
                             <Link
                                 to="/friend/search"
@@ -286,52 +238,26 @@ const EditDiary = () => {
                         </div>
                         <div className={styles.selectedMembers}>
                             {members.map((member, index) => (
-                                <div
-                                    key={index}
-                                    className={styles.selectedMember}
-                                >
-                                    <input
-                                        type="hidden"
-                                        {...register(`users.${index}`)}
-                                        value={member}
-                                    />
+                                <div key={index} className={styles.selectedMember}>
+                                    <input type="hidden" {...register(`users.${index}`)} value={member} />
                                     {member}
                                 </div>
                             ))}
                         </div>
                     </div>
-                    <InputField
-                        label="소개"
-                        placeholder="다이어리 소개 입력"
-                        id="diaryIntroduction"
-                        style={{ width: "100%" }}
-                        {...register("description")}
-                    />
-                    <Button
-                        label="수정하기"
-                        variant={buttonActive}
-                        type="submit"
-                        onClick={handleButtonClick}
-                    />
+                    <InputField label="소개" placeholder="다이어리 소개 입력" id="diaryIntroduction" style={{ width: "100%" }} {...register("description")} />
+                    <Button label="수정하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>
                 {isModalOpen && (
                     <Modal closeFn={closeModal}>
                         <Modal.Icon>
-                            <img
-                                src="/src/assets/images/completedImage.png"
-                                alt="완료"
-                            />
+                            <img src="/src/assets/images/completedImage.png" alt="완료" />
                         </Modal.Icon>
                         <Modal.Body>
                             <p>다이어리 수정이 완료되었습니다.</p>
                         </Modal.Body>
                         <Modal.Button>
-                            <Button
-                                type="button"
-                                label="확인"
-                                variant="active"
-                                onClick={() => navigate(`/diary/${id}`)}
-                            />
+                            <Button type="button" label="확인" variant="active" onClick={() => navigate(`/diary/${id}`)} />
                         </Modal.Button>
                     </Modal>
                 )}
