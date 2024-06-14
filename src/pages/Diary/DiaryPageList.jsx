@@ -11,6 +11,7 @@ import Button from '@/components/Button/Button';
 import SadIcon from '@/assets/icons/SadIcon'; // SadIcon import 추가
 import useAxios from '@/hooks/useAxios';
 import Paper from '@/apis/api/Paper';
+import BottomBar from "@/components/BottomBar/BottomBar";
 import { makeArray } from '@/utils/makeArray';
 
 const DiaryPageList = () => {
@@ -134,6 +135,7 @@ const DiaryPageList = () => {
                     </div>
                 )}
                 <div ref={loaderRef} style={{ height: '1px' }}></div>
+                <BottomBar />
             </div>
         </div>
     );

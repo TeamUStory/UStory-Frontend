@@ -14,6 +14,7 @@ import PlaceMark from "@/assets/icons/PlaceMark";
 import useAxios from "@/hooks/useAxios";
 import Diary from "@/apis/api/Diary";
 import Paper from "@/apis/api/Paper";
+import BottomBar from "@/components/BottomBar/BottomBar";
 import { makeArray } from "@/utils/makeArray";
 
 const DiaryDetail = () => {
@@ -199,6 +200,7 @@ const DiaryDetail = () => {
                     </div>
                 </div>
             </div>
+            <BottomBar/>
         </div>
     );
 };

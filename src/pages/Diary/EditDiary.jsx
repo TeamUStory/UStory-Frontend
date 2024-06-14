@@ -251,7 +251,7 @@ const EditDiary = () => {
                 {isModalOpen && (
                     <Modal closeFn={closeModal}>
                         <Modal.Icon>
-                            <img src="/src/assets/images/completedImage.png" alt="완료" />
+                            <img src="@/assets/images/completedImage.png" alt="완료" />
                         </Modal.Icon>
                         <Modal.Body>
                             <p>다이어리 수정이 완료되었습니다.</p>
