@@ -1,56 +1,58 @@
 @import "@/assets/styles/colors.scss";
 
 .allContainer {
-    
+    max-width: 480px;
+    min-width: 320px;
+
     .contentsContainer {
-        
+
         display: flex;
         flex-direction: column;
         gap: 37px;
-        
+
         padding: 70px 20px 20px 20px;
         overflow-y: auto;
-        
-        
+
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            
+
             box-sizing: border-box;
             height: 595px;
-            
+
             border-radius: 20px;
             border: 1px solid $black4;
             background-color: #f8f8f8;
-            
-            
+
+
             .diariesSearchContainer {
+                overflow-y: scroll;
                 background-color: $white1;
                 width: 100%;
                 border-radius: 20px 20px 0 0;
-                
+
                 padding: 15px;
                 box-sizing: border-box;
-                
+
                 display: flex;
                 flex-direction: column;
                 gap: 29px;
-                
+
                 .searchBox {
                     position: relative;
                     width: 100%;
 
-                    label{
-                      display: none;
+                    label {
+                        display: none;
                     }
-                    
+
                     input {
                         box-sizing: border-box;
                         width: 100%;
                         padding-right: 50px;
                     }
-                    
+
                     svg {
                         position: absolute;
                         text-align: center;
@@ -61,39 +63,40 @@
                     }
                 }
             }
-        
+
             .diariesContainer {
-                
+                height: 100%;
+
                 .diaryContainer {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
                     box-sizing: border-box;
                     padding: 0px 10px;
-                    
-                    .diaryImage {  
+
+                    .diaryImage {
                         display: flex;
                         align-items: center;
                         gap: 17px;
-                        
+
                         box-sizing: border-box;
-                        
+
                         img {
                             width: 41px;
                             height: 41px;
                             border-radius: 10px;
                             border: 1px solid $black4;
                         }
-                        
+
                         .information {
                             display: flex;
                             flex-direction: column;
-                            
+
                             p {
                                 font-size: 14px;
                                 font-weight: 600;
                             }
-                            
+
                             .category {
                                 font-size: 12px;
                                 font-weight: 400;
@@ -101,7 +104,7 @@
                             }
                         }
                     }
-                    
+
                     label {
                         margin: 0;
                     }
@@ -116,20 +119,20 @@
                     background-color: $black4;
                 }
             }
-            
+
             .noResultContainer {
                 box-sizing: border-box;
 
                 text-align: center;
 
-                & div{
+                & div {
                     position: relative;
                     width: fit-content;
                     padding: 0;
                 }
             }
         }
-        
+
     }
-    
+
 }

@@ -16,7 +16,7 @@ const SelectDiary = () => {
     const location = useLocation();
     const { paperId } = location.state || {};
 
-    const [selectedDiary, setSelectedDiary] = useState("");
+    const [selectedDiary, setSelectedDiary] = useState({ id: null, name: "" });
     const [diaries, setDiaries] = useState([]);
     const [searchValue, setSearchValue] = useState("");
 
@@ -32,7 +32,7 @@ const SelectDiary = () => {
     // 페이지 처음 실행될때, 로컬스토리지에 있는 다이어리 목록 가져오기
     useEffect(() => {
         fetchDiaryList("");
-        const savedSelectedDiary = JSON.parse(localStorage.getItem("selectedDiary")) || "";
+        const savedSelectedDiary = JSON.parse(localStorage.getItem("selectedDiary")) || { id: null, name: "" };
         setSelectedDiary(savedSelectedDiary);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -44,9 +44,9 @@ const SelectDiary = () => {
     }, [DiaryData]);
 
     // 다이어리 선택
-    const handleRadioButtonClick = (name) => {
-        setSelectedDiary(name);
-        localStorage.setItem("selectedDiary", JSON.stringify(name));
+    const handleRadioButtonClick = (diary) => {
+        setSelectedDiary({ id: diary.id, name: diary.name });
+        localStorage.setItem("selectedDiary", JSON.stringify({ id: diary.id, name: diary.name }));
     };
 
     const handleInputChange = (e) => {
@@ -91,7 +91,7 @@ const SelectDiary = () => {
                                                     <p className={styles.category}>{diary.diaryCategory}</p>
                                                 </div>
                                             </div>
-                                            <RadioButton checked={selectedDiary === diary.name} onChange={() => handleRadioButtonClick(diary.name)} />
+                                            <RadioButton checked={selectedDiary.id === diary.id} onChange={() => handleRadioButtonClick(diary)} />
                                         </div>
                                         {index < diaries.length - 1 && <hr />}
                                     </React.Fragment>
@@ -104,7 +104,7 @@ const SelectDiary = () => {
                         )}
                     </div>
                 </div>
-                <Button label="선택 완료" variant={selectedDiary ? "active" : "disabled"} onClick={handleAddClick} disabled={!selectedDiary} />
+                <Button label="선택 완료" variant={selectedDiary.id ? "active" : "disabled"} onClick={handleAddClick} disabled={!selectedDiary.id} />
             </div>
         </div>
     );
