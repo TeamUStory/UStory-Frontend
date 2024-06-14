@@ -192,7 +192,7 @@ const PaperPage = () => {
                             </button>
                             {isToggle && (
                                 <div className={styles.menuContainer}>
-                                    <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate("/editpaper")} />
+                                    <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate(`/edit/paper/${paperId}`)} />
                                     <button className={styles.exitButton}>삭제하기</button>
                                 </div>
                             )}

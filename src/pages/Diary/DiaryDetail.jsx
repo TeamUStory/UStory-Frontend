@@ -39,7 +39,7 @@ const DiaryDetail = () => {
         const fetchData = async () => {
             await fetchDiaryData(Diary.getDiaryDetail(id));
             const params = {
-                requestTime: new Date().toISOString().split(".")[0],
+                requestTime: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T'),
                 size: 2,
             };
             await fetchPaperData(Paper.getPaperListByDiary(id, params));

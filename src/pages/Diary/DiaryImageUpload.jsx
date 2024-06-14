@@ -82,7 +82,6 @@ const DiaryImageUpload = ({ onImageUrlChange, imgUrl }) => {
           });
 
           if (response.status === 200) {
-            console.log("이미지 업로드 완료");
             const url = presignedUrl.split("?")[0];
             setImageUrl(url);
             onImageUrlChange(url);

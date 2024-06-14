@@ -24,7 +24,7 @@ const PageList = () => {
   const loadMoreData = async () => {
     setLoading(true);
     const size = 20;
-    const requestTime = new Date().toISOString().split('.')[0];
+    const requestTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T');
     await fetchData(Paper.getPaperList({
       size: size,
       page: page,
@@ -41,7 +41,7 @@ const PageList = () => {
   // 데이터가 업데이트될 때 userSaveList 갱신
   useEffect(() => {
     if (data) {
-      setUserSaveList((prevList) => [...prevList, ...data]); // 기존 리스트에 새 데이터 추가
+      setUserSaveList((prevList) => [...prevList, ...data]);
     }
   }, [data]);
 

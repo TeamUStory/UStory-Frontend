@@ -12,22 +12,26 @@ import CarouselItem from "@/components/Carousel/CarouselItem";
 import Diary from "@/apis/api/Diary";
 import Paper from "@/apis/api/Paper";
 import useAxios from "@/hooks/useAxios";
+import User from "@/apis/api/User";
 import { makeArray } from '@/utils/makeArray';
 
 const Home = () => {
     const navigate = useNavigate();
     const [diaryItems, setDiaryItems] = useState([]);
     const [paperItems, setPaperItems] = useState([]);
+    const [nickname, setNickname] = useState('');
 
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
     const { data: paperData, fetchData: fetchPaperData } = useAxios();  
-    
-    // 다이어리 리스트, 페이퍼리스트 정보 조회
+    const { data: userData, fetchData: fetchUserData} = useAxios();
+
+    // 다이어리 리스트, 페이퍼리스트, user 정보 조회
     useEffect(() => {
         const fetchData = async () => {
+            await fetchUserData(User.getUser());
             await fetchDiaryData(Diary.getHomeDiary());
 
-            const requestTime = new Date().toISOString().split('.')[0];
+            const requestTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T');
             const size = 6;
             const page = 1;
     
@@ -35,7 +39,7 @@ const Home = () => {
             await fetchPaperData(Paper.getPaperList(params));
         };
         fetchData();
-    }, [fetchDiaryData, fetchPaperData]);
+    }, [fetchDiaryData, fetchPaperData, fetchUserData]);
 
     // 다이어리 리스트 정보 저장
     useEffect(() => {
@@ -51,6 +55,13 @@ const Home = () => {
         }
     }, [paperData]);
 
+    // user 정보 저장
+    useEffect(() => {
+        if (userData){
+            setNickname(userData.nickname);
+        }
+    }, [userData]);
+
     const newDiaryItems = makeArray(diaryItems, 3);
 
     const isPostItems = paperItems.length > 0;
@@ -59,7 +70,7 @@ const Home = () => {
         <div className={styles.container}>
             <header className={styles.header}>
                 <p>
-                    <span className={styles.nickname}>깡냥이</span>님,
+                    <span className={styles.nickname}>{nickname}</span>님,
                     <br />
                     어디로 떠나시나요?
                 </p>

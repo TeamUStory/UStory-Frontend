@@ -44,7 +44,7 @@ const DiaryPageList = () => {
             });
 
             params = {
-                requestTime: new Date().toISOString().split('.')[0],
+                requestTime: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T'),
                 startDate: formattedStartDate,
                 endDate: formattedEndDate,
                 page,
@@ -52,7 +52,7 @@ const DiaryPageList = () => {
             };
         } else {
             params = { 
-                requestTime: new Date().toISOString().split('.')[0],
+                requestTime: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T'),
                 page,
                 size: pageSize,
             };
