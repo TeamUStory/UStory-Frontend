@@ -15,12 +15,12 @@ const MapApi = ({ width = '100%', height = '344px', borderRadius = "20px" }) => 
         script.onload = () => {
             window.kakao.maps.load(() => {
                 if (containerRef.current) {
-                    var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
-                        center : new kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표 
+                    var map = new window.kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
+                        center : new window.kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표 
                         level : 14 // 지도의 확대 레벨 
                     });
 
-                    var clusterer = new kakao.maps.MarkerClusterer({
+                    var clusterer = new window.kakao.maps.MarkerClusterer({
                         map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
                         averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
                         minLevel: 10 // 클러스터 할 최소 지도 레벨 
@@ -53,22 +53,13 @@ const MapApi = ({ width = '100%', height = '344px', borderRadius = "20px" }) => 
                     addClusterMarker('https://i.namu.wiki/i/lT2DdjdyqFE5IuD_9uuyusuGd7EpgisaYSuVb-lwdoVZFHf2yh0nD5aNe4aLz7prnXKp5MhJl5WbCRHZJ0DPVA.webp', 37.30, 126.77);
                     
                      // 클러스터 클릭 가능하도록 설정
-                    kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
+                    window.kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
                         // 현재 지도 레벨에서 1레벨 확대한 레벨
                         var level = map.getLevel()-1;
 
                         // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
                         map.setLevel(level, {anchor: cluster.getCenter()});
                     });
-
-
-                    // // 크기를 변경한 이후에는 반드시 map.relayout 함수를 호출
-                    // const relayout = () => {
-                    //     map.relayout();
-                    // };
-
-                    // // 예시: 지도 크기 변경 후 재배치
-                    // relayout();
                 }
             });
         };
