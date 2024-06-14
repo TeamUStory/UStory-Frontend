@@ -24,8 +24,8 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail,  }) => {
 
     const firstRender = useRef(true);
 
-    // imgUrls와 thumbnail로 초기화
-    useEffect(() => {
+     // imgUrls와 thumbnail로 초기화
+     useEffect(() => {
         if (imgUrls || thumbnail) {
             setImageUrls([...imgUrls]);
             setThumbnailImageUrl(thumbnail);
@@ -103,6 +103,8 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail,  }) => {
                             localStorage.setItem("paperImageUrls", JSON.stringify(newUrls));
                             return newUrls;
                         });
+                        setCroppedImage(null); // reset croppedImage after upload
+                        setPresignedUrl(null); // reset presignedUrl after upload
                     } else {
                         console.error("이미지 업로드 실패:", response);
                     }
@@ -208,6 +210,7 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail,  }) => {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
 
     return (
         <div className={styles.image_upload}>

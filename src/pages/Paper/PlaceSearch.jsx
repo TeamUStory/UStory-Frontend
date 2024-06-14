@@ -35,7 +35,7 @@ const PlaceSearch = () => {
     
     const handleAddClick = () => {
         localStorage.setItem('placeInfo', JSON.stringify(placeInfo));
-        // console.log(placeInfo);
+        console.log(placeInfo);
         navigate('/register/paper',{state : {placeInfo}});
     }
 

@@ -14,6 +14,7 @@ import MapApiPlace from "@/apis/MapApis/MapApiPlace";
 import PlaceMark from "@/assets/icons/PlaceMark";
 import { format } from "date-fns";
 import useAxios from "@/hooks/useAxios";
+import Paper from "@/apis/api/Paper";
 
 const RegisterPaper = () => {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ const RegisterPaper = () => {
     const { register, handleSubmit, setValue, watch, control, reset } = useForm();
     const watchAllFields = watch();
 
-    const [diary, setDiary] = useState("");
+    const [diary, setDiary] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [buttonActive, setButtonActive] = useState("disabled");
     const [placeInformation, setPlaceInformation] = useState({});
@@ -54,8 +55,10 @@ const RegisterPaper = () => {
         if (savedData) {
             const formData = JSON.parse(savedData);
             setValue("title", formData.title);
-            setValue("comment", formData.comment);
-            setValue("date", formData.date);
+            setValue("writerComment", formData.writerComment);
+            setValue("visitedAt", new Date(formData.visitedAt));
+            setValue("thumbnailImageUrl", formData.thumbnailImageUrl);
+            setValue("imageUrls", formData.imageUrls);
         }
     }, [setValue]);
 
@@ -63,39 +66,43 @@ const RegisterPaper = () => {
     useEffect(() => {
         const formData = {
             title: watch("title"),
-            diary: diary,
-            date: format(watch("date"), "yyyy/MM/dd"),
+            diary: diary.id,
+            visitedAt: format(watch("visitedAt"), "yyyy/MM/dd"),
             city: placeInformation.address,
             store: placeInformation.store,
-            coordinateX: placeInformation.coordinateX,
-            coordinateY: placeInformation.coordinateY,
-            comment: watch("comment"),
+            coordinateX: Number(placeInformation.coordinateX),
+            coordinateY: Number(placeInformation.coordinateY),
+            writerComment: watch("writerComment"),
             thumbnailImageUrl: watch("thumbnailImageUrl"),
-            imageUrls: watch(`imageUrls`),
+            imageUrls: watch("imageUrls"),
         };
 
         localStorage.setItem("paperFormData", JSON.stringify(formData));
-    }, [watchAllFields, diary]);
+    }, [watchAllFields, diary, placeInformation]);
 
     // 모든 항목의 유효성 검사
     useEffect(() => {
         const isFormValid = Object.values(watchAllFields).every((value) => !!value);
-        if (!isFormValid) {
-            setButtonActive("disabled");
-        } else {
-            setButtonActive("active");
-        }
+        setButtonActive(isFormValid ? "active" : "disabled");
     }, [watchAllFields]);
 
     const onSubmit = async (data) => {
-        // localStorage.removeItem("paperFormData");
-        // localStorage.removeItem("thumbnailImageUrl");
-        // localStorage.removeItem("placeInfo");
-        // localStorage.removeItem("paperImageUrls");
-        // localStorage.removeItem("selectedDiary");
-        console.log(data);
+        const visitedAt = new Date(data.visitedAt);
+
+        const postData = {
+            title: data.title,
+            diaryId: diary.id,
+            visitedAt: format(visitedAt, "yyyy/MM/dd"),
+            city: placeInformation.address,
+            store: placeInformation.store,
+            coordinateX: Number(placeInformation.coordinateX),
+            coordinateY: Number(placeInformation.coordinateY),
+            writerComment: data.writerComment,
+            thumbnailImageUrl: data.thumbnailImageUrl,
+            imageUrls: data.imageUrls,
+        };
+        await fetchPaperData(Paper.postPaper(postData));
         setIsModalOpen(true);
-        reset();
     };
 
     // 다이어리 아이디 가져오기
@@ -113,15 +120,20 @@ const RegisterPaper = () => {
     const closeModal = () => {
         setIsModalOpen(false);
         navigate(`/papers/${paperId}`);
-    };
-
-    const handleRegisterClick = () => {
-        closeModal();
+        reset();
         localStorage.removeItem("paperFormData");
         localStorage.removeItem("placeInfo");
         localStorage.removeItem("paperImageUrls");
         localStorage.removeItem("thumbnailImageUrl");
-        reset();
+    };
+
+    const handleRegisterClick = () => {
+      setIsModalOpen(false);
+      reset();
+      localStorage.removeItem("paperFormData");
+      localStorage.removeItem("placeInfo");
+      localStorage.removeItem("paperImageUrls");
+      localStorage.removeItem("thumbnailImageUrl");
     };
 
     const handlePlaceSearchClick = () => {
@@ -139,12 +151,16 @@ const RegisterPaper = () => {
                             <p>다이어리</p>
                             <Button type="button" variant="inactive" label={<ArrowIcon fill="#000" />} onClick={() => navigate("/diary/select")} />
                         </div>
-                        {diary && <div className={styles.selectedDiary}>{diary}</div>}
+                        {diary && (
+                            <div className={styles.selectedDiary}>
+                                <p>{diary.name}</p>
+                            </div>
+                        )}
                     </div>
                     <hr />
                     <PaperImageUpload onImageUrlsChange={handleImageUrlsChange} />
                     <Controller
-                        name="date"
+                        name="visitedAt"
                         control={control}
                         defaultValue={new Date()}
                         render={({ field }) => (
@@ -164,7 +180,7 @@ const RegisterPaper = () => {
                         <MapApiPlace height="218px" coordinateX={placeInformation.coordinateX} coordinateY={placeInformation.coordinateY} />
                     </div>
 
-                    <InputField label="코멘트" placeholder="장소에 대한 한 줄 코멘트 입력" className={styles.input} {...register("comment")} />
+                    <InputField label="코멘트" placeholder="장소에 대한 한 줄 코멘트 입력" className={styles.input} {...register("writerComment")} />
                     <Button label="기록하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>
                 {isModalOpen && (

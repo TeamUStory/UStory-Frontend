@@ -1,19 +1,53 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Controller, useForm } from "react-hook-form";
 import styles from './RegisterPaper.module.scss'
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
-import ProfileUpload from './ProfileUpload';
+import PaperImageUpload from './PaperImageUpload';
 import Calender from '@/components/Calender/Calender';
 import ArrowIcon from '@/assets/icons/ArrowIcon'
 import Button from '@/components/Button/Button'
 import Modal from '@/components/Modal/Modal';
-import MapApi from '@/apis/api/MapApi';
+import { format } from "date-fns";
+import MapApiPlace from "@/apis/MapApis/MapApiPlace";
+import useAxios from "@/hooks/useAxios";
+import Paper from "@/apis/api/Paper";
 
 const EditPaper = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { paperId } = useParams();
+    const { register, handleSubmit, setValue, watch, control, reset } = useForm();
+    const watchAllFields = watch();
 
+    const [diary, setDiary] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [buttonActive, setButtonActive] = useState("disabled");
+    const [placeInformation, setPlaceInformation] = useState({});
+
+
+    const {data: paperData, fetchData: fetchPaperData} = useAxios();
+    const { fectchData: fetchUpdatedPaperData} = useAxios();
+
+    // 페이퍼 상세 정보 조회
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchPaperData(Paper.getPaperDetail(paperId));
+        }
+        fetchData();
+    }, []);
+
+    // 수정할 정보 paperFormData에 넣기
+    useEffect(()=>{
+        if (paperData){
+            setValue("title", paperData.title);
+            setValue("writerComment", paperData.writerComment);
+            setValue("visitedAt", new Date(paperData.visitedAt));
+            setValue("thumbnailImageUrl", paperData.thumbnailImageUrl);
+            setValue("imageUrls", paperData.imageUrls);
+        };
+    })
 
     const handleButtonClick = () => {
         setIsModalOpen(true);
@@ -21,12 +55,12 @@ const EditPaper = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        navigate(`/papers/`)
+        navigate(`/papers/${paperId}`)
     };
 
     const handleRegisterClick = () => {
         closeModal();
-        navigate(`/papers/`);
+        navigate(`/papers/${paperId}`);
     }
 
     return (
@@ -47,7 +81,7 @@ const EditPaper = () => {
                         깡냥꽁냥
                     </div>
                 </div>
-                <ProfileUpload />
+                <PaperImageUpload />
                 <div className={styles.selectDate}>
                     <p>날짜</p>
                     <Calender />    
@@ -58,7 +92,7 @@ const EditPaper = () => {
                         placeholder="건물, 지번 또는 도로명 검색"
                         className={styles.input}
                     />
-                    <MapApi height="218px"/>
+                    <MapApiPlace height="218px"/>
                 </div>
                 <Button label="수정하기" variant="disabled" onClick={handleButtonClick} />
                 {isModalOpen && (
@@ -67,7 +101,7 @@ const EditPaper = () => {
                                 <img src="/src/assets/images/completedImage.png" alt="완료" />
                             </Modal.Icon>
                         <Modal.Body>
-                            <p>장소 기록이 완료되었습니다.<br/>닫기 버튼을 누르면 등록한 기록 페이지로 넘어갑니다.</p>
+                            <p>장소 기록이 완료되었습니다.</p>
                         </Modal.Body>
                         <Modal.Button>
                             <Button type="button" label="수정하기" variant="active" onClick={handleRegisterClick} />
