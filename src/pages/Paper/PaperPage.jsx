@@ -190,7 +190,6 @@ const PaperPage = () => {
 
     // 페이퍼 삭제
     const paperDeleteClick = async () => {
-        console.log('완료');
         await fetchPageDeleteData(Paper.deletePaper(paperId));
         navigate(`/papers/diary/${diaryData[0].id}`);
     }

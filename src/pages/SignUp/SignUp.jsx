@@ -67,7 +67,6 @@ const SignUp = () => {
       // 중복 닉네임 있을 때
       if (nicknameData.isDuplicate === true) {
         setNicknameValid(false);
-        console.log(nicknameData)
         setErrorMessage("* 이미 사용 중인 닉네임입니다.");
       } else {
         setNicknameValid(true);

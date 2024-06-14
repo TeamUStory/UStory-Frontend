@@ -32,7 +32,6 @@ const FindPassword = () => {
     if (resetPasswordData) {
       setResetSuccess(true);
       setIsModalOpen(true);
-      console.log(resetPasswordData)
     } else {
       setResetSuccess(false);
     }
