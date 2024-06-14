@@ -7,6 +7,7 @@ const Error = ({ resetErrorBoundary }) => {
 
   // 에러 페이지에서 이전 페이지로 이동하는 버튼 navite 안쓰고
   const handleBack = () => {
+    history.back();
     resetErrorBoundary()
   }
 

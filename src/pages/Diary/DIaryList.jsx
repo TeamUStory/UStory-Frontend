@@ -47,7 +47,6 @@ const DiaryList = () => {
 
     useEffect(() => {
         fetchDiaryList(activeTab, page);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeTab, page, fetchDiaryData]);
 
     useEffect(() => {
@@ -65,7 +64,7 @@ const DiaryList = () => {
         if (isIntersecting && !loading) {
             setPage((prevPage) => prevPage + 1);
         }
-    }, [isIntersecting, loading]);
+    }, [isIntersecting]);
 
     // 2개씩 나뉜 다이어리 모음
     const groupedPostItems = makeArray(diaryItems, 2);

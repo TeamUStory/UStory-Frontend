@@ -1,0 +1,62 @@
+@import "@/assets/styles/colors.scss";
+
+.wrap {position: absolute;left: 0;bottom: 50px;width: 200px;margin-left: -144px;text-align: left;font-size: 12px;line-height: 1.5;}
+.wrap * {padding: 0;margin: 0;}
+.wrap .info {width: 100%;border-radius: 15px;overflow: hidden;background: #fff; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);}
+.title{
+  height: 20px;
+  width: 100%;
+}
+.info .close {position: absolute;top: 10px;right: 15px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+.info .close:hover {cursor: pointer;}
+.body {
+  padding: 15px;
+  box-sizing: border-box;
+}
+.img{
+  width: 100%;
+  margin-bottom: 5px;
+
+  img{
+    width: 100%;
+    border-radius: 10px;
+  }
+}
+
+.desc{
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.ellipsis{
+  font-size: 14px;
+  color: $point-color1;
+  word-break: break-all;
+
+  svg{
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+    stroke-width: 1.5;
+
+      path{
+        stroke: $point-color1;
+      }
+    }
+  }
+
+  a{
+
+    svg{
+      transform: rotate(180deg);
+      width: 16px;
+      height: 16px;
+      vertical-align: middle;
+      stroke-width: 1.5;
+    }
+  }
+
+
+

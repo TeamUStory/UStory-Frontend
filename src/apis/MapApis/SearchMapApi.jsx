@@ -77,8 +77,8 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
                 function getListItem(index, place) {
                     const el = document.createElement("li");
                     let itemStr = `<span class="${styles.markerbg} marker_${index + 1}}"></span>
-                        <p>${index + 1}</p>
-                    <div class="${styles.info}">
+                          <p>${index + 1}</p>
+                      <div class="${styles.info}">
                         <p>${place.place_name}</p>`;
 
                     if (place.road_address_name) {

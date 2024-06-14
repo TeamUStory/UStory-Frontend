@@ -20,14 +20,15 @@ const EditMypage = () => {
   const [nicknameButtonDisabled, setNicknameButtonDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [editSuccess, setEditSuccess] = useState(false);
-  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [pwCheck, setPwCheck] = useState(false);
   const { fetchData: fetchUserData, data: userData } = useAxios();
   const { fetchData: fetchNicknameData, data: nicknameData } = useAxios();
   const { fetchData: fetchEditUser, data: editUserData } = useAxios();
   const { fetchData: fetchDeleteUser, response: deleteUserData } = useAxios();
   const navigator = useNavigate();
-
+  
+  const text = "탈퇴";
   const nickname = watch('nickname');
 
   useEffect(() => {
@@ -113,10 +114,10 @@ const EditMypage = () => {
 
   // 찐탈퇴
   const handleLastWithdrawal = async () => {
-    if(userData.password === password) {
+    if(text === message) {
       await fetchDeleteUser(User.deleteUser());
       setPwCheck(false);
-    }  else if (userData.password !== password) {
+    }  else if (text !== message) {
       setPwCheck(true);
     }
   }
@@ -124,7 +125,6 @@ const EditMypage = () => {
   useEffect(() => {
     if (deleteUserData && deleteUserData.status === 200) {
       navigator('/login');
-      console.log(deleteUserData)
     }
   }, [deleteUserData, navigator]);
 
@@ -206,9 +206,10 @@ const EditMypage = () => {
         <Modal closeFn={closeModal}>
           <Modal.Icon><img src={BanImg} alt="ban" /></Modal.Icon>
           <Modal.Body>
-            <p>비밀번호를 입력하면 탈퇴가 완료됩니다.</p>
-            <input type="password" placeholder='비밀번호 입력' className={styles.input} value={password} onChange={(e) => setPassword(e.target.value)}/>
-            {pwCheck ? <span className={styles.error} style={{marginTop:"15px", display:"inline-block"}}>비밀번호가 틀렸습니다.</span> : null}
+            <p>아래 메세지를 똑같이 입력해 주세요.</p>
+            <span className={styles.needMessage}>"{text}"</span>
+            <input type="text" placeholder='메세지 입력' className={styles.input} value={message} onChange={(e) => setMessage(e.target.value)}/>
+            {pwCheck ? <span className={styles.error} style={{marginTop:"15px", display:"inline-block"}}>메세지가 맞지 않습니다.</span> : null}
           </Modal.Body>
           <Modal.Button>
             <Button type="button" label="탈퇴하기" variant="active" onClick={handleLastWithdrawal}/>
