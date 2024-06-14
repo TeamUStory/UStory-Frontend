@@ -20,13 +20,6 @@ const MapApi = ({ width = '100%', height = '344px', borderRadius = "20px" }) => 
         fetchPaperListAll();
     }, []);
 
-    // data
-    useEffect(() => {
-        if (paperData) {
-            console.log(paperData);
-        }
-    }, [paperData]);
-
     useEffect(() => {
         // Kakao 지도 API 스크립트 동적으로 추가
         const script = document.createElement('script');
