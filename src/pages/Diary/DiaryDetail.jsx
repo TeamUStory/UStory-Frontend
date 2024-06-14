@@ -56,7 +56,7 @@ const DiaryDetail = () => {
         if (diaryData) {
             setDiaryDetail(diaryData);
             setMembers(diaryData.users);
-            
+
             if(diaryData.diaryCategory === "개인"){
                 setIsIndividual(true);
             }

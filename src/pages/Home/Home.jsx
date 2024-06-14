@@ -14,6 +14,7 @@ import Paper from "@/apis/api/Paper";
 import useAxios from "@/hooks/useAxios";
 import User from "@/apis/api/User";
 import { makeArray } from '@/utils/makeArray';
+import { truncateText } from "@/utils/truncateText";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -92,7 +93,7 @@ const Home = () => {
                                                 <div className={styles.diaryItem}>
                                                     <img src={diary.imgUrl} alt={diary.name} />
                                                     <div className={styles.diaryContent}>
-                                                        <p className={styles.name}>{diary.name}</p>
+                                                        <p className={styles.name}>{truncateText(diary.name, 10)}</p>
                                                         <p className={styles.diaryCategory}>{diary.diaryCategory}</p>
                                                     </div>
                                                 </div>

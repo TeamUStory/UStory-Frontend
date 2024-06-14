@@ -39,7 +39,7 @@ const AddMember = () => {
         };
 
         initializeMembers();
-    }, [diaryMembers]);
+    }, []);
 
     // 친구 존재에 따라 친구들 리스트 추가
     useEffect(() => {
