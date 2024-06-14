@@ -30,6 +30,7 @@ const DiaryDetail = () => {
     });
     const [paperList, setPaperList] = useState([]);
     const [members, setMembers] = useState([]);
+    const [isIndividual, setIsIndividual] = useState(false);
 
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
     const { data: paperData, fetchData: fetchPaperData } = useAxios();
@@ -55,6 +56,10 @@ const DiaryDetail = () => {
         if (diaryData) {
             setDiaryDetail(diaryData);
             setMembers(diaryData.users);
+            
+            if(diaryData.diaryCategory === "개인"){
+                setIsIndividual(true);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [diaryData]);
@@ -101,9 +106,9 @@ const DiaryDetail = () => {
                                 label="수정하기"
                                 onClick={() => navigate(`/edit/diary/${id}`)}
                             />
-                            <button className={styles.exitButton} onClick={handleExitClick}>
+                            {!isIndividual && <button className={styles.exitButton} onClick={handleExitClick}>
                                 나가기
-                            </button>
+                            </button>}
                         </div>
                     )}
                 </div>

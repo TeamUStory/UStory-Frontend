@@ -26,6 +26,9 @@
 
             .membersSearchContainer {
                 overflow-y: auto;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+
                 background-color: $white1;
                 width: 100%;
                 border-radius: 20px 20px 0 0;
@@ -62,6 +65,10 @@
                     }
                 }
                 
+            }
+
+            .membersSearchContainer::-webkit-scrollbar {
+                display: none;
             }
         
             .membersContainer {
@@ -134,7 +141,12 @@
             z-index: -2;
             height: 80vh;
             overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
             
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+
             border-radius: 20px;
             border: 1px solid $black4;
             background-color: #f8f8f8;
@@ -143,6 +155,10 @@
                 text-align: center;
                 z-index: -3;
             }
+        }
+        
+        .noResultContainer::-webkit-scrollbar {
+            display: none;
         }
 
     }

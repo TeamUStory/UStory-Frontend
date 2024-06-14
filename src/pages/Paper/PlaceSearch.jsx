@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./PlaceSearch.module.scss";
 import SearchMapApi from "@/apis/MapApis/SearchMapApi";
 import InputField from "@/components/InputField/InputField";
@@ -15,6 +15,14 @@ const PlaceSearch = () => {
     const [inputText, setInputText] = useState("");
     const [place, setPlace] = useState("");
     const [placeInfo, setPlaceInfo] = useState({});
+
+    useEffect(() => {
+        const hasReloaded = sessionStorage.getItem('hasReloaded');
+        if (!hasReloaded) {
+            sessionStorage.setItem('hasReloaded', 'true');
+            window.location.reload();
+        }
+    }, []);
 
     const onChange = (e) => {
         setInputText(e.target.value);

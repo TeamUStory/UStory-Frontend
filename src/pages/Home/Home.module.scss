@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     box-sizing: border-box;
 
     .header {
@@ -19,7 +19,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        
+
         box-sizing: border-box;
         padding: 20px;
         background-color: $white1;
@@ -30,33 +30,33 @@
         p {
             font-size: 16px;
             font-weight: 600;
-            
+
             .nickname {
                 font-weight: 700;
                 color: $point-color1;
             }
         }
     }
-    
-    .contents{
+
+    .contents {
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 20px;
-        
+
         padding-top: 83px;
         padding-bottom: 83px;
         overflow-y: auto;
-        
-        .mapContainer{
+
+        .mapContainer {
             padding: 0 20px;
             width: 100%;
             box-sizing: border-box;
         }
 
-        #map{
-          border-radius: 20px !important;
+        #map {
+            border-radius: 20px !important;
         }
 
         .diaryContainer {
@@ -75,7 +75,7 @@
                 font-size: 16px;
                 font-weight: 600;
             }
-            
+
             .diaryList {
                 display: flex;
                 flex-direction: column;
@@ -86,13 +86,13 @@
                 background-color: $white1;
                 border-radius: 20px;
                 overflow: hidden;
-                
+
                 button {
                     width: 100%;
                     padding: 0;
                     text-align: left;
 
-                    .diaryItem{
+                    .diaryItem {
                         display: flex;
                         gap: 17px;
 
@@ -102,14 +102,14 @@
                             border: 1px solid $black5;
                             border-radius: 10px;
                         }
-                        
+
                         .diaryContent {
-                            
+
                             .diaryName {
                                 font-size: 14px;
                                 font-weight: 600;
                             }
-    
+
                             .diaryCategory {
                                 font-size: 12px;
                                 font-weight: 400;
@@ -118,6 +118,7 @@
                         }
                     }
                 }
+
                 hr {
                     background: $black4;
                     border: 0px;
@@ -128,7 +129,7 @@
                 }
             }
         }
-        
+
         .recordContainer {
             width: 100%;
             display: flex;
@@ -142,7 +143,7 @@
                 font-size: 16px;
                 font-weight: 600;
             }
-            
+
             .recordsList {
                 display: flex;
                 overflow-x: auto;
@@ -150,10 +151,17 @@
                 gap: 21px;
                 padding-top: 11px;
                 width: 100%;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+
                 svg {
-                    width:12px;
+                    width: 12px;
                 }
             }
+            .recordsList::-webkit-scrollbar {
+                display: none;
+            }
+
             .noRecordList {
                 width: 100%;
                 border: $black4 1px dashed;

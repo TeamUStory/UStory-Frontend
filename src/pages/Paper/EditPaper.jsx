@@ -167,6 +167,14 @@ const EditPaper = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="제목" placeholder="제목 입력" className={styles.input} {...register("title", { required: true })} />
                     <PaperImageUpload onImageUrlsChange={handleImageUrlsChange} imgUrls={images} thumbnail={thumbnailUrl} />
+                    <div className={styles.PlaceContainer}>
+                        <p>장소</p>
+                        <div className={styles.PlaceSearch} onClick={handlePlaceSearchClick}>
+                            <InputField placeholder="장소 검색" className={styles.input} disabled value={placeInformation.store ? `${placeInformation.store}` : ""} />
+                            <PlaceMark color="#AAAAAA" />
+                        </div>
+                        <MapApiPlace height="218px" coordinateX={placeInformation.coordinateX} coordinateY={placeInformation.coordinateY} />
+                    </div>
                     <Controller
                         name="visitedAt"
                         control={control}
@@ -178,15 +186,6 @@ const EditPaper = () => {
                             </div>
                         )}
                     />
-
-                    <div className={styles.PlaceContainer}>
-                        <p>장소</p>
-                        <div className={styles.PlaceSearch} onClick={handlePlaceSearchClick}>
-                            <InputField placeholder="장소 검색" className={styles.input} disabled value={placeInformation.store ? `${placeInformation.store}` : ""} />
-                            <PlaceMark color="#AAAAAA" />
-                        </div>
-                        <MapApiPlace height="218px" coordinateX={placeInformation.coordinateX} coordinateY={placeInformation.coordinateY} />
-                    </div>
 
                     <Button label="수정하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>

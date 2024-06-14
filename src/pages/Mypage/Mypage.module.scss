@@ -180,11 +180,11 @@
     }
 
     .location{
-      background: url("/src/assets/images/location_bg.png") no-repeat right 16px bottom 22px #D0EEEC30;
+      background: url("@/assets/images/location_bg.png") no-repeat right 16px bottom 22px #D0EEEC30;
     }
 
     .diary{
-      background: url("/src/assets/images/save_bg.png") no-repeat right 16px bottom 22px #F7DEBD30;
+      background: url("@/assets/images/save_bg.png") no-repeat right 16px bottom 22px #F7DEBD30;
     }
   }
 }

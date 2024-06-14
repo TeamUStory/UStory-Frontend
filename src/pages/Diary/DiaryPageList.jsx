@@ -89,7 +89,7 @@ const DiaryPageList = () => {
         if (isIntersecting && !loading) {
             setPage((prevPage) => prevPage + 1);
         }
-    }, [isIntersecting, loading]);
+    }, [isIntersecting]);
 
     // 2개씩 나뉜 기록 모음
     const groupedPostItems = makeArray(postItems, 2);
@@ -106,8 +106,8 @@ const DiaryPageList = () => {
                     onDateChange={(start, end) => {
                         setStartDate(start);
                         setEndDate(end);
-                        setPage(1); // Reset page number on date change
-                        setPaperItems([]); // Clear paper items on date change
+                        setPage(1);
+                        setPaperItems([]);
                     }}
                 />
             </div>
