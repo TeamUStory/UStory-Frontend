@@ -65,7 +65,7 @@ const SelectDiary = () => {
 
     // 선택한 다이어리 보내주기
     const handleAddClick = () => {
-        const destinationPath = paperId ? `edit/paper/${paperId}` : `/register/diary`;
+        const destinationPath = paperId ? `edit/paper/${paperId}` : `/register/paper`;
         navigate(destinationPath, { state: { paperId: paperId, selectedDiary: selectedDiary } });
     };
 

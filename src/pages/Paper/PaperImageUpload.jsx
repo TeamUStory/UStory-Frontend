@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./PaperImageUpload.module.scss";
 import InputField from "@/components/InputField/InputField";
@@ -10,7 +10,7 @@ import useAxios from "@/hooks/useAxios";
 import S3Storage from "@/apis/api/S3Storage";
 import axios from "axios";
 
-const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
+const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail,  }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [uploadedImage, setUploadedImage] = useState(null);
     const [croppedImage, setCroppedImage] = useState(null);
@@ -22,13 +22,17 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
 
     const { data: presignedUrlData, fetchData: fetchPresignedUrlData } = useAxios();
 
-    // // imgUrls로 업로드,
-    // useEffect(() => {
-    //     setImageUrls([...imgUrls]);
-    //     setThumbnailImageUrl(thumbnail);
-    // }, [imgUrls, thumbnail]);
+    const firstRender = useRef(true);
 
-    // 로컬 스토리지에서 이미지, 썸네일 URL 불러오기
+    // imgUrls와 thumbnail로 초기화
+    useEffect(() => {
+        if (imgUrls || thumbnail) {
+            setImageUrls([...imgUrls]);
+            setThumbnailImageUrl(thumbnail);
+        }
+    }, [imgUrls, thumbnail]);
+
+    // 로컬 스토리지에서 이미지와 썸네일 URL 불러오기
     useEffect(() => {
         const savedImageUrls = JSON.parse(localStorage.getItem("paperImageUrls") || "[]");
         const savedThumbnailImageUrl = localStorage.getItem("thumbnailImageUrl");
@@ -45,7 +49,7 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
 
-        // 이미지 url 갯수 제한
+        // 이미지 URL 갯수 제한
         if (imageUrls.length + (thumbnailImageUrl ? 1 : 0) >= 5) {
             alert("최대 5개의 이미지만 업로드할 수 있습니다.");
             return;
@@ -189,6 +193,17 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
             localStorage.removeItem("thumbnailImageUrl");
         }
     };
+
+    useEffect(() => {
+        if (firstRender.current) {
+            firstRender.current = false;
+            return;
+        }
+        if (onImageUrlsChange) {
+            onImageUrlsChange(imageUrls, thumbnailImageUrl);
+        }
+    }, [imageUrls, thumbnailImageUrl]);
+
 
     const closeModal = () => {
         setIsModalOpen(false);
