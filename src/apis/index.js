@@ -41,6 +41,8 @@ api.interceptors.request.use(
   }
 );
 
+
+
 // 응답
 api.interceptors.response.use(
   (res) => {
@@ -52,9 +54,27 @@ api.interceptors.response.use(
         console.error('BadRequest - 400');
       } else if (err.response && err.response.status === HttpStatusCode.Unauthorized) {
         console.error('Unauthorized - 401');
-        
+
         // 토큰 만료 시 재발급 api
         try {
+          // 엑세스 토큰 재발급
+          const refresh = async () => {
+            try {
+              const res = await api.post('/jwt/re-issue');
+              
+              if (res?.data) {
+                let newAccessToken = res.data;
+                localStorage.setItem('accessToken', newAccessToken);
+                return newAccessToken;
+              } else {
+                throw new Error('No value present');
+              }
+            } catch (err) {
+              console.error('토큰 재발급 실패', err);
+              throw err;
+            }
+          };
+
           const newAccessToken = await refresh();
           err.config.headers.Authorization = `Bearer ${newAccessToken}`;
           return api.request(err.config);
@@ -76,21 +96,3 @@ api.interceptors.response.use(
     return Promise.reject(err);
   }
 );
-
-// 엑세스 토큰 재발급
-export const refresh = async () => {
-  try {
-    const res = await api.post('/jwt/re-issue');
-    
-    if (res?.data) {
-      let newAccessToken = res.data;
-      localStorage.setItem('accessToken', newAccessToken);
-      return newAccessToken;
-    } else {
-      throw new Error('No value present');
-    }
-  } catch (err) {
-    console.error('토큰 재발급 실패', err);
-    throw err;
-  }
-};
