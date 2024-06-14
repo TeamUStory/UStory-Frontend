@@ -12,13 +12,14 @@
 
         box-sizing: border-box;
         padding: 20px;
+        z-index: 999;
     }   
 
     .pageList {
         display: flex;
         flex-direction: column;
 
-        padding: 134px 20px 64px 20px;
+        padding: 134px 20px 100px 20px;
         box-sizing: border-box;
         width: 100%;
         gap: 15px;
