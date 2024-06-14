@@ -23,6 +23,8 @@ import Carousel from "@/components/Carousel/Carousel";
 import CarouselItem from "@/components/Carousel/CarouselItem";
 import Diary from "@/apis/api/Diary";
 import BottomBar from "@/components/BottomBar/BottomBar";
+import CompletedImage from "@/assets/images/completedImage.png";
+import CancelImage from "@/assets/images/cancelImage.png"
 
 const PaperPage = () => {
     const navigate = useNavigate();
@@ -330,7 +332,7 @@ const PaperPage = () => {
             </div>
             {isModalOpen && (
                 <Modal closeFn={closeModal}>
-                    <Modal.Icon>{isSaveIconFilled ? <img src="@/assets/images/completedImage.png" alt="저장" /> : <img src="@/assets/images/cancelImage.png" alt="취소" />}</Modal.Icon>
+                    <Modal.Icon>{isSaveIconFilled ? <img src={CompletedImage} alt="저장" /> : <img src={CancelImage} alt="취소" />}</Modal.Icon>
                     <Modal.Body>
                         <p>{isSaveIconFilled ? "장소 저장이 완료되었습니다." : "장소 저장이 취소되었습니다."}</p>
                     </Modal.Body>

@@ -11,6 +11,7 @@ import Button from "@/components/Button/Button";
 import Diary from "@/apis/api/Diary";
 import useAxios from "@/hooks/useAxios";
 import Modal from "@/components/Modal/Modal";
+import CompletedImage from "@/assets/images/completedImage.png"
 
 // 카테고리
 const categories = [
@@ -127,7 +128,7 @@ const EditDiary = () => {
             return Object.values(formFields).every((value) => !!value) && members.length > 0;
         };
 
-        if (isIndividual && isFormValid()) {
+        if (isFormValid()) {
             setButtonActive("active");
         } else {
             setButtonActive("disabled");
@@ -139,7 +140,15 @@ const EditDiary = () => {
         localStorage.removeItem("diaryFormData");
         localStorage.removeItem("selectedMembers");
         localStorage.removeItem("diaryImageURL");
-        await fetchUpdatedDiaryData(Diary.putDiary(id, data));
+        
+        const formData = {
+            ...data,
+            diaryCategory: isIndividual ? "INDIVIDUAL" : data.diaryCategory,
+            users: members
+        };
+
+        console.log(formData);
+        await fetchUpdatedDiaryData(Diary.putDiary(id, formData));
         setIsModalOpen(true);
         reset();
     };
@@ -154,7 +163,7 @@ const EditDiary = () => {
             imgUrl: imgUrl,
             users: members,
         };
-        if (formData.name && formData.diaryCategory && formData.description && formData.color && formData.imgUrl && formData.users.length > 0) {
+        if (formData.name && formData.description && formData.color && formData.imgUrl && formData.users.length > 0) {
             handleSubmit(onSubmit)(formData);
         }
     };
@@ -164,6 +173,7 @@ const EditDiary = () => {
         navigate(`/diary/${id}`);
     };
 
+    console.log(members);
     return (
         <div className={styles.container}>
             <SubHeader pageTitle="다이어리 수정하기" />
@@ -254,7 +264,7 @@ const EditDiary = () => {
                 {isModalOpen && (
                     <Modal closeFn={closeModal}>
                         <Modal.Icon>
-                            <img src="@/assets/images/completedImage.png" alt="완료" />
+                            <img src={CompletedImage} alt="완료" />
                         </Modal.Icon>
                         <Modal.Body>
                             <p>다이어리 수정이 완료되었습니다.</p>

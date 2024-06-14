@@ -12,6 +12,7 @@ import Modal from "@/components/Modal/Modal";
 import DiaryImageUpload from "./DiaryImageUpload";
 import Diary from "@/apis/api/Diary";
 import useAxios from "@/hooks/useAxios";
+import CompletedImage from "@/assets/images/completedImage.png";
 
 // 카테고리
 const categories = [
@@ -232,7 +233,7 @@ const RegisterDiary = () => {
                 {isModalOpen && (
                     <Modal closeFn={closeModal}>
                         <Modal.Icon>
-                            <img src="@/assets/images/completedImage.png" alt="완료" />
+                            <img src={CompletedImage} alt="완료" />
                         </Modal.Icon>
                         <Modal.Body>
                             <p>다이어리 추가가 완료되었습니다.</p>

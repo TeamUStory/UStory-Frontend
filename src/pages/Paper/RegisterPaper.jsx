@@ -15,6 +15,7 @@ import PlaceMark from "@/assets/icons/PlaceMark";
 import { format } from "date-fns";
 import useAxios from "@/hooks/useAxios";
 import Paper from "@/apis/api/Paper";
+import CompletedImage from "@/assets/images/completedImage.png";
 
 const RegisterPaper = () => {
     const navigate = useNavigate();
@@ -191,7 +192,7 @@ const RegisterPaper = () => {
                 {isModalOpen && (
                     <Modal closeFn={closeModal}>
                         <Modal.Icon>
-                            <img src="@/assets/images/completedImage.png" alt="완료" />
+                            <img src={CompletedImage} alt="완료" />
                         </Modal.Icon>
                         <Modal.Body>
                             <p>

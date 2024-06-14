@@ -13,6 +13,7 @@ import MapApiPlace from "@/apis/MapApis/MapApiPlace";
 import PlaceMark from "@/assets/icons/PlaceMark";
 import useAxios from "@/hooks/useAxios";
 import Paper from "@/apis/api/Paper";
+import CompletedImage from "@/assets/images/completedImage.png";
 
 const EditPaper = () => {
     const navigate = useNavigate();
@@ -192,7 +193,7 @@ const EditPaper = () => {
                 {isModalOpen && (
                     <Modal closeFn={closeModal}>
                         <Modal.Icon>
-                            <img src="@/assets/images/completedImage.png" alt="완료" />
+                            <img src={CompletedImage} alt="완료" />
                         </Modal.Icon>
                         <Modal.Body>
                             <p>페이퍼 수정이 완료되었습니다.</p>
