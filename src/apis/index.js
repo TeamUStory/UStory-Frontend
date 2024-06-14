@@ -7,6 +7,24 @@ axios.defaults.timeout = 5000;
 
 export const api = axios.create();
 
+// 엑세스 토큰 재발급
+export const refresh = async () => {
+  try {
+    const res = await api.post('/jwt/re-issue');
+    
+    if (res?.data) {
+      let newAccessToken = res.data;
+      localStorage.setItem('accessToken', newAccessToken);
+      return newAccessToken;
+    } else {
+      throw new Error('No value present');
+    }
+  } catch (err) {
+    console.error('토큰 재발급 실패', err);
+    throw err;
+  }
+};
+
 // reject 했을때, error가 useAXios로 넘어가지 않을 시 -> throw Err 변경
 // 요청
 api.interceptors.request.use(
@@ -57,24 +75,6 @@ api.interceptors.response.use(
 
         // 토큰 만료 시 재발급 api
         try {
-          // 엑세스 토큰 재발급
-          const refresh = async () => {
-            try {
-              const res = await api.post('/jwt/re-issue');
-              
-              if (res?.data) {
-                let newAccessToken = res.data;
-                localStorage.setItem('accessToken', newAccessToken);
-                return newAccessToken;
-              } else {
-                throw new Error('No value present');
-              }
-            } catch (err) {
-              console.error('토큰 재발급 실패', err);
-              throw err;
-            }
-          };
-
           const newAccessToken = await refresh();
           err.config.headers.Authorization = `Bearer ${newAccessToken}`;
           return api.request(err.config);
