@@ -17,15 +17,18 @@ const SavePageList = () => {
   const intersecting = useInfiniteScroll(targetEl);
 
   // 저장된 기록 가져오기
+  const loadBookmarks = async () => {
+    setLoading(true);
+    const size = 20;
+    setLoading(true);
+    await fetchData(BookMark.getBookmarkPaperList({page, size}));
+    setLoading(false);
+  };
+
+  // 초기 데이터 불러오기
   useEffect(() => {
-    const loadBookmarks = async () => {
-      const size = 20;
-      setLoading(true);
-      await fetchData(BookMark.getBookmarkPaperList({page, size}));
-      setLoading(false);
-    };
     loadBookmarks();
-  }, [fetchData, page]);
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -37,7 +40,14 @@ const SavePageList = () => {
     if (intersecting && !loading) {
       setPage((prev) => prev + 1);
     }
-  }, [intersecting, loading]);
+  }, [intersecting]);
+
+  // 페이지 변경에 따른 데이터 로드
+  useEffect(() => {
+    if (page > 1) {
+      loadBookmarks();
+    }
+  }, [page]);
 
   return (
     <>

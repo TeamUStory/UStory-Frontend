@@ -24,7 +24,7 @@ const PageList = () => {
   const loadMoreData = async () => {
     setLoading(true);
     const size = 20;
-    const requestTime = new Date().toISOString().split('.')[0];
+    const requestTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T');
     await fetchData(Paper.getPaperList({
       size: size,
       page: page,

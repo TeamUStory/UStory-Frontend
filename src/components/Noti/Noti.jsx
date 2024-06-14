@@ -14,7 +14,7 @@ const Noti = () => {
   // 알림 로드
   useEffect(() => {
     const fetchNotiData = async () => {
-      const requestTime = new Date().toISOString().split('.')[0];
+      const requestTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T');
       await fetchData(Notice.getNoticeList({ requestTime }));
     }
     fetchNotiData();
