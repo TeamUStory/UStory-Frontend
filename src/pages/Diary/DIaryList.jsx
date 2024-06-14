@@ -39,7 +39,7 @@ const DiaryList = () => {
 
     const fetchDiaryList = async (category, page) => {
         setLoading(true);
-        const requestTime = new Date().toISOString().split('.')[0];
+        const requestTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T');
         const params = category ? { requestTime, diaryCategory: category.en, page } : { requestTime, page };
         await fetchDiaryData(Diary.getDiaryList(params));
         setLoading(false);

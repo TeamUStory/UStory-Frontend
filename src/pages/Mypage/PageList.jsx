@@ -41,7 +41,7 @@ const PageList = () => {
   // 데이터가 업데이트될 때 userSaveList 갱신
   useEffect(() => {
     if (data) {
-      setUserSaveList((prevList) => [...prevList, ...data]); // 기존 리스트에 새 데이터 추가
+      setUserSaveList((prevList) => [...prevList, ...data]);
     }
   }, [data]);
 

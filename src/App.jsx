@@ -57,7 +57,7 @@ function App() {
                         <Route path="/friend/search" element={<AddMember />} />
                         <Route path="/diary/:id" element={<DiaryDetail />} />
                         <Route path="/edit/diary/:id" element={<EditDiary />} />
-                        <Route
+                        <Route 
                             path="/papers/diary/:id"
                             element={<DiaryPageList />}
                         />
