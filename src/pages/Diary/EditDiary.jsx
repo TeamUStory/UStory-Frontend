@@ -47,6 +47,7 @@ const EditDiary = () => {
     const [members, setMembers] = useState([]);
     const [buttonActive, setButtonActive] = useState("disabled");
     const [imgUrl, setImgUrl] = useState("");
+    const [isIndividual, setIndividual] = useState(false);
 
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
     const { fetchData: fetchUpdatedDiaryData } = useAxios();
@@ -78,6 +79,9 @@ const EditDiary = () => {
             setMembers(diaryData.users.map((user) => user.nickname));
             setDiaryCategory(categories.find((category) => category.label === diaryData.diaryCategory)?.value || "");
             setImgUrl(diaryData.imgUrl);
+            if (diaryData.diaryCategory === "개인"){
+                setIndividual(true);
+            }
         }
     }, [diaryData]);
 
@@ -99,7 +103,7 @@ const EditDiary = () => {
     useEffect(() => {
         const formData = {
             name: watch("name"),
-            diaryCategory: watch("diaryCategory"),
+            diaryCategory: isIndividual ? "INDIVIDUAL" : watch("diaryCategory"),
             description: watch("description"),
             color: watch("color"),
             imgUrl: imgUrl,
@@ -115,7 +119,6 @@ const EditDiary = () => {
         const isFormValid = () => {
             const formFields = {
                 name: watch("name"),
-                diaryCategory: watch("diaryCategory"),
                 description: watch("description"),
                 color: watch("color"),
                 imgUrl: imgUrl,
@@ -124,7 +127,7 @@ const EditDiary = () => {
             return Object.values(formFields).every((value) => !!value) && members.length > 0;
         };
 
-        if (isFormValid()) {
+        if (isIndividual && isFormValid()) {
             setButtonActive("active");
         } else {
             setButtonActive("disabled");
@@ -145,7 +148,7 @@ const EditDiary = () => {
         e.preventDefault();
         const formData = {
             name: watch("name"),
-            diaryCategory: watch("diaryCategory"),
+            diaryCategory: isIndividual ? "INDIVIDUAL" : watch("diaryCategory"),
             description: watch("description"),
             color: watch("color"),
             imgUrl: imgUrl,
@@ -168,7 +171,7 @@ const EditDiary = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="다이어리 이름" placeholder="다이어리 이름 입력" className={styles.input} {...register("name", { required: true })} />
                     <DiaryImageUpload onImageUrlChange={handleImageUrl} imgUrl={imgUrl} />
-                    <Controller
+                    {!isIndividual && <Controller
                         name="diaryCategory"
                         control={control}
                         defaultValue=""
@@ -185,7 +188,7 @@ const EditDiary = () => {
                                 defaultValue="카테고리"
                             />
                         )}
-                    />
+                    />}
                     <Controller
                         name="color"
                         control={control}
@@ -214,7 +217,7 @@ const EditDiary = () => {
                             </div>
                         )}
                     />
-                    <div className={styles.membersSelect}>
+                    {!isIndividual && <div className={styles.membersSelect}>
                         <div className={styles.title}>
                             <div className={styles.phrases}>
                                 <p>멤버 </p>
@@ -244,7 +247,7 @@ const EditDiary = () => {
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </div>}
                     <InputField label="소개" placeholder="다이어리 소개 입력" id="diaryIntroduction" style={{ width: "100%" }} {...register("description")} />
                     <Button label="수정하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>
