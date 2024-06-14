@@ -32,8 +32,10 @@ const PlaceSearch = () => {
     const updatePlaceInfo = (newPlaceInfo) => {
         setPlaceInfo(newPlaceInfo);
     }
-
+    
     const handleAddClick = () => {
+        localStorage.setItem('placeInfo', JSON.stringify(placeInfo));
+        console.log(placeInfo);
         navigate('/register/paper',{state : {placeInfo}});
     }
 

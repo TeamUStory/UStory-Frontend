@@ -3,6 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import "@/assets/styles/global.scss";
 import Loading from "@/components/Loading/Loading";
 import { useAuth } from "@/hooks/useAuth";
+import useScrollToTop from "@/hooks/useScrollToTop";
+import KakaoCallback from "@/components/KakaoCallback/KakaoCallback";
+import Error from "@/components/Error/Error";
 
 const Home = lazy(() => import("./pages/Home/Home"));
 const DiaryList = lazy(() => import("./pages/Diary/DIaryList"));
@@ -27,22 +30,18 @@ const SelectDiary = lazy(() => import("./pages/Paper/SelectDiary"));
 const PaperPage = lazy(() => import("./pages/Paper/PaperPage"));
 const EditPaper = lazy(() => import("./pages/Paper/EditPaper"));
 const PlaceSearch = lazy(() => import("./pages/Paper/PlaceSearch"));
-const KakaoCallback = lazy(() =>
-    import("@/components/KakaoCallback/KakaoCallback")
-);
-const Error = lazy(() => import("@/components/Error/Error"));
 
 function App() {
     const { isLoggedIn } = useAuth();
+    useScrollToTop();
 
     return (
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading isLodding={true} />}>
             <Routes>
                 <Route
                     path="/login/oauth2/code/kakao"
                     element={<KakaoCallback />}
                 />
-                <Route path="*" element={<Error />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/findpassword" element={<FindPassword />} />
@@ -58,7 +57,7 @@ function App() {
                         <Route path="/friend/search" element={<AddMember />} />
                         <Route path="/diary/:id" element={<DiaryDetail />} />
                         <Route path="/edit/diary/:id" element={<EditDiary />} />
-                        <Route
+                        <Route 
                             path="/papers/diary/:id"
                             element={<DiaryPageList />}
                         />
@@ -82,7 +81,7 @@ function App() {
                             element={<PaperPage />}
                         />
                         <Route
-                            path="/editpaper/:paperId"
+                            path="/edit/paper/:paperId"
                             element={<EditPaper />}
                         />
                         <Route path="/search/place" element={<PlaceSearch />} />
@@ -90,6 +89,7 @@ function App() {
                 ) : (
                     <Route path="*" element={<Login />} />
                 )}
+                <Route path="*" element={<Error />} />
             </Routes>
         </Suspense>
     );

@@ -38,32 +38,20 @@ const markerColors = [
 const RegisterDiary = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { register, handleSubmit, setValue, watch, control, reset } =
-        useForm();
-    const { data: diaryNum, fetchData: fetchDiaryData } = useAxios();
-
+    const { register, handleSubmit, setValue, watch, control, reset } = useForm();
     const [selectedColor, setSelectedColor] = useState("");
     const [diaryCategory, setDiaryCategory] = useState("");
-    const [members, setMembers] = useState(
-        location.state?.selectedMembers || []
-    );
+    const [members, setMembers] = useState(location.state?.selectedMembers || []);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [buttonActive, setButtonActive] = useState("disabled");
     const [diaryId, setDiaryId] = useState(0);
 
+    const { data: diaryNum, fetchData: fetchDiaryData } = useAxios();
     const watchAllFields = watch();
 
     const handleImageUrl = (url) => {
         setValue("imgUrl", url);
     };
-
-    // 맨처음 들어왔을때 localstorage 지우기
-    useEffect(() => {
-        localStorage.removeItem("diaryFormData");
-        localStorage.removeItem("selectedMembers");
-        localStorage.removeItem("diaryImageURL");
-        reset();
-    },[])
 
     // 선택한 멤버들 목록 불러오기
     useEffect(() => {
@@ -88,10 +76,7 @@ const RegisterDiary = () => {
             setValue("color", formData.color);
             setValue("imgUrl", formData.imgUrl);
             setDiaryCategory(formData.diaryCategory);
-            setSelectedColor(
-                markerColors.find((color) => color.color === formData.color)
-                    ?.hexcode || ""
-            );
+            setSelectedColor(markerColors.find((color) => color.color === formData.color)?.hexcode || "");
         }
     }, [setValue]);
 
@@ -112,9 +97,7 @@ const RegisterDiary = () => {
 
     // 모든 항목의 유효성 검사
     useEffect(() => {
-        const isFormValid = Object.values(watchAllFields).every(
-            (value) => !!value
-        );
+        const isFormValid = Object.values(watchAllFields).every((value) => !!value) && members.length > 0;
         if (!isFormValid) {
             setButtonActive("disabled");
         } else {
@@ -150,14 +133,7 @@ const RegisterDiary = () => {
             users: members,
         };
 
-        if (
-            formData.name &&
-            formData.diaryCategory &&
-            formData.description &&
-            formData.color &&
-            formData.imgUrl &&
-            formData.users.length > 0
-        ) {
+        if (formData.name && formData.diaryCategory && formData.description && formData.color && formData.imgUrl && formData.users.length > 0) {
             handleSubmit(onSubmit)(formData);
         }
     };
@@ -172,12 +148,7 @@ const RegisterDiary = () => {
             <SubHeader pageTitle="다이어리 만들기" />
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <InputField
-                        label="다이어리 이름"
-                        placeholder="다이어리 이름 입력"
-                        className={styles.input}
-                        {...register("name", { required: true })}
-                    />
+                    <InputField label="다이어리 이름" placeholder="다이어리 이름 입력" className={styles.input} {...register("name", { required: true })} />
                     <DiaryImageUpload onImageUrlChange={handleImageUrl} />
                     <Controller
                         name="diaryCategory"
@@ -205,30 +176,22 @@ const RegisterDiary = () => {
                         render={({ field }) => (
                             <div className={styles.markerColorSelect}>
                                 <p>마커 색상</p>
-                                <p className={styles.information}>
-                                    선택한 색상으로 지도에 마커가 생성됩니다.
-                                </p>
+                                <p className={styles.information}>선택한 색상으로 지도에 마커가 생성됩니다.</p>
                                 <div className={styles.colorButtons}>
-                                    {markerColors.map(
-                                        ({ color, hexcode }, index) => (
-                                            <button
-                                                type="button"
-                                                key={index}
-                                                className={
-                                                    selectedColor === hexcode
-                                                        ? styles.selected
-                                                        : ""
-                                                }
-                                                style={{
-                                                    backgroundColor: hexcode,
-                                                }}
-                                                onClick={() => {
-                                                    setSelectedColor(hexcode);
-                                                    field.onChange(color);
-                                                }}
-                                            ></button>
-                                        )
-                                    )}
+                                    {markerColors.map(({ color, hexcode }, index) => (
+                                        <button
+                                            type="button"
+                                            key={index}
+                                            className={selectedColor === hexcode ? styles.selected : ""}
+                                            style={{
+                                                backgroundColor: hexcode,
+                                            }}
+                                            onClick={() => {
+                                                setSelectedColor(hexcode);
+                                                field.onChange(color);
+                                            }}
+                                        ></button>
+                                    ))}
                                 </div>
                             </div>
                         )}
@@ -237,9 +200,7 @@ const RegisterDiary = () => {
                         <div className={styles.title}>
                             <div className={styles.phrases}>
                                 <p>멤버</p>
-                                <p className={styles.information}>
-                                    최대 10명까지
-                                </p>
+                                <p className={styles.information}>최대 10명까지</p>
                             </div>
                             <Link
                                 to="/friend/search"
@@ -258,52 +219,26 @@ const RegisterDiary = () => {
                         </div>
                         <div className={styles.selectedMembers}>
                             {members.map((member, index) => (
-                                <div
-                                    key={index}
-                                    className={styles.selectedMember}
-                                >
-                                    <input
-                                        type="hidden"
-                                        {...register(`users.${index}`)}
-                                        value={member}
-                                    />
+                                <div key={index} className={styles.selectedMember}>
+                                    <input type="hidden" {...register(`users.${index}`)} value={member} />
                                     {member}
                                 </div>
                             ))}
                         </div>
                     </div>
-                    <InputField
-                        label="소개"
-                        placeholder="다이어리 소개 입력"
-                        id="diaryIntroduction"
-                        style={{ width: "100%" }}
-                        {...register("description")}
-                    />
-                    <Button
-                        label="기록하기"
-                        variant={buttonActive}
-                        type="submit"
-                        onClick={handleButtonClick}
-                    />
+                    <InputField label="소개" placeholder="다이어리 소개 입력" id="diaryIntroduction" style={{ width: "100%" }} {...register("description")} />
+                    <Button label="기록하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>
                 {isModalOpen && (
                     <Modal closeFn={closeModal}>
                         <Modal.Icon>
-                            <img
-                                src="/src/assets/images/completedImage.png"
-                                alt="완료"
-                            />
+                            <img src="/src/assets/images/completedImage.png" alt="완료" />
                         </Modal.Icon>
                         <Modal.Body>
                             <p>다이어리 추가가 완료되었습니다.</p>
                         </Modal.Body>
                         <Modal.Button>
-                            <Button
-                                type="button"
-                                label="확인"
-                                variant="active"
-                                onClick={() => navigate(`/diary/${diaryId}`)}
-                            />
+                            <Button type="button" label="확인" variant="active" onClick={() => navigate(`/diary/${diaryId}`)} />
                         </Modal.Button>
                     </Modal>
                 )}

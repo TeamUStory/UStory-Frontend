@@ -28,37 +28,40 @@ const Noti = () => {
   const navigate = useNavigate();
 
   // 알림 조회
-  // 초기 데이터 불러오기
-  const fetchNotiData = async (page) => {
+  const fetchNotiData = async () => {
     setLoading(true);
-    // const size = 10;
-    const requestTime = new Date().toISOString().split('.')[0];
-    const response = await fetchNoti(Notice.getNoticeList({ requestTime }));
-    if (response && response.length > 0) {
-      setNotiList((prevList) => [...prevList, ...response]);
-    }
+    const size = 10;
+    const requestTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T');
+    const params = { size, page, requestTime };
+    await fetchNoti(Notice.getNoticeList(params));
     setLoading(false);
   };
 
-  // useEffect(() => {
-  //   fetchNotiData(page);
-  //   console.log("page: ", page);
-  // }, [page]);
+  useEffect(() => {
+    fetchNotiData();
+  }, []);
 
   // 데이터가 업데이트될 때 userSaveList 갱신
   useEffect(() => {
     if (notiData) {
-      // setNotiList((prevList) => [...prevList, ...notiData]); // 기존 리스트에 새 데이터 추가
-      console.log("notiData: ", notiData);
+      setNotiList((prevList) => [...prevList, ...notiData]); // 기존 리스트에 새 데이터 추가
     }
   }, [notiData]);
 
+
   // 페이지가 변경될 때마다 추가 데이터 불러오기
-  // useEffect(() => {
-  //   if (intersecting && !loading) {
-  //     setPage((prevPage) => prevPage + 1);
-  //   }
-  // }, [intersecting, loading]);
+  useEffect(() => {
+    if (intersecting && !loading) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, [intersecting]);
+
+  // 페이지 변경에 따른 데이터 로드
+  useEffect(() => {
+    if (page > 1) {
+      fetchNotiData();
+    }
+  }, [page]);
 
   // 최신 알림 시간으로 로컬 스토리지 업데이트
   useEffect(() => {

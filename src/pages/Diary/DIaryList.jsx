@@ -39,7 +39,7 @@ const DiaryList = () => {
 
     const fetchDiaryList = async (category, page) => {
         setLoading(true);
-        const requestTime = new Date().toISOString().split('.')[0];
+        const requestTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T');
         const params = category ? { requestTime, diaryCategory: category.en, page } : { requestTime, page };
         await fetchDiaryData(Diary.getDiaryList(params));
         setLoading(false);
@@ -47,7 +47,6 @@ const DiaryList = () => {
 
     useEffect(() => {
         fetchDiaryList(activeTab, page);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeTab, page, fetchDiaryData]);
 
     useEffect(() => {
@@ -65,7 +64,7 @@ const DiaryList = () => {
         if (isIntersecting && !loading) {
             setPage((prevPage) => prevPage + 1);
         }
-    }, [isIntersecting, loading]);
+    }, [isIntersecting]);
 
     // 2개씩 나뉜 다이어리 모음
     const groupedPostItems = makeArray(diaryItems, 2);
