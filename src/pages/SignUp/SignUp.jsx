@@ -26,6 +26,7 @@ const SignUp = () => {
   const { fetchData: fetchEmailData, data: emailData } = useAxios(); // 이메일 인증 요청
   const { fetchData: fetchCode, data: codeData } = useAxios(); // 이메일 인증 코드 확인
   const { fetchData: fetchSignup, data: signUpData } = useAxios(); // 회원가입
+  const { timeLeft, isRunning, startTimer, resetTimer } = useTimer(180);
   const navigate = useNavigate();
 
   const nickname = watch('nickname');
@@ -83,11 +84,11 @@ const SignUp = () => {
     }
   }, [nickname])
 
+  const userData = { email: email };
+
   // 이메일 유효성 검사 로직
   const handleEmailValidation = async () => {
     setEmailButtonDisabled(true);
-
-    const userData = { email: email };
 
     if(!/^\S+@\S+$/.test(email)) {
       setEmailErrorMessage("* 이메일 형식이 올바르지 않습니다.");
@@ -104,8 +105,12 @@ const SignUp = () => {
       }
     );
 
+    // 이메일 인증 요청 버튼 클릭 시 타이머 시작 또는 리셋
+    resetTimer();
+    startTimer();
+
     // 버튼 클릭 할 때 마다 10초 동안 비활성화
-    setInterval(() => {
+    setTimeout(() => {
       setEmailButtonDisabled(false);
     }, 10000);
   };
@@ -113,7 +118,6 @@ const SignUp = () => {
   useEffect(() => {
     if(emailData) {
       setEmailValid(true);
-      startTimer(180)
     } else {
       setEmailValid(false);
     }
@@ -128,15 +132,6 @@ const SignUp = () => {
     }
   
   }, [email])
-
-  const { timeLeft, isRunning, startTimer, resetTimer } = useTimer(180);
-
-  // 이메일 인증요청 버튼 누를 때마다 타이머 초기화
-  useEffect(() => {
-    if(emailButtonDisabled) {
-      resetTimer();
-    }
-  }, [emailButtonDisabled, resetTimer])
 
   // 인증 코드 확인
   const handleVerify = async () => {
