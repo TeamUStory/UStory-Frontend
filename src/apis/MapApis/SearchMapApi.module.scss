@@ -1,1 +1,105 @@
 @import '@/assets/styles/colors.scss';
+
+.bg_white {
+    box-sizing: border-box;
+    padding: 15px 0;
+
+    li {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+
+        p {
+            font-size: 20px;
+            color: $point-color1;
+            font-weight: 600;
+            box-sizing: border-box;
+            padding-right: 20px;
+        }
+
+        .info {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            p {
+                font-weight: 600;
+                font-size: 14px;
+                color: black;
+            }
+
+            span {
+                font-size: 12px;
+                font-weight: 500;
+                color: #616161;
+            }
+
+            .jibun_gray {
+                display: flex;
+                align-items: center;
+                color: $black3;
+                font-weight: 400;
+                font-size: 12px;
+                gap: 5px;
+
+                p {
+                    white-space: nowrap;
+                    border: 1px solid $black3;
+                    border-radius: 5px;
+                    font-weight: 500;
+                    font-size: 12px;
+                    box-sizing: border-box;
+                    padding: 2px 9px;
+                    color: $black3;
+                }
+            }
+        }
+    }
+
+    hr {
+        border: 1px solid $black4;
+        box-sizing: border-box;
+        margin: 18px 0;
+    }
+}
+
+.noResultContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 29px;
+
+    box-sizing: border-box;
+    padding: 34px 0 50px 0;
+
+    svg {
+        width: 37px;
+    }
+
+    p {
+        font-weight: 600;
+        font-size: 14px;
+        color: $black2;
+    }
+}
+
+.wrap {
+    position: relative;
+    bottom: 65px;
+    text-align: left;
+    font-size: 12px;
+    width: fit-content;
+    
+    .customOverlay {
+        font-size: 14px;
+        font-weight: 500;
+        box-sizing: border-box;
+        padding: 9px 19px;
+        border-radius: 100px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.10);
+        background-color: white;
+        top: 100px;
+    }
+}

@@ -4,9 +4,9 @@ export default {
    * @method DELETE
    * @summeray 친구 삭제
    */
-  deleteFriend(friendId) {
+  deleteFriend(friendNickname) {
     return {
-      url: `/friend/${friendId}`,
+      url: `/friend/${friendNickname}`,
       method: "delete"
     }
   },
@@ -53,7 +53,7 @@ export default {
    */
   postFriendRespond(data) {
     return {
-      url: `/friend/approve`,
+      url: `/friend/approve`,
       method: "post",
       data: { ...data }
     }

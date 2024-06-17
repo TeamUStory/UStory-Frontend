@@ -8,7 +8,9 @@ import Button from "@/components/Button/Button";
 import User from "@/apis/api/User";
 import Timer from '@/components/Timer/Timer';
 import useTimer from '@/hooks/useSetInterval';
-import useAxios  from '../../hooks/useAxios';
+import useAxios  from '@/hooks/useAxios';
+import Modal from '@/components/Modal/Modal';
+import Congratulations from '@/assets/images/Congratulations.png';
 
 const SignUp = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -18,9 +20,13 @@ const SignUp = () => {
   const [emailButtonDisabled, setEmailButtonDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [codeSuccess, setCodeSuccess] = useState(false);
+  const [signUpSuccess, setSignUpSuccess] = useState(false);
   const { fetchData: fetchNicknameData, data: nicknameData } = useAxios(); // 닉네임 중복 체크
   const { fetchData: fetchEmailData, data: emailData } = useAxios(); // 이메일 인증 요청
+  const { fetchData: fetchCode, data: codeData } = useAxios(); // 이메일 인증 코드 확인
   const { fetchData: fetchSignup, data: signUpData } = useAxios(); // 회원가입
+  const { timeLeft, isRunning, startTimer, resetTimer } = useTimer(180);
   const navigate = useNavigate();
 
   const nickname = watch('nickname');
@@ -30,10 +36,8 @@ const SignUp = () => {
   useEffect(() => {
     if (nickname) {
       setNicknameButtonDisabled(false);
-      
     } else {
       setNicknameButtonDisabled(true);
-      setNicknameValid(false);
       setErrorMessage("");
     }
 
@@ -41,6 +45,7 @@ const SignUp = () => {
       setEmailButtonDisabled(false);
     } else {
       setEmailButtonDisabled(true);
+      setEmailErrorMessage("")
     }
 
   }, [nickname, email]);
@@ -66,44 +71,117 @@ const SignUp = () => {
       } else {
         setNicknameValid(true);
       }
-
-      if(setEmailValid) {
-        setErrorMessage("* 닉네임 확인은 필수입니다.");  
-      }
     }
+
   }, [nicknameData])
+
+  // 닉네임이 변경되었을 때 유효성을 다시 확인하도록 
+  useEffect(() => {
+    if(nicknameValid) {
+      setNicknameValid(false);
+      setErrorMessage("* 닉네임이 변경되었습니다. 다시 확인해 주세요.");
+    }
+  }, [nickname])
+
+  const userData = { email: email };
 
   // 이메일 유효성 검사 로직
   const handleEmailValidation = async () => {
-    const userData = { email: email };
+    setEmailButtonDisabled(true);
 
-    // if(!/^\S+@\S+$/.test(email)) {
-      
-    // }
+    if(!/^\S+@\S+$/.test(email)) {
+      setEmailErrorMessage("* 이메일 형식이 올바르지 않습니다.");
+      setEmailButtonDisabled(false);
+      return;
+    }
 
-    await fetchEmailData(User.postEmail(userData));
+    await fetchEmailData(User.postEmail(userData),
+      (err) => {
+        if(err.response.status === 400) {
+          setEmailValid(false);
+          setEmailErrorMessage("* 이미 사용 중인 이메일입니다.");
+        }
+      }
+    );
+
+    // 이메일 인증 요청 버튼 클릭 시 타이머 시작 또는 리셋
+    resetTimer();
+    startTimer();
+
+    // 버튼 클릭 할 때 마다 10초 동안 비활성화
+    setTimeout(() => {
+      setEmailButtonDisabled(false);
+    }, 10000);
   };
 
   useEffect(() => {
     if(emailData) {
       setEmailValid(true);
-      startTimer(180)
     } else {
       setEmailValid(false);
     }
-
-    if(emailData && emailData.isSuccess === false) {
-      setEmailValid(false);
-      setEmailErrorMessage("* 이미 사용 중인 이메일입니다.");
-    }
   }, [emailData])
 
-  const { timeLeft, isRunning, startTimer, resetTimer } = useTimer(180);
+  // 이메일 변경 시 다시 인증
+  useEffect(() => {
+    if(emailValid) {
+      setEmailValid(false);
+      setEmailErrorMessage("* 이메일이 변경되었습니다. 다시 인증해 주세요.");
+      setCodeSuccess(false)
+    }
+  
+  }, [email])
 
-    // 회원가입
-    const onSubmit = async () => {
-      await fetchSignup(User.postUser());
-    };
+  // 인증 코드 확인
+  const handleVerify = async () => {
+    const userData = { toEmail: email, authCode: watch('verificationCode') };
+
+    await fetchCode(User.postEmailCode(userData));
+  }
+
+  useEffect(() => {
+    if(codeData && codeData.isValid === true) {
+      setCodeSuccess(true);
+    } else {
+      setEmailValid(false);
+      setEmailErrorMessage("* 인증 코드가 일치하지 않습니다. 다시 시도해 주세요.");
+      setCodeSuccess(false);
+    }
+  }, [codeData])
+
+  // 회원가입
+  const onSubmit = async () => {
+    if(nicknameValid && codeSuccess) {
+      await fetchSignup(User.postUser({
+        email: email,
+        name: watch('name'),
+        nickname: nickname,
+        password: watch('password'),
+        passwordCheck: watch('confirmPassword'),
+        profileImgUrl: "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png",
+        profileDescription: "자기소개가 없습니다.",
+        diaryImgUrl: "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/diary-profile.png"
+      }));
+    } 
+
+    if(!nicknameValid) {
+      setErrorMessage("* 닉네임 중복 확인을 해주세요.");
+    }
+
+    if(!emailValid) {
+      setEmailErrorMessage("* 이메일 인증을 해주세요.");
+    }
+  }
+
+  useEffect(() => {
+    if(signUpData) {
+      if(signUpData) {
+        setSignUpSuccess(true)
+      } else {
+        setSignUpSuccess(false)
+      }
+    }
+  }, [signUpData, navigate]);
 
   return (
     <div className={styles.signUpWrap}>
@@ -152,7 +230,7 @@ const SignUp = () => {
                   message: "* 비밀번호는 16자 이하여야 합니다."
                 },
                 pattern: {
-                  value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
+                  value: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*])[a-zA-Z\d~!@#$%^&*]{8,16}$/,
                   message: "* 비밀번호는 영문, 숫자, 특수문자를 1개 이상 포함해야 합니다."
                 }
               })}
@@ -183,7 +261,6 @@ const SignUp = () => {
                 <Button type="button" label="인증 요청" variant="active" onClick={handleEmailValidation}/>
               }
             </div>
-            {!emailValid && <p className={styles.error}>{emailErrorMessage}</p>}
             <div className={styles.certified} style={{ display: emailValid ? "flex" : "none" }}>
               <div className={styles.inputBox} style={{ marginTop: "-10px" }}>
                 <InputField
@@ -192,15 +269,26 @@ const SignUp = () => {
                   {...register('verificationCode')}
                 />
               </div>
-              <Button type="button" label="인증" variant="noFilled"/>
+              <Button type="button" label="인증" variant="noFilled" onClick={handleVerify}/>
               <Timer timeLeft={timeLeft} isRunning={isRunning} startTimer={startTimer} resetTimer={resetTimer}/>
             </div>
+            {!emailValid && <p className={styles.error}>{emailErrorMessage}</p> }
+            {codeSuccess && <p className={styles.success}>* 인증되었습니다.</p>}
             <div className={styles.btnWrap}>
               <Button type="submit" label="가입하기" variant={watch('nickname') && watch('name') && watch('password') && watch('confirmPassword') && watch('email') ? "active" : "disabled"}/>
             </div>
           </form>
         </div>
       </div>
+      {signUpSuccess && (
+        <Modal closeFn={() => navigate("/login")}>
+          <Modal.Icon><img src={Congratulations} alt='cancelImage' /></Modal.Icon>
+          <Modal.Body>회원가입을 성공 했어요!</Modal.Body>
+          <Modal.Button>
+            <Button type="button" label="어스토리 시작하기" variant="active" onClick={() => navigate("/login")}/>
+          </Modal.Button>
+        </Modal>
+      )}
     </div>
   );
 }

@@ -48,7 +48,7 @@ const MyRecord = () => {
         <div className={clsx(styles.box, styles.diary)}>
           <p className={styles.text}>내 다이어리</p>
             <Button type="button" label={`${diaryCount}개`} variant="inactive" 
-            onClick={() => navigate('/diarylist')}/>
+            onClick={() => navigate('/diary')}/>
         </div>
       </div>
     </div>

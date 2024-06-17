@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import styles from './Mypage.module.scss';
 import SubHeader from '@/components/SubHeader/SubHeader';
 import InputField from '@/components/InputField/InputField';
@@ -19,10 +20,15 @@ const EditMypage = () => {
   const [nicknameButtonDisabled, setNicknameButtonDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [editSuccess, setEditSuccess] = useState(false);
+  const [message, setMessage] = useState("");
+  const [pwCheck, setPwCheck] = useState(false);
   const { fetchData: fetchUserData, data: userData } = useAxios();
   const { fetchData: fetchNicknameData, data: nicknameData } = useAxios();
   const { fetchData: fetchEditUser, data: editUserData } = useAxios();
-
+  const { fetchData: fetchDeleteUser, response: deleteUserData } = useAxios();
+  const navigator = useNavigate();
+  
+  const text = "탈퇴";
   const nickname = watch('nickname');
 
   useEffect(() => {
@@ -46,18 +52,18 @@ const EditMypage = () => {
   },[fetchUserData])
 
   useEffect(() => {
-    if(userData) {
-      setValue('profileImgUrl', userData.nickname);
+    if (userData) {
+      setValue('profileImgUrl', userData.profileImgUrl);
       setValue('nickname', userData.nickname);
       setValue('name', userData.name);
       setValue('profileDescription', userData.profileDescription);
     }
+
   },[userData, setValue])
 
   // 닉네임 유효성 검사 로직
   const handleNicknameValidation = async () => {
     const userData = { nickname: nickname };
-
     await fetchNicknameData(User.postNickname(userData));
 
     if(nicknameValid === false) {
@@ -78,6 +84,17 @@ const EditMypage = () => {
     }
   }, [nicknameData])
 
+  // 받아온 유저 데이터에서 닉네임 입력에 변화가 없으면 인증 안해도 됨
+  useEffect(() => {
+    if(userData && nickname === userData.nickname) {
+      setNicknameValid(true);
+      setErrorMessage("");
+    } else if (userData && nickname !== userData.nickname) {
+      setNicknameValid(false);
+      setErrorMessage("* 닉네임이 변경되었습니다. 다시 확인해 주세요.");
+    }
+  }, [nickname, userData])
+
   // 정보 수정
   const onSubmit = async (data) => {
     await fetchEditUser(User.putUser(data));
@@ -85,7 +102,6 @@ const EditMypage = () => {
 
   useEffect(() => {
     if (editUserData) {
-      console.log(editUserData);
       setEditSuccess(true);
     }
   },[editUserData])
@@ -96,13 +112,35 @@ const EditMypage = () => {
     setLastWithdrawal(false);
   }
 
+  // 찐탈퇴
+  const handleLastWithdrawal = async () => {
+    if(text === message) {
+      await fetchDeleteUser(User.deleteUser());
+      setPwCheck(false);
+    }  else if (text !== message) {
+      setPwCheck(true);
+    }
+  }
+
+  useEffect(() => {
+    if (deleteUserData && deleteUserData.status === 200) {
+      navigator('/login');
+    }
+  }, [deleteUserData, navigator]);
+
+  // 프로필 이미지 업로드
+  const handleProfileUpload = (url) => {
+    setValue('profileImgUrl', url);
+  }
+
   return(
     <>
       <SubHeader pageTitle="정보 수정하기" />
       <div className={styles.editWrap}>
         <div className={styles.wrap}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <ProfileUpload />
+            {/* 이미지 업로드, 프리뷰 컴포넌트 */}
+            <ProfileUpload profileUrl={watch('profileImgUrl')} onUploadComplete={handleProfileUpload}/>
             <div className={styles.certified}>
               <div className={styles.inputBox}>
                 <InputField 
@@ -140,17 +178,16 @@ const EditMypage = () => {
               {!nicknameValid ? 
                 <Button type="button" 
                   onClick={() => setErrorMessage("* 닉네임 확인은 필수입니다.")} 
-                  label="수정하기" 
-                  variant={watch('nickname') && watch('name') && watch('profileDescription') ? "active" : "disabled"}
+                  label="수정하기"
+                  variant="active"
                 />
                 :
                 <Button 
                   type="submit" 
                   label="수정하기" 
-                  variant={watch('nickname') && watch('name') && watch('profileDescription') ? "active" : "disabled"}
+                  variant={watch('nickname') && watch('name') && watch('profileDescription') && watch('profileImgUrl') ? "active" : "disabled"}
                 />
               }
-              
               <button type='button' className={styles.withdrawal} onClick={() => setModalOpen(true)}>회원 탈퇴하기</button>
             </div>
           </form>
@@ -169,11 +206,13 @@ const EditMypage = () => {
         <Modal closeFn={closeModal}>
           <Modal.Icon><img src={BanImg} alt="ban" /></Modal.Icon>
           <Modal.Body>
-            <p>비밀번호를 입력하면 탈퇴가 완료됩니다.</p>
-            <input type="password" placeholder='비밀번호 입력' className={styles.input} />
+            <p>아래 메세지를 똑같이 입력해 주세요.</p>
+            <span className={styles.needMessage}>"{text}"</span>
+            <input type="text" placeholder='메세지 입력' className={styles.input} value={message} onChange={(e) => setMessage(e.target.value)}/>
+            {pwCheck ? <span className={styles.error} style={{marginTop:"15px", display:"inline-block"}}>메세지가 맞지 않습니다.</span> : null}
           </Modal.Body>
           <Modal.Button>
-            <Button type="button" label="탈퇴하기" variant="active" onClick={() => console.log("찐탈퇴")}/>
+            <Button type="button" label="탈퇴하기" variant="active" onClick={handleLastWithdrawal}/>
           </Modal.Button>
         </Modal>
       )}

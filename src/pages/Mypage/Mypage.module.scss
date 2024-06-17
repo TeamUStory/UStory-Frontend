@@ -48,7 +48,7 @@
   min-width: 320px;
   max-width: 480px;
   margin: 0 auto;
-  padding-bottom: 64px;
+  padding-bottom: 100px;
 
   .wrap{
     box-sizing: border-box;
@@ -180,11 +180,11 @@
     }
 
     .location{
-      background: url("/src/assets/images/location_bg.png") no-repeat right 16px bottom 22px #D0EEEC30;
+      background: url("@/assets/images/location_bg.png") no-repeat right 16px bottom 22px #D0EEEC30;
     }
 
     .diary{
-      background: url("/src/assets/images/save_bg.png") no-repeat right 16px bottom 22px #F7DEBD30;
+      background: url("@/assets/images/save_bg.png") no-repeat right 16px bottom 22px #F7DEBD30;
     }
   }
 }
@@ -342,4 +342,12 @@
   font-size: 13px;
   color: $ok-color;
   margin-top: 10px;
+}
+
+.needMessage{
+  font-size: 16px;
+  color: $black3;
+  margin-top: 10px;
+  display: inline-block;
+  font-weight: 400;
 }

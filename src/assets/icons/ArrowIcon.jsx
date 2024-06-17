@@ -10,7 +10,6 @@ const ArrowIcon = ({fill = "none"}) => {
 
 ArrowIcon.propTypes = {
   fill: propTypes.string,
-  strokeWidth: propTypes.number
 }
 
 export default ArrowIcon;

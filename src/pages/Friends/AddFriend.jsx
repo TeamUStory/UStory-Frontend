@@ -12,14 +12,19 @@ import SadIcon from '@/assets/icons/SadIcon';
 import Friend from '@/apis/api/Friend';
 import User from '@/apis/api/User';
 import useAxios from '@/hooks/useAxios';
+import BanImg from '@/assets/images/ban.png';
 
 const AddFriend = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [searchResult, setSearchResult] = useState(null)
   const [nickname, setNickname] = useState('')
   const [resultShow, setResultShow] = useState(false)
+  const [modalMessage, setModalMessage] = useState('')
+  const [selfAdd, setSelfAdd] = useState(false)
   const {fetchData: fetchSearchData, data: searchData} = useAxios();
+  const {fetchData: fetchAddFriend, response} = useAxios();
 
+  // 검색
   const handleSearch = async () => {
     const nicknameData = nickname
     await fetchSearchData(User.searchUser(nicknameData))
@@ -36,10 +41,34 @@ const AddFriend = () => {
     }
   }, [searchData])
   
-  const handleAdd = () => {
-    setIsModalOpen(true)
+  // 친구 요청
+  const handleAdd = async () => {
+
+    await fetchAddFriend(Friend.postFriendRequest({receiverNickname: searchResult.nickname}), (err) => {
+      // 이미 있거나 요청한 경우
+      if(err.response.status === 409) {
+        setIsModalOpen(true);
+        setModalMessage(`이미 있는 친구이거나, \n친구 요청을 이미 보냈습니다.`)
+      }
+      // 자기 자신인 경우
+      if(err.response.status === 400) {
+        setIsModalOpen(true);
+        setSelfAdd(true)
+        setModalMessage("자기 자신은 친구 추가가 불가능합니다.")
+      } 
+    })
   }
 
+  useEffect(() => {
+    if(response) {
+      if(response.status === 204) {
+        setModalMessage("친구 추가가 완료되었습니다.")
+        setIsModalOpen(true)
+      }
+    }
+  }, [response])
+  
+  // 텍스트 입력 시 결과 사라지기
   useEffect(() => {
     if(nickname === '') {
       setResultShow(false)
@@ -73,8 +102,10 @@ const AddFriend = () => {
       </div>
       {isModalOpen && ( 
         <Modal closeFn={() => setIsModalOpen(false)}>
-          <Modal.Icon><img src={checkImg} alt='checkImg'/></Modal.Icon>
-          <Modal.Body>친구 추가가 완료되었습니다.</Modal.Body>
+          <Modal.Icon><img src={selfAdd ? BanImg : checkImg} alt='checkImg'/></Modal.Icon>
+          <Modal.Body>
+            {modalMessage}
+          </Modal.Body>
           <Modal.Button>
             <Button type="button" label="확인" variant="active" onClick={() => setIsModalOpen(false)}/>
           </Modal.Button>

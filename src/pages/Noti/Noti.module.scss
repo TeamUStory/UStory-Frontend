@@ -82,3 +82,39 @@
     }
   }
 }
+
+// 더보기 버튼
+.moreBtn{
+  position: relative;
+
+  button{
+    padding: 0px;
+
+    svg{
+      width: 24px;
+      vertical-align: middle;
+    }
+  }
+
+  .buttonWrap{
+    position: absolute;
+    top: 24px;
+    right: 0;
+    background: $white1;
+    box-shadow: 0px 0px 20px #00000009;
+    border-radius: 10px;
+    width: 95px;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+    display: none;
+    z-index: 1;
+
+    button{
+      padding: 0px;
+      color: $wrong-color;
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
+}

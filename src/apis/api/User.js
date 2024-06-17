@@ -115,5 +115,41 @@ export default {
       url: "/user/logout",
       method: "post",
     }
+  },
+
+  /**
+   * @method POST
+   * @summeray 비밀번호 재설정 이메일 인증 코드 발송
+   */
+  postResetPasswordEmail(data) {
+    return {
+      url: "/user/change-password/send-validate",
+      method: "post",
+      data: { ...data }
+    }
+  },
+    
+  /**
+   * @method POST
+   * @summeray 비밀번호 재설정 이메일 인증 코드 검증
+   */
+  postResetPasswordEmailCode(data) {
+    return {
+      url: "/user/change-password/verify-validate",
+      method: "post",
+      data: { ...data }
+    }
+  },
+
+  /**
+   * @method PUT
+   * @summeray 비밀번호 재설정
+   */
+  putResetPassword(data) {
+    return {
+      url: "/user/change-password",
+      method: "put",
+      data: { ...data }
+    }
   }
 }

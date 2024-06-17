@@ -17,6 +17,8 @@ const Login = () => {
   const { fetchData, data } = useAxios();
   const navigate = useNavigate();
 
+  useEffect(() => {}, [data]);
+
   // 로그인 클릭
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,8 +37,9 @@ const Login = () => {
       const accessToken = data.accessToken;
       localStorage.setItem('accessToken', accessToken);
       navigate('/');
+      window.location.reload();
     }
-
+    
     if (data?.accessToken === null) {
       setError("* 이메일 또는 비밀번호를 확인해 주세요.");
     }
@@ -74,7 +77,7 @@ const Login = () => {
           </form>
         </div>
         <div className={styles.bottomBtns}>
-          <Button label="비밀번호 찾기" variant="inactive"  onClick={() => navigate("/findpassword")}/>
+          <Button label="비밀번호 재설정" variant="inactive"  onClick={() => navigate("/findpassword")}/>
           <Button label="회원가입" variant="inactive" onClick={() => navigate("/signup")}/>
         </div>
         <SocialLogin />
