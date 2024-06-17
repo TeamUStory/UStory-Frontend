@@ -10,6 +10,7 @@ import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import Button from '@/components/Button/Button';
 import useAxios from "@/hooks/useAxios";
 import Diary from "@/apis/api/Diary";
+import { makeArray } from '@/utils/makeArray';
 
 // 카테고리 배열
 const categories = [
@@ -24,81 +25,50 @@ const DiaryList = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState(null);
     const [diaryItems, setDiaryItems] = useState([]);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
 
-    const { data:diaryData, fetchData:fetchDiaryData} = useAxios();
+    const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
 
     // 카테고리 선택
     const handleTabClick = (category) => {
-        if (activeTab === category) {
-            setActiveTab(null);
-        } else {
-            setActiveTab(category);
-        }
+        setActiveTab((prevTab) => (prevTab === category ? null : category));
+        setPage(1);
+        setDiaryItems([]);
     };
-    
-    const fetchDiaryList = async (category) => {
-        const requestTime = new Date().toISOString().split('.')[0];
-        const params = category ? { requestTime, diaryCategory: category.en } : { requestTime };
+
+    const fetchDiaryList = async (category, page) => {
+        setLoading(true);
+        const requestTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T');
+        const params = category ? { requestTime, diaryCategory: category.en, page } : { requestTime, page };
         await fetchDiaryData(Diary.getDiaryList(params));
+        setLoading(false);
     };
 
     useEffect(() => {
-        fetchDiaryList(activeTab);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeTab]);  
+        fetchDiaryList(activeTab, page);
+    }, [activeTab, page, fetchDiaryData]);
 
     useEffect(() => {
-        if(diaryData) {
-            setDiaryItems(diaryData);
+        if (diaryData) {
+            setDiaryItems((prevItems) => [...prevItems, ...diaryData]);
         }
-        
     }, [diaryData]);
-
-
-
-    // 현재 보여지는 포스트 상태
-    const pageSize = 4;
-    const [postItems, setPostItems] = useState([]);
-
-    useEffect(() => {
-        setPostItems(diaryItems.slice(0, pageSize));
-    }, [diaryItems]);
-
-    console.log(postItems)
 
     // 감지할 요소
     const loaderRef = useRef(null);
     const isIntersecting = useInfiniteScroll(loaderRef);
 
-    // 그 다음 포스트를 불러오는 함수
-    const loadMorePosts = () => {
-        setPostItems((prevPostItems) => {
-            const currentLength = prevPostItems.length;
-            const newPosts = diaryItems.slice(currentLength, currentLength + pageSize);
-            return [...prevPostItems, ...newPosts];
-        });
-    };
-
-    // 감지 요소가 보이면 포스트 불러오기
+    // 감지 요소가 보이면 페이지 증가
     useEffect(() => {
-        if (isIntersecting) {
-            loadMorePosts();
+        if (isIntersecting && !loading) {
+            setPage((prevPage) => prevPage + 1);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isIntersecting]);
 
-    // 배열을 2개씩 나누는 함수
-    const makeArray = (array, size) => {
-        return array.reduce((acc, _, i) => {
-            if (i % size === 0) acc.push(array.slice(i, i + size));
-            return acc;
-        }, []);
-    };
-
     // 2개씩 나뉜 다이어리 모음
-    const groupedPostItems = makeArray(postItems, 2);
+    const groupedPostItems = makeArray(diaryItems, 2);
 
-    // console.log(groupedPostItems);
     return (
         <div className={styles.container}>
             <header className={styles.header}>

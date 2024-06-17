@@ -1,0 +1,91 @@
+@import "@/assets/styles/colors.scss";
+
+.image_upload {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  flex-wrap: wrap;
+
+  .upload_box {
+    width: 84px;
+    height: 84px;
+    background: #F8F8F8;
+    border-radius: 10px;
+    border: 1px solid $black4;
+    box-sizing: border-box;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 20px;
+    }
+
+    input {
+      display: none;
+    }
+
+    label {
+      margin-top: 12px;
+      font-size: 12px;
+      margin-bottom: 0px;
+      white-space: nowrap;
+    }
+  }
+}
+
+.image_previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.image_preview, .thumbnail {
+  width: 84px;
+  height: 84px;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid $black4;
+  }
+
+  .deleteButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0px 0px 5px #00000025;
+  }
+
+  .crownButton {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    background: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0px 0px 5px #00000025;
+  }
+}

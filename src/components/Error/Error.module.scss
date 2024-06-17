@@ -1,0 +1,38 @@
+@import "@/assets/styles/colors.scss";
+
+.errorWrap{
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+
+  box-sizing: border-box;
+  padding: 20px;
+  max-width: 480px;
+  min-width: 320px;
+
+  .error {
+    text-align: center;
+    
+    img{
+      margin-bottom: 33px;
+    }
+
+    h3{
+      font-size: 30px;
+      font-weight: bold;
+      color: $point-color1;
+      margin-bottom: 11px;
+    }
+
+    p{
+      font-size: 14px;
+      color: $black2;
+      margin-bottom: 33px;
+      font-weight: 400;
+    }
+  }
+}

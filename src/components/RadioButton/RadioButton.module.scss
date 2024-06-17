@@ -33,3 +33,19 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.radioButton__input:disabled + .radioButton__custom {
+  border-color: $black4; 
+}
+
+.radioButton__input:checked:disabled + .radioButton__custom::after {
+  content: '';
+  width: 9px;
+  height: 9px;
+  background: $black4;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

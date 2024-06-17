@@ -1,11 +1,29 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 
-axios.defaults.baseURL = 'http://15.164.24.133:8080';
+axios.defaults.baseURL = 'https://api.ustory.me/api';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 5000;
 
 export const api = axios.create();
+
+// 엑세스 토큰 재발급
+export const refresh = async () => {
+  try {
+    const res = await api.post('/jwt/re-issue');
+    
+    if (res?.data) {
+      let newAccessToken = res.data;
+      localStorage.setItem('accessToken', newAccessToken);
+      return newAccessToken;
+    } else {
+      throw new Error('No value present');
+    }
+  } catch (err) {
+    console.error('토큰 재발급 실패', err);
+    throw err;
+  }
+};
 
 // reject 했을때, error가 useAXios로 넘어가지 않을 시 -> throw Err 변경
 // 요청
@@ -41,12 +59,14 @@ api.interceptors.request.use(
   }
 );
 
+
+
 // 응답
 api.interceptors.response.use(
   (res) => {
     return res;
   },
-  (err) => {
+  async (err) => {
     if (isAxiosError(err)) {
       if (err.response && err.response.status === HttpStatusCode.BadRequest) {
         console.error('BadRequest - 400');
@@ -55,13 +75,14 @@ api.interceptors.response.use(
 
         // 토큰 만료 시 재발급 api
         try {
-          const newAccessToken = refresh();
-          err.config.headers.Authorization = `Bearer ${newAccessToken}`
+          const newAccessToken = await refresh();
+          err.config.headers.Authorization = `Bearer ${newAccessToken}`;
           return api.request(err.config);
-        } catch (tokenError) {
-          return Promise.reject(tokenError);
+        } catch (refreshErr) {
+          console.error('토큰 재발급 중 오류 발생', refreshErr);
+          return Promise.reject(refreshErr);
         }
-        
+
       } else if (err.response && err.response.status === HttpStatusCode.InternalServerError) {
         console.error('Internal Server Error - 500');
       } else if (err.response && err.response.status === HttpStatusCode.NotFound) {
@@ -75,15 +96,3 @@ api.interceptors.response.use(
     return Promise.reject(err);
   }
 );
-
-// 엑세스 토큰 재발급
-export const refresh = async () => {
-  try {
-    const res = await api.post('/jwt/re-issue');
-    localStorage.setItem('accessToken', res);
-    return res;
-  }catch (err) {
-    console.error('토큰 재발급 실패');
-    throw err
-  }
-};

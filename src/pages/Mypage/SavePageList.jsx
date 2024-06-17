@@ -1,34 +1,58 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styles from './Mypage.module.scss';
 import SubHeader from '@/components/SubHeader/SubHeader';
 import NoResult from '@/components/NoResult/NoResult';
 import SadIcon from '@/assets/icons/SadIcon';
 import PostItem from '@/components/PostItem/PostItem';
-import BottomBar from '@/components/BottomBar/BottomBar';
-import PlusButton from '@/components/PlusButton/PlusButton';
 import useAxios from '@/hooks/useAxios';
 import BookMark from '@/apis/api/BookMark';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 
 const SavePageList = () => {
   const { fetchData, data } = useAxios();
   const [useSaveList, setUseSaveList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const targetEl = useRef(null);
+  const intersecting = useInfiniteScroll(targetEl);
 
   // 저장된 기록 가져오기
+  const loadBookmarks = async () => {
+    setLoading(true);
+    const size = 20;
+    setLoading(true);
+    await fetchData(BookMark.getBookmarkPaperList({page, size}));
+    setLoading(false);
+  };
+
+  // 초기 데이터 불러오기
   useEffect(() => {
-    fetchData(BookMark.getBookmarkPaperList());
-  }, [fetchData])
+    loadBookmarks();
+  }, []);
 
   useEffect(() => {
     if (data) {
-      setUseSaveList(data.slice(0, 4))
+      setUseSaveList((prev) => [...prev, ...data]);
     }
-  }, [data])
+  }, [data]);
 
+  useEffect(() => {
+    if (intersecting && !loading) {
+      setPage((prev) => prev + 1);
+    }
+  }, [intersecting]);
+
+  // 페이지 변경에 따른 데이터 로드
+  useEffect(() => {
+    if (page > 1) {
+      loadBookmarks();
+    }
+  }, [page]);
 
   return (
     <>
       <SubHeader pageTitle={"저장한 기록"} />
-      <div className={styles.listWrap}>
+      <div className={styles.listWrap} style={{paddingBottom:"10px"}}>
         <div className={styles.wrap}>
           <div className={styles.myRecordList}>
             {useSaveList.length === 0 ? 
@@ -37,19 +61,18 @@ const SavePageList = () => {
               </div>
               :
               useSaveList.map((item) => (
-              <PostItem 
-                key={item.paperId}
-                image={item.thumbnailImageUrl}
-                title={item.title}
-                subText={item.store}
-                link={`/papers/${item.paperId}`}
-              />
+                <PostItem 
+                  key={item.paperId}
+                  image={item.thumbnailImageUrl}
+                  title={item.title}
+                  subText={item.store}
+                  link={`/papers/${item.paperId}`}
+                />
               ))}
+            <div ref={targetEl} style={{ height: 1 }}></div>
           </div>
         </div>
       </div>
-      <BottomBar />
-      <PlusButton />
     </>
   )
 }
