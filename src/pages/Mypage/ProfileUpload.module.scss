@@ -19,6 +19,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 0px !important;
+    cursor: pointer;
 
     svg{
       width: 20px;
@@ -28,12 +30,16 @@
       display: none;
     }
 
-    label{
+    p{
       margin-top: 12px;
       font-size: 11px;
       margin-bottom: 0px;
     }
   }
+}
+
+input[type="file"] {
+  display: none;
 }
 
 .profile_preview {
