@@ -10,7 +10,7 @@ import useAxios from "@/hooks/useAxios";
 import S3Storage from "@/apis/api/S3Storage";
 import axios from "axios";
 
-const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail  }) => {
+const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [uploadedImage, setUploadedImage] = useState(null);
     const [croppedImage, setCroppedImage] = useState(null);
@@ -22,10 +22,11 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail  }) => {
 
     const { data: presignedUrlData, fetchData: fetchPresignedUrlData } = useAxios();
 
+    const fileInputRef = useRef(null);
     const firstRender = useRef(true);
 
-     // imgUrls와 thumbnail로 초기화
-     useEffect(() => {
+    // imgUrls와 thumbnail로 초기화
+    useEffect(() => {
         if (imgUrls || thumbnail) {
             setImageUrls([...imgUrls]);
             setThumbnailImageUrl(thumbnail);
@@ -104,7 +105,7 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail  }) => {
                             return newUrls;
                         });
                         setCroppedImage(null);
-                        setPresignedUrl(null); 
+                        setPresignedUrl(null);
                     } else {
                         console.error("이미지 업로드 실패:", response);
                     }
@@ -124,7 +125,6 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail  }) => {
 
     // 썸네일 선택 처리
     const handleThumbnailClick = (url) => {
-
         if (thumbnailImageUrl === url) {
             // 이미 선택된 썸네일을 클릭한 경우 선택 해제
             setThumbnailImageUrl("");
@@ -184,7 +184,6 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail  }) => {
 
     // 사진 삭제 처리
     const handleRemoveImage = (index) => {
-        
         const urlToRemove = imageUrls[index];
         setImageUrls((prevUrls) => {
             const newUrls = prevUrls.filter((_, idx) => idx !== index); // 이미지 목록에서 선택된 이미지 제외
@@ -208,11 +207,15 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail  }) => {
         }
     }, [imageUrls, thumbnailImageUrl]);
 
-
     const closeModal = () => {
         setIsModalOpen(false);
     };
 
+    const handleUploadBoxClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
 
     return (
         <div className={styles.image_upload}>
@@ -220,9 +223,9 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail  }) => {
                 <ImageEditor uploadedImage={uploadedImage} closeModal={closeModal} setCroppedImage={handleCroppedImage} />
             ) : (
                 <div className={styles.image_previews}>
-                    <div className={styles.upload_box}>
+                    <div className={styles.upload_box} onClick={handleUploadBoxClick}>
                         <CameraIcon stroke={"#616161"} />
-                        <InputField type="file" label="이미지 업로드" onChange={handleFileUpload} accept=".jpg,.jpeg,.png,.gif" />
+                        <InputField type="file" label="이미지 업로드" onChange={handleFileUpload} accept=".jpg,.jpeg,.png,.gif" ref={fileInputRef} style={{ display: "none" }} />
                     </div>
                     {thumbnailImageUrl && (
                         <div className={styles.thumbnail}>
