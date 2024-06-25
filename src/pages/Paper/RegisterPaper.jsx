@@ -147,9 +147,17 @@ const RegisterPaper = () => {
         navigate("/search/place");
     };
 
+    const handleBackClick = () => {
+        navigate('/mypage/pagelist');
+        localStorage.removeItem("paperFormData");
+        localStorage.removeItem("placeInfo");
+        localStorage.removeItem("paperImageUrls");
+        localStorage.removeItem("thumbnailImageUrl");
+    }
+
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="기록하기" />
+            <SubHeader pageTitle="기록하기" onClick={handleBackClick}/>
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="제목" placeholder="제목 입력" className={styles.input} {...register("title", { required: true })} />

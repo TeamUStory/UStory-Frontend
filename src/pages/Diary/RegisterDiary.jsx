@@ -138,6 +138,13 @@ const RegisterDiary = () => {
             handleSubmit(onSubmit)(formData);
         }
     };
+    
+    const handleBackClick = () => {
+        navigate('/diary');
+        localStorage.removeItem("diaryFormData");
+        localStorage.removeItem("selectedMembers");
+        localStorage.removeItem("diaryImageURL");
+    }
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -146,7 +153,7 @@ const RegisterDiary = () => {
 
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="다이어리 만들기" />
+            <SubHeader pageTitle="다이어리 만들기" onClick={handleBackClick} />
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="다이어리 이름" placeholder="다이어리 이름 입력" className={styles.input} {...register("name", { required: true })} />
