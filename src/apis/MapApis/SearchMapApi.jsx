@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import styles from "./SearchMapApi.module.scss";
-import SadIcon from "../../assets/icons/SadIcon";
+import SadIcon from "@/assets/icons/SadIcon";
 
 const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
     const location = useLocation();

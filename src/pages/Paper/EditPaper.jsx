@@ -176,9 +176,9 @@ const EditPaper = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="제목" placeholder="제목 입력" className={styles.input} {...register("title", { required: true })} />
                     <PaperImageUpload onImageUrlsChange={handleImageUrlsChange} imgUrls={images} thumbnail={thumbnailUrl} />
-                    <div className={styles.PlaceContainer}>
+                    <div className={styles.placeContainer}>
                         <p>장소</p>
-                        <div className={styles.PlaceSearch} onClick={handlePlaceSearchClick}>
+                        <div className={styles.placeSearch} onClick={handlePlaceSearchClick}>
                             <InputField placeholder="장소 검색" className={styles.input} disabled value={placeInformation.store ? `${placeInformation.store}` : ""} />
                             <PlaceMark color="#AAAAAA" />
                         </div>

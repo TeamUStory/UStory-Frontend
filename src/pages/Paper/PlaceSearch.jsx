@@ -56,7 +56,7 @@ const PlaceSearch = () => {
     return (
         <div className={styles.allContainer}>
             <SubHeader pageTitle="장소 검색하기" />
-            <div className={styles.ContentsContainer}>
+            <div className={styles.contentsContainer}>
                 <div className={styles.container}>
                     <div className={styles.searchContainer}>
                         <InputField placeholder="검색" onChange={onChange} value={inputText} onKeyPress={handleKeyPress} />

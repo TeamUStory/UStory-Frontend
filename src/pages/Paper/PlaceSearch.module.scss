@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: column;
 
-    .ContentsContainer {
+    .contentsContainer {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -33,6 +33,7 @@
                 display: flex;
                 width: 100%;
                 align-items: center;
+                position: relative;
 
                 div {
                     width: 100%;
@@ -50,7 +51,8 @@
                 button {
                     position: absolute;
                     padding: 0;
-                    right: 52px;
+                    text-align: center;
+                    right: 17px;
                 }
             }
         }
