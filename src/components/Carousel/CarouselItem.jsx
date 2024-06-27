@@ -4,13 +4,16 @@ import { useContext } from 'react';
 import { CarouselContext } from './Carousel';
 
 export const CarouselItem = ({ index, children }) => {
-  const currentIndex = useContext(CarouselContext);
+  const { currentIndex } = useContext(CarouselContext);
 
-  return index === currentIndex ? (
-    <div className={styles.carousel_item}>
+  return (
+    <div
+      className={`${styles.carousel_item}`}
+      style={{ display: currentIndex === index ? 'block' : 'none' }}
+    >
       {children}
     </div>
-  ) : null;
+  );
 };
 
 CarouselItem.propTypes = {

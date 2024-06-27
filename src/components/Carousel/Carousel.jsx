@@ -1,6 +1,7 @@
-import { createContext, useState, useRef, Children } from 'react';
-import propTypes from 'prop-types';
-import styles from './Carousel.module.scss';
+import { createContext, useState, useRef, Children } from "react";
+import propTypes from "prop-types";
+import styles from "./Carousel.module.scss";
+import CarouselItem  from "./CarouselItem";
 
 const CarouselContext = createContext();
 
@@ -9,6 +10,9 @@ export const Carousel = ({ children }) => {
   const carouselRef = useRef(null);
   const touchStartRef = useRef(null);
   const touchEndRef = useRef(null);
+
+  const CarouselItems = Children.toArray(children).filter(child => child.type === CarouselItem);
+  const totalItems = CarouselItems.length;
 
   const handleTouchStart = (e) => {
     touchStartRef.current = e.targetTouches[0].clientX;
@@ -23,7 +27,6 @@ export const Carousel = ({ children }) => {
 
   const handleSwipe = () => {
     const diff = touchStartRef.current - touchEndRef.current;
-
     if (diff > 0) {
       handleNext();
     } else if (diff < 0) {
@@ -39,33 +42,32 @@ export const Carousel = ({ children }) => {
   };
 
   const handleNext = () => {
-    const CarouselItems = Children.toArray(children);
-
     if (currentIndex === CarouselItems.length - 1) {
       return;
     }
-
     setCurrentIndex(currentIndex + 1);
   };
 
+  const goToIndex = (index) => {
+    setCurrentIndex(index);
+  };
+
   return (
-    <div 
+    <div
       className={styles.carousel}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       ref={carouselRef}
     >
-      <CarouselContext.Provider 
-        value={currentIndex}
-      >
-          {children}
+      <CarouselContext.Provider value={{ currentIndex, goToIndex, totalItems }}>
+        {children}
       </CarouselContext.Provider>
     </div>
   );
 };
 
 Carousel.propTypes = {
-  children: propTypes.node.isRequired,
+    children: propTypes.node.isRequired,
 };
 
 export { CarouselContext };

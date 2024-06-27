@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import styles from "../Home/Home.module.scss";
 import PlusButton from "@/components/PlusButton/PlusButton";
 import BottomBar from "@/components/BottomBar/BottomBar";
@@ -13,18 +13,19 @@ import Diary from "@/apis/api/Diary";
 import Paper from "@/apis/api/Paper";
 import useAxios from "@/hooks/useAxios";
 import User from "@/apis/api/User";
-import { makeArray } from '@/utils/makeArray';
+import { makeArray } from "@/utils/makeArray";
 import { truncateText } from "@/utils/truncateText";
+import CarouselIndicator from "@/components/Carousel/CarouselIndicator";
 
 const Home = () => {
     const navigate = useNavigate();
     const [diaryItems, setDiaryItems] = useState([]);
     const [paperItems, setPaperItems] = useState([]);
-    const [nickname, setNickname] = useState('');
+    const [nickname, setNickname] = useState("");
 
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
-    const { data: paperData, fetchData: fetchPaperData } = useAxios();  
-    const { data: userData, fetchData: fetchUserData} = useAxios();
+    const { data: paperData, fetchData: fetchPaperData } = useAxios();
+    const { data: userData, fetchData: fetchUserData } = useAxios();
 
     // 다이어리 리스트, 페이퍼리스트, user 정보 조회
     useEffect(() => {
@@ -32,10 +33,10 @@ const Home = () => {
             await fetchUserData(User.getUser());
             await fetchDiaryData(Diary.getHomeDiary());
 
-            const requestTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T');
+            const requestTime = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Seoul" }).replace(" ", "T");
             const size = 6;
             const page = 1;
-    
+
             const params = { requestTime, page, size };
             await fetchPaperData(Paper.getPaperList(params));
         };
@@ -58,7 +59,7 @@ const Home = () => {
 
     // user 정보 저장
     useEffect(() => {
-        if (userData){
+        if (userData) {
             setNickname(userData.nickname);
         }
     }, [userData]);
@@ -82,11 +83,15 @@ const Home = () => {
                     <MapApi />
                 </div>
                 <div className={styles.diaryContainer}>
-                    <p>내가 속한 다이어리를<br/>확인해보세요!</p>
+                    <p>
+                        내가 속한 다이어리를
+                        <br />
+                        확인해보세요!
+                    </p>
                     <div className={styles.diaryList}>
                         <Carousel>
                             {newDiaryItems.map((group, groupIndex) => (
-                                <CarouselItem key={groupIndex} index={groupIndex}> 
+                                <CarouselItem key={groupIndex} index={groupIndex}>
                                     {group.map((diary, index) => (
                                         <div key={diary.id}>
                                             <button onClick={() => navigate(`/diary/${diary.id}`)}>
@@ -103,6 +108,7 @@ const Home = () => {
                                     ))}
                                 </CarouselItem>
                             ))}
+                            <CarouselIndicator/>
                         </Carousel>
                     </div>
                 </div>
@@ -111,13 +117,7 @@ const Home = () => {
                     {isPostItems ? (
                         <div className={styles.recordsList}>
                             {paperItems.map((postitem, idx) => (
-                                <PostItem
-                                    key={idx}
-                                    image={postitem.thumbnailImageUrl}
-                                    title={postitem.title}
-                                    link={`/papers/${postitem.paperId}`}
-                                    subText={postitem.diaryName}
-                                >
+                                <PostItem key={idx} image={postitem.thumbnailImageUrl} title={postitem.title} link={`/papers/${postitem.paperId}`} subText={postitem.diaryName}>
                                     <FriendIcon stroke="#AAAAAA" />
                                 </PostItem>
                             ))}

@@ -25,6 +25,7 @@ import Diary from "@/apis/api/Diary";
 import BottomBar from "@/components/BottomBar/BottomBar";
 import CompletedImage from "@/assets/images/completedImage.png";
 import CancelImage from "@/assets/images/cancelImage.png"
+import CarouselIndicator from "@/components/Carousel/CarouselIndicator";
 
 const PaperPage = () => {
     const navigate = useNavigate();
@@ -189,6 +190,7 @@ const PaperPage = () => {
             await fetchDiaryData(Diary.getDiaryList(params));
         };
         fetchDiary();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchDiaryData])
 
     // 페이퍼 삭제
@@ -234,6 +236,7 @@ const PaperPage = () => {
                                 </div>
                             </CarouselItem>
                         ))}
+                        <CarouselIndicator />
                     </Carousel>
                 </div>
                 <div className={styles.contents}>
