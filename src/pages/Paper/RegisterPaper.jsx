@@ -31,7 +31,7 @@ const RegisterPaper = () => {
 
     const { data: paperNum, fetchData: fetchPaperData } = useAxios();
 
-    // imageUrls, thumbnailImageUrl 변화 감지
+    // 이미지 URL과 썸네일 URL 변화 감지
     const handleImageUrlsChange = (newImageUrls, newThumbnail) => {
         setValue("imageUrls", newImageUrls);
         setValue("thumbnailImageUrl", newThumbnail);
@@ -39,10 +39,12 @@ const RegisterPaper = () => {
 
     // 선택한 다이어리 불러오기
     useEffect(() => {
-        if (location.state && location.state.selectedDiary && Object.keys(location.state.selectedDiary).length > 0) {
-            setDiary(location.state.selectedDiary);
+        const selectedDiary = location.state?.selectedDiary || JSON.parse(localStorage.getItem("selectedDiary"));
+        if (selectedDiary) {
+            setDiary(selectedDiary);
+            localStorage.setItem("selectedDiary", JSON.stringify(selectedDiary));
         }
-    }, [location.state, setDiary]);
+    }, [location.state]);
 
     // 장소 정보 불러오기
     useEffect(() => {
@@ -60,6 +62,8 @@ const RegisterPaper = () => {
             setValue("visitedAt", new Date(formData.visitedAt));
             setValue("thumbnailImageUrl", formData.thumbnailImageUrl);
             setValue("imageUrls", formData.imageUrls);
+            setValue("diaryName", formData.diaryName);
+            setValue("diaryId", formData.diaryId);
         }
     }, [setValue]);
 
@@ -144,31 +148,24 @@ const RegisterPaper = () => {
     };
 
     const handlePlaceSearchClick = () => {
+        localStorage.setItem("selectedDiary", JSON.stringify(diary));
         navigate("/search/place");
     };
 
     const handleBackClick = () => {
-        navigate('/mypage/pagelist');
+        navigate("/mypage/pagelist");
         localStorage.removeItem("paperFormData");
         localStorage.removeItem("placeInfo");
         localStorage.removeItem("paperImageUrls");
         localStorage.removeItem("thumbnailImageUrl");
-    }
+    };
 
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="기록하기" onClick={handleBackClick}/>
+            <SubHeader pageTitle="기록하기" onClick={handleBackClick} />
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="제목" placeholder="제목 입력" className={styles.input} {...register("title", { required: true })} />
-                    <div className={styles.placeContainer}>
-                        <p>장소</p>
-                        <div className={styles.placeSearch} onClick={handlePlaceSearchClick}>
-                            <InputField placeholder="장소 검색" className={styles.input} disabled value={placeInformation.store ? `${placeInformation.store}` : ""} />
-                            <PlaceMark color="#AAAAAA" />
-                        </div>
-                        <MapApiPlace height="218px" coordinateX={placeInformation.coordinateX} coordinateY={placeInformation.coordinateY} />
-                    </div>
                     <div className={styles.diarySelect}>
                         <div className={styles.title}>
                             <p>다이어리</p>
@@ -193,7 +190,14 @@ const RegisterPaper = () => {
                             </div>
                         )}
                     />
-
+                    <div className={styles.placeContainer}>
+                        <p>장소</p>
+                        <div className={styles.placeSearch} onClick={handlePlaceSearchClick}>
+                            <InputField placeholder="장소 검색" className={styles.input} disabled value={placeInformation.store ? `${placeInformation.store}` : ""} />
+                            <PlaceMark color="#AAAAAA" />
+                        </div>
+                        <MapApiPlace height="218px" coordinateX={placeInformation.coordinateX} coordinateY={placeInformation.coordinateY} />
+                    </div>
                     <InputField label="코멘트" placeholder="장소에 대한 한 줄 코멘트 입력" className={styles.input} {...register("writerComment")} />
                     <Button label="기록하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>

@@ -23,15 +23,18 @@
       width: 20px;
     }
 
-    input {
-      display: none;
-    }
-
     label {
-      margin-top: 12px;
-      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       margin-bottom: 0px;
-      white-space: nowrap;
+      
+      p {
+        margin-top: 12px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
     }
   }
 }
@@ -42,7 +45,8 @@
   gap: 14px;
 }
 
-.image_preview, .thumbnail {
+.image_preview,
+.thumbnail {
   width: 84px;
   height: 84px;
   position: relative;

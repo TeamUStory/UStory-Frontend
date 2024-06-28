@@ -30,7 +30,6 @@ const PlaceSearch = () => {
 
     const handleKeyPress = (e) => {
         if (e.key === "Enter") {
-            // 엔터키를 눌렀을 때 실행할 동작
             setPlace(inputText);
         }
     };

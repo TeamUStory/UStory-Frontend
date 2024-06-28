@@ -195,7 +195,6 @@ const EditPaper = () => {
                             </div>
                         )}
                     />
-
                     <Button label="수정하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>
                 {isModalOpen && (
