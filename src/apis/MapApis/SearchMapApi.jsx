@@ -19,6 +19,12 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
         overlays.current = [];
     };
 
+    // 마커 초기화하는 함수
+    const clearMarkers = () => {
+        markers.current.forEach((marker) => marker.setMap(null));
+        markers.current = [];
+    };
+
     // 맵 초기화 함수
     const initializeMap = () => {
         const mapOption = {
@@ -170,7 +176,6 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
 
             for (i = 1; i <= pagination.last; i++) {
                 var el = document.createElement("a");
-                el.href = "#";
                 el.innerHTML = i;
 
                 if (i === pagination.current) {
@@ -180,6 +185,7 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
                         return function () {
                             pagination.gotoPage(i);
                             clearOverlays();
+                            clearMarkers();
                         };
                     })(i);
                 }
