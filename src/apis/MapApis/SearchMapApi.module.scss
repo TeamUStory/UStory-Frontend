@@ -3,6 +3,10 @@
 .bg_white {
     box-sizing: border-box;
     padding: 15px 0;
+    overflow-y: auto;
+    height: auto;
+    min-height: 51%;
+    max-height: 64%;
 
     li {
         width: 100%;
