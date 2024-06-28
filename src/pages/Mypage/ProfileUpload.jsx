@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import useAxios from '@/hooks/useAxios';
 import styles from './ProfileUpload.module.scss';
-import InputField from '@/components/InputField/InputField';
 import CameraIcon from '@/assets/icons/CameraIcon';
 import propTypes from 'prop-types';
 import ImageEditor from '@/components/ImageEditor/ImageEditor';
@@ -78,10 +77,11 @@ const ProfileUpload = ({ profileUrl, onUploadComplete }) => {
         />
       ) : (
         <>
-          <div className={styles.upload_box}>
+          <label htmlFor="file"  className={styles.upload_box}>
             <CameraIcon stroke={"#616161"}/>
-            <InputField type="file" label="프로필 업로드" onChange={handleFileUpload} accept="image/.jpg,.jpeg,.png,.gif"/>
-          </div>
+            <p className={styles.file_text}>파일 업로드</p>
+          </label>
+          <input type="file" id="file" name="file" onChange={handleFileUpload} accept="image/.jpg,.jpeg,.png,.gif"/>
           <div className={styles.profile_preview}>
             <img src={croppedImage || profileUrl} alt="Profile" className={styles.profile_image} />
           </div>
