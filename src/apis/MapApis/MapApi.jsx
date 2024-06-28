@@ -70,9 +70,11 @@ const MapApi = ({ width = '100%', height = '344px', borderRadius = "20px" }) => 
                                         </div>
                                         <div className={styles.desc}>
                                             <div className={styles.ellipsis}>
-                                                <PlaceMark /> 
+                                              <PlaceMark /> 
+                                              <a href={`/papers/${paperId}`} className={styles.link}>
                                                 <span>{store}</span>
-                                                <a href={`/papers/${paperId}`} className={styles.link}><ArrowIcon fill="#FB8176" /></a>
+                                                <ArrowIcon fill="#FB8176" />
+                                              </a>
                                             </div>
                                         </div>
                                     </div>
@@ -91,10 +93,29 @@ const MapApi = ({ width = '100%', height = '344px', borderRadius = "20px" }) => 
                             overlay.setMap(null);
                         }
 
+                        // // content 터치 시 상세 페이지로 이동
+                        // content.addEventListener('click', (e) => {
+          
+                        //     overlay.setMap(map);
+                        //     if (e.target.classList.contains(styles.link)) {
+                        //         window.location.href = `/papers/${paperId}`;
+                        //     }
+                        // });
+
+                        // // 다른 곳 누르면 오버레이 닫기
+                        // kakao.maps.event.addListener(map, 'click', function () {
+                        //     overlay.setMap(null);
+                        // });
+
                         // 마커 클릭 가능하도록 설정
                         kakao.maps.event.addListener(marker, 'click', function () {
                             // 마커 클릭 시 오버레이 표시
                             overlay.setMap(map);
+                        });
+
+                        // 줌 변동 있을 때 오버레이 닫기
+                        kakao.maps.event.addListener(map, 'zoom_changed', function () {
+                            overlay.setMap(null);
                         });
 
                         clusterer.addMarker(marker);

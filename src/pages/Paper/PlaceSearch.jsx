@@ -15,11 +15,12 @@ const PlaceSearch = () => {
     const [inputText, setInputText] = useState("");
     const [place, setPlace] = useState("");
     const [placeInfo, setPlaceInfo] = useState({});
+    const [buttonVariant, setButtonVariant] = useState("disabled");
 
     useEffect(() => {
-        const hasReloaded = sessionStorage.getItem('hasReloaded');
+        const hasReloaded = sessionStorage.getItem("hasReloaded");
         if (!hasReloaded) {
-            sessionStorage.setItem('hasReloaded', 'true');
+            sessionStorage.setItem("hasReloaded", "true");
             window.location.reload();
         }
     }, []);
@@ -33,6 +34,7 @@ const PlaceSearch = () => {
             setPlace(inputText);
         }
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setPlace(inputText);
@@ -48,9 +50,14 @@ const PlaceSearch = () => {
 
         const destinationPath = paperId ? `/edit/paper/${paperId}` : "/register/paper";
         navigate(destinationPath, {
-            state: {placeInfo}
-        })
+            state: { placeInfo }
+        });
     };
+
+    useEffect(() => {
+        const isFormValid = Object.keys(placeInfo).length > 0;
+        setButtonVariant(isFormValid ? "active" : "disabled");
+    }, [placeInfo]);
 
     return (
         <div className={styles.allContainer}>
@@ -59,11 +66,16 @@ const PlaceSearch = () => {
                 <div className={styles.container}>
                     <div className={styles.searchContainer}>
                         <InputField placeholder="검색" onChange={onChange} value={inputText} onKeyPress={handleKeyPress} />
-                        <Button type="submit" label={<SearchIcon />} variant={"inactive"} onClick={handleSubmit} />
+                        <Button type="submit" label={<SearchIcon />} variant="inactive" onClick={handleSubmit} />
                     </div>
                     <SearchMapApi height="219px" searchPlace={place} onUpdatePlaceInfo={updatePlaceInfo} />
                 </div>
-                <Button type="Button" label="장소 선택" variant={"active"} onClick={handleAddClick} />
+                <Button
+                    type="button"
+                    label="장소 선택"
+                    variant={buttonVariant}
+                    onClick={handleAddClick}
+                />
             </div>
         </div>
     );

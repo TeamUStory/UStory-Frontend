@@ -48,6 +48,13 @@
 
 
   a{
+    color: $point-color1;
+    text-decoration: none;
+
+    width: 88%;
+    display: inline-block;
+    word-break: break-all;
+    line-height: 1.5;
 
     svg{
       transform: rotate(180deg);
@@ -57,7 +64,6 @@
       stroke-width: 1.5;
     }
   }
-
 
   }
 

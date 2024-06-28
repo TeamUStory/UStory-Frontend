@@ -39,13 +39,20 @@ const FindPassword = () => {
 
     const userData = { toEmail: email };
 
-    if (!/^\S+@\S+$/.test(email)) {
-      setEmailErrorMessage("* 이메일 형식이 올바르지 않습니다.");
-      setEmailButtonDisabled(false);
-      return;
-    }
+    // if (!/^\S+@\S+$/.test(email)) {
+    //   setEmailErrorMessage("* 이메일 형식이 올바르지 않습니다.");
+    //   setEmailButtonDisabled(false);
+    //   return;
+    // }
 
-    await fetchEmailData(User.postResetPasswordEmail(userData));
+    await fetchEmailData(User.postResetPasswordEmail(userData),
+      (err) => {
+        if(err.response.status === 400) {
+          setEmailValid(false);
+          setEmailErrorMessage("* 이메일 형식이 올바르지 않습니다.");
+        }
+      }
+    );
 
     resetTimer();
     startTimer();

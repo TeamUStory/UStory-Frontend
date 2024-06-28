@@ -125,7 +125,7 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
     // 자른 이미지 설정 및 모달 닫기
     const handleCroppedImage = async (croppedFile) => {
         setCroppedImage(croppedFile);
-        setIsModalOpen(false); // 모달 닫기
+        setIsModalOpen(false);
 
         const fetchPresignedUrl = async () => {
             await fetchPresignedUrlData(S3Storage.getImageUrl(currentFileName));
@@ -139,7 +139,6 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
         e.stopPropagation(); // 이벤트 전파 방지
 
         if (thumbnailImageUrl === url) {
-            // 이미 선택된 썸네일을 클릭한 경우 아무 작업도 하지 않음
             return;
         } else if (imageUrls.includes(url)) {
             // 이미지 목록에 있는 썸네일 클릭한 경우
@@ -182,18 +181,18 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
 
     // 사진 삭제 처리
     const handleRemoveImage = (index, e) => {
-        e.preventDefault(); // 폼 제출 방지
-        e.stopPropagation(); // 이벤트 전파 방지
+        e.preventDefault();
+        e.stopPropagation();
 
         const urlToRemove = imageUrls[index];
         setImageUrls((prevUrls) => {
-            const newUrls = prevUrls.filter((_, idx) => idx !== index); // 선택된 이미지 목록에서 제거
+            const newUrls = prevUrls.filter((_, idx) => idx !== index);
             localStorage.setItem("paperImageUrls", JSON.stringify(newUrls));
             return newUrls;
         });
 
         if (thumbnailImageUrl === urlToRemove) {
-            setThumbnailImageUrl(""); // 삭제된 이미지가 썸네일인 경우 썸네일 초기화
+            setThumbnailImageUrl("");
             localStorage.removeItem("thumbnailImageUrl");
         }
     };
@@ -236,7 +235,7 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
                     {thumbnailImageUrl && (
                         <div key={thumbnailImageUrl} className={styles.thumbnail}>
                             <img src={thumbnailImageUrl} alt={"Thumbnail"} />
-                            <button className={styles.deleteButton} type="button" onClick={(e) => handleRemoveImage(imageUrls.indexOf(thumbnailImageUrl),e)}>
+                            <button className={styles.deleteButton} type="button" onClick={(e) => handleRemoveImage(imageUrls.indexOf(thumbnailImageUrl), e)}>
                                 <XIcon stroke="#616161" />
                             </button>
                             <button className={styles.crownButton} type="button" onClick={(e) => handleThumbnailClick(thumbnailImageUrl, e)}>
@@ -250,7 +249,7 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
                             <button className={styles.deleteButton} onClick={(e) => handleRemoveImage(index, e)}>
                                 <XIcon stroke="#616161" />
                             </button>
-                            <button className={styles.crownButton} onClick={(e) => handleThumbnailClick(url, e)} >
+                            <button className={styles.crownButton} onClick={(e) => handleThumbnailClick(url, e)}>
                                 <CrownIcon fill={thumbnailImageUrl === url ? "#FB8176" : ""} bgColor={"#fff"} />
                             </button>
                         </div>
