@@ -7,10 +7,11 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
     const containerRef = useRef(null);
     const [noResult, setNoResult] = useState(false);
     const [placeInfo, setPlaceInfo] = useState({});
-    const [servicesLoaded, setServicesLoaded] = useState(false); // Kakao Maps Services 로드 상태
+    const [servicesLoaded, setServicesLoaded] = useState(false);
     const map = useRef(null);
     const markers = useRef([]);
     const overlays = useRef([]);
+    const markerItems = useRef([]);
 
     // 오버레이 초기화하는 함수
     const clearOverlays = () => {
@@ -41,6 +42,9 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
             // 장소 리스트의 모든 자식 element 제거
             removeAllChildNodes(listEl);
 
+            markers.current = [];
+            markerItems.current = [];
+
             // 마커 추가하는 함수
             function addMarker(position, idx) {
                 const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png";
@@ -66,9 +70,9 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
             function getListItem(index, place) {
                 const el = document.createElement("li");
                 let itemStr = `<span class="${styles.markerbg} marker_${index + 1}"></span>
-                          <p>${index + 1}</p>
-                      <div class="${styles.info}">
-                        <p>${place.place_name}</p>`;
+                              <p>${index + 1}</p>
+                          <div class="${styles.info}">
+                            <p>${place.place_name}</p>`;
 
                 if (place.road_address_name) {
                     itemStr += `<span>${place.road_address_name}</span>
@@ -120,6 +124,13 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
                     });
                 })(marker, places[i]);
 
+                // 장소 item 선택시 marker 클릭 이벤트
+                itemEl.addEventListener("click", () => {
+                    window.kakao.maps.event.trigger(marker, "click");
+                });
+
+                markerItems.current.push({ marker, itemEl });
+
                 fragment.appendChild(itemEl);
                 if (i < places.length - 1) {
                     const hr = document.createElement("hr");
@@ -137,7 +148,7 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
             map.current.setBounds(bounds);
         };
 
-        // 모든 자식 노드를 제거하는 함수
+        // 모든 자식 노드 제거하는 함수
         function removeAllChildNodes(el) {
             if (el) {
                 while (el.hasChildNodes()) {
@@ -146,11 +157,44 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
             }
         }
 
-         // 장소 검색 콜백 함수
-        const placesSearchCB = (data, status) => {
+        // 페이지 번호 표시하는 함수
+        function displayPagination(pagination) {
+            var paginationEl = document.getElementById("pagination"),
+                fragment = document.createDocumentFragment(),
+                i;
+
+            // 기존에 추가된 페이지번호 삭제
+            while (paginationEl.hasChildNodes()) {
+                paginationEl.removeChild(paginationEl.lastChild);
+            }
+
+            for (i = 1; i <= pagination.last; i++) {
+                var el = document.createElement("a");
+                el.href = "#";
+                el.innerHTML = i;
+
+                if (i === pagination.current) {
+                    el.className = styles.on;
+                } else {
+                    el.onclick = (function (i) {
+                        return function () {
+                            pagination.gotoPage(i);
+                            clearOverlays();
+                        };
+                    })(i);
+                }
+
+                fragment.appendChild(el);
+            }
+            paginationEl.appendChild(fragment);
+        }
+
+        // 장소 검색 콜백 함수
+        const placesSearchCB = (data, status, pagination) => {
             if (status === window.kakao.maps.services.Status.OK) {
                 displayPlaces(data);
                 setNoResult(false);
+                displayPagination(pagination);
             } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
                 setNoResult(true);
                 removeAllChildNodes(document.getElementById("placesList"));
@@ -206,7 +250,7 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
             ) : (
                 <div id="menu_wrap" className={styles.bg_white}>
                     <ul id="placesList"></ul>
-                    <div id="pagination"></div>
+                    <div id="pagination" className={styles.pagination}></div>
                 </div>
             )}
         </div>

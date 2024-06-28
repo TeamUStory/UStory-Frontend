@@ -62,6 +62,22 @@
         }
     }
 
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+
+        a{
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            color: inherit;
+            &.on{
+                font-weight: 600;
+                color: $point-color1;
+            }
+        }
+    }
     hr {
         border: 1px solid $black4;
         box-sizing: border-box;
