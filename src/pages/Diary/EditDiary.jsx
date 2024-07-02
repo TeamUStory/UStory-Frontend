@@ -11,7 +11,8 @@ import Button from "@/components/Button/Button";
 import Diary from "@/apis/api/Diary";
 import useAxios from "@/hooks/useAxios";
 import Modal from "@/components/Modal/Modal";
-import CompletedImage from "@/assets/images/completedImage.png"
+import CompletedImage from "@/assets/images/completedImage.png";
+import CancelImage from "@/assets/images/cancelImage.png";
 
 // 카테고리
 const categories = [
@@ -43,6 +44,7 @@ const EditDiary = () => {
 
     const [selectedColor, setSelectedColor] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isBackModalOpen, setIsBackModalOpen] = useState(false);
     const [diaryCategory, setDiaryCategory] = useState("");
     const [diaryMembers, setDiaryMemebers] = useState([]);
     const [members, setMembers] = useState([]);
@@ -69,10 +71,8 @@ const EditDiary = () => {
         if (diaryData) {
             setValue("name", diaryData.name);
             setValue("description", diaryData.description);
-
             setValue("imgUrl", diaryData.imgUrl);
             setValue("diaryCategory", categories.find((category) => category.label === diaryData.diaryCategory)?.value || "");
-
             setValue("color", markerColors.find((colors) => colors.hexcode === diaryData.color)?.color);
 
             setSelectedColor(diaryData.color);
@@ -80,7 +80,7 @@ const EditDiary = () => {
             setMembers(diaryData.users.map((user) => user.nickname));
             setDiaryCategory(categories.find((category) => category.label === diaryData.diaryCategory)?.value || "");
             setImgUrl(diaryData.imgUrl);
-            if (diaryData.diaryCategory === "개인"){
+            if (diaryData.diaryCategory === "개인") {
                 setIndividual(true);
             }
         }
@@ -140,14 +140,13 @@ const EditDiary = () => {
         localStorage.removeItem("diaryFormData");
         localStorage.removeItem("selectedMembers");
         localStorage.removeItem("diaryImageURL");
-        
+
         const formData = {
             ...data,
             diaryCategory: isIndividual ? "INDIVIDUAL" : data.diaryCategory,
-            users: members
+            users: members,
         };
 
-        console.log(formData);
         await fetchUpdatedDiaryData(Diary.putDiary(id, formData));
         setIsModalOpen(true);
         reset();
@@ -169,21 +168,24 @@ const EditDiary = () => {
     };
 
     const handleBackClick = () => {
-        navigate('/diary');
+        navigate("/diary");
         localStorage.removeItem("diaryFormData");
         localStorage.removeItem("selectedMembers");
         localStorage.removeItem("diaryImageURL");
-    }
+    };
+
+    const closeBackModal = () => {
+        setIsBackModalOpen(false);
+    };
 
     const closeModal = () => {
         setIsModalOpen(false);
         navigate(`/diary/${id}`);
     };
 
-    console.log(members);
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="다이어리 수정하기" onClick={handleBackClick}/>
+            <SubHeader pageTitle="다이어리 수정하기" onClick={() => setIsBackModalOpen(true)} />
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="다이어리 이름" placeholder="다이어리 이름 입력" className={styles.input} {...register("name", { required: true })} />
@@ -268,16 +270,28 @@ const EditDiary = () => {
                     <InputField label="소개" placeholder="다이어리 소개 입력" id="diaryIntroduction" style={{ width: "100%" }} {...register("description")} />
                     <Button label="수정하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>
-                {isModalOpen && (
-                    <Modal closeFn={closeModal}>
+                {(isModalOpen || isBackModalOpen) && (
+                    <Modal closeFn={isModalOpen ? closeModal : closeBackModal}>
                         <Modal.Icon>
-                            <img src={CompletedImage} alt="완료" />
+                            <img src={isModalOpen ? CompletedImage : CancelImage} alt={isModalOpen ? "완료" : "뒤로가기"} />
                         </Modal.Icon>
                         <Modal.Body>
-                            <p>다이어리 수정이 완료되었습니다.</p>
+                            {isModalOpen ? (
+                                <p>다이어리 수정이 완료되었습니다.</p>
+                            ) : (
+                                <p>
+                                    정말로 뒤로 가시겠습니까?
+                                    <br/>
+                                    지금까지 수정한 내용은 저장되지 않습니다.
+                                </p>
+                            )}
                         </Modal.Body>
                         <Modal.Button>
-                            <Button type="button" label="확인" variant="active" onClick={() => navigate(`/diary/${id}`)} />
+                            {isModalOpen ? (
+                                <Button type="button" label="확인" variant="active" onClick={() => navigate(`/diary/${id}`)} />
+                            ) : (
+                                <Button type="button" label="확인" variant="active" onClick={handleBackClick} />
+                            )}
                         </Modal.Button>
                     </Modal>
                 )}

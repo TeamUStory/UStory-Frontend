@@ -16,6 +16,7 @@ import { format } from "date-fns";
 import useAxios from "@/hooks/useAxios";
 import Paper from "@/apis/api/Paper";
 import CompletedImage from "@/assets/images/completedImage.png";
+import CancelImage from "@/assets/images/cancelImage.png";
 
 const RegisterPaper = () => {
     const navigate = useNavigate();
@@ -25,6 +26,7 @@ const RegisterPaper = () => {
 
     const [diary, setDiary] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isBackModalOpen, setIsBackModalOpen] = useState(false);
     const [buttonActive, setButtonActive] = useState("disabled");
     const [placeInformation, setPlaceInformation] = useState({});
     const [paperId, setPaperId] = useState(0);
@@ -160,9 +162,13 @@ const RegisterPaper = () => {
         localStorage.removeItem("thumbnailImageUrl");
     };
 
+    const closeBackModal = () => {
+        setIsBackModalOpen(false);
+    };
+
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="기록하기" onClick={handleBackClick} />
+            <SubHeader pageTitle="기록하기" onClick={() => setIsBackModalOpen(true)} />
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="제목" placeholder="제목 입력" className={styles.input} {...register("title", { required: true })} />
@@ -201,20 +207,32 @@ const RegisterPaper = () => {
                     <InputField label="코멘트" placeholder="장소에 대한 한 줄 코멘트 입력" className={styles.input} {...register("writerComment")} />
                     <Button label="기록하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>
-                {isModalOpen && (
-                    <Modal closeFn={closeModal}>
+                {(isModalOpen || isBackModalOpen) && (
+                    <Modal closeFn={isModalOpen ? closeModal : closeBackModal}>
                         <Modal.Icon>
-                            <img src={CompletedImage} alt="완료" />
+                            <img src={isModalOpen ? CompletedImage : CancelImage} alt={isModalOpen ? "완료" : "뒤로가기"} />
                         </Modal.Icon>
                         <Modal.Body>
-                            <p>
-                                장소 기록이 완료되었습니다.
-                                <br />
-                                닫기 버튼을 누르면 등록한 기록 페이지로 넘어갑니다.
-                            </p>
+                            {isModalOpen ? (
+                                <p>
+                                    장소 기록이 완료되었습니다.
+                                    <br />
+                                    닫기 버튼을 누르면 등록한 기록 페이지로 넘어갑니다.
+                                </p>
+                            ) : (
+                                <p>
+                                    정말로 뒤로 가시겠습니까?
+                                    <br />
+                                    지금까지 작성한 내용은 저장되지 않습니다.
+                                </p>
+                            )}
                         </Modal.Body>
                         <Modal.Button>
-                            <Button type="button" label="추가로 기록할래요." variant="active" onClick={handleRegisterClick} />
+                            {isModalOpen ? (
+                                <Button type="button" label="확인" variant="active" onClick={handleRegisterClick} />
+                            ) : (
+                                <Button type="button" label="확인" variant="active" onClick={handleBackClick} />
+                            )}
                         </Modal.Button>
                     </Modal>
                 )}

@@ -17,6 +17,8 @@ import { makeArray } from "@/utils/makeArray";
 import { truncateText } from "@/utils/truncateText";
 import CarouselIndicator from "@/components/Carousel/CarouselIndicator";
 
+const basicDiaryImageUrl = "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/diary-profile.png";
+
 const Home = () => {
     const navigate = useNavigate();
     const [diaryItems, setDiaryItems] = useState([]);
@@ -96,7 +98,7 @@ const Home = () => {
                                         <div key={diary.id}>
                                             <button onClick={() => navigate(`/diary/${diary.id}`)}>
                                                 <div className={styles.diaryItem}>
-                                                    <img src={diary.imgUrl} alt={diary.name} />
+                                                    <img src={diary.imgUrl === "기본 DiaryImgUrl" ? basicDiaryImageUrl : diary.imgUrl} alt={diary.name} />
                                                     <div className={styles.diaryContent}>
                                                         <p className={styles.name}>{truncateText(diary.name, 10)}</p>
                                                         <p className={styles.diaryCategory}>{diary.diaryCategory}</p>

@@ -14,6 +14,7 @@ import PlaceMark from "@/assets/icons/PlaceMark";
 import useAxios from "@/hooks/useAxios";
 import Paper from "@/apis/api/Paper";
 import CompletedImage from "@/assets/images/completedImage.png";
+import CancelImage from "@/assets/images/cancelImage.png";
 
 const EditPaper = () => {
     const navigate = useNavigate();
@@ -23,6 +24,7 @@ const EditPaper = () => {
     const watchAllFields = watch();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isBackModalOpen, setIsBackModalOpen] = useState(false);
     const [buttonActive, setButtonActive] = useState("disabled");
     const [placeInformation, setPlaceInformation] = useState(location.state?.placeInfo || {});
     const [thumbnailUrl, setThumbnailUrl] = useState("");
@@ -167,11 +169,15 @@ const EditPaper = () => {
         localStorage.removeItem("placeInfo");
         localStorage.removeItem("paperImageUrls");
         localStorage.removeItem("thumbnailImageUrl");
+    };
+        
+    const closeBackModal = () => {
+        setIsBackModalOpen(false)
     }
 
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="수정하기" onClick={handleBackClick}/>
+            <SubHeader pageTitle="수정하기" onClick={() => setIsBackModalOpen(true)} />
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="제목" placeholder="제목 입력" className={styles.input} {...register("title", { required: true })} />
@@ -197,16 +203,28 @@ const EditPaper = () => {
                     />
                     <Button label="수정하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>
-                {isModalOpen && (
-                    <Modal closeFn={closeModal}>
+                {(isModalOpen || isBackModalOpen) && (
+                    <Modal closeFn={isModalOpen ? closeModal : closeBackModal}>
                         <Modal.Icon>
-                            <img src={CompletedImage} alt="완료" />
+                            <img src={isModalOpen ? CompletedImage : CancelImage} alt={isModalOpen ? "완료" : "뒤로가기"} />
                         </Modal.Icon>
                         <Modal.Body>
-                            <p>페이퍼 수정이 완료되었습니다.</p>
+                            {isModalOpen ? (
+                                <p>페이퍼 수정이 완료되었습니다.</p>
+                            ) : (
+                                <p>
+                                    정말로 뒤로 가시겠습니까?
+                                    <br/>
+                                    지금까지 수정한 내용은 저장되지 않습니다.
+                                </p>
+                            )}
                         </Modal.Body>
                         <Modal.Button>
-                            <Button type="button" label="확인" variant="active" onClick={handleRegisterClick} />
+                            {isModalOpen ? (
+                                <Button type="button" label="확인" variant="active" onClick={handleRegisterClick} />
+                            ) : (
+                                <Button type="button" label="확인" variant="active" onClick={handleBackClick} />
+                            )}
                         </Modal.Button>
                     </Modal>
                 )}

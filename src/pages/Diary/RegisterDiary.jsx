@@ -13,6 +13,7 @@ import DiaryImageUpload from "./DiaryImageUpload";
 import Diary from "@/apis/api/Diary";
 import useAxios from "@/hooks/useAxios";
 import CompletedImage from "@/assets/images/completedImage.png";
+import CancelImage from "@/assets/images/cancelImage.png";
 
 // 카테고리
 const categories = [
@@ -44,6 +45,7 @@ const RegisterDiary = () => {
     const [diaryCategory, setDiaryCategory] = useState("");
     const [members, setMembers] = useState(location.state?.selectedMembers || []);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isBackModalOpen, setIsBackModalOpen] = useState(false);
     const [buttonActive, setButtonActive] = useState("disabled");
     const [diaryId, setDiaryId] = useState(0);
 
@@ -144,7 +146,11 @@ const RegisterDiary = () => {
         localStorage.removeItem("diaryFormData");
         localStorage.removeItem("selectedMembers");
         localStorage.removeItem("diaryImageURL");
-    }
+    };
+
+    const closeBackModal = () => {
+        setIsBackModalOpen(false);
+    };
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -153,7 +159,7 @@ const RegisterDiary = () => {
 
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="다이어리 만들기" onClick={handleBackClick} />
+            <SubHeader pageTitle="다이어리 만들기" onClick={() => setIsBackModalOpen(true)} />
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="다이어리 이름" placeholder="다이어리 이름 입력" className={styles.input} {...register("name", { required: true })} />
@@ -237,16 +243,28 @@ const RegisterDiary = () => {
                     <InputField label="소개" placeholder="다이어리 소개 입력" id="diaryIntroduction" style={{ width: "100%" }} {...register("description")} />
                     <Button label="기록하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>
-                {isModalOpen && (
-                    <Modal closeFn={closeModal}>
+                {(isModalOpen || isBackModalOpen) && (
+                    <Modal closeFn={isModalOpen ? closeModal : closeBackModal}>
                         <Modal.Icon>
-                            <img src={CompletedImage} alt="완료" />
+                            <img src={isModalOpen ? CompletedImage : CancelImage} alt={isModalOpen ? "완료" : "뒤로가기"} />
                         </Modal.Icon>
                         <Modal.Body>
-                            <p>다이어리 추가가 완료되었습니다.</p>
+                            {isModalOpen ? (
+                                <p>다이어리 추가가 완료되었습니다.</p>
+                            ) : (
+                                <p>
+                                    정말로 뒤로 가시겠습니까?
+                                    <br />
+                                    지금까지 작성한 내용은 저장되지 않습니다.
+                                </p>
+                            )}
                         </Modal.Body>
                         <Modal.Button>
-                            <Button type="button" label="확인" variant="active" onClick={() => navigate(`/diary/${diaryId}`)} />
+                            {isModalOpen ? (
+                                <Button type="button" label="확인" variant="active" onClick={() => navigate(`/diary/${diaryId}`)} />
+                            ) : (
+                                <Button type="button" label="확인" variant="active" onClick={handleBackClick} />
+                            )}
                         </Modal.Button>
                     </Modal>
                 )}

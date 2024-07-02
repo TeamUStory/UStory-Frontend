@@ -88,7 +88,7 @@ const FindPassword = () => {
           </form>
         </div>
         {isModalOpen && 
-          <Modal closeFn={() => avigator("/login")}>
+          <Modal closeFn={() => navigator("/login")}>
             <Modal.Icon><img src={resetSuccess ? completedImage : cancelImage} alt="modal icon"/></Modal.Icon>
             <Modal.Body>
               {resetSuccess ? "비밀번호 변경을 성공하였습니다." : "비밀번호 변경에 실패하였습니다. 다시 시도해 주세요."}
