@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Mypage.module.scss';
 import Button from "@/components/Button/Button";
@@ -7,12 +8,22 @@ import ArrowIcon from "@/assets/icons/ArrowIcon";
 
 const ProfileBox = ({user}) => {
   const navigate = useNavigate();
+  const [profileImgUrl, setProfileImgUrl] = useState('')
+
+  // 프로필 이미지 url이 없을 경우 기본 이미지
+  useEffect(() => {
+    if(user.profileImgUrl === '') {
+      setProfileImgUrl("https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png")
+    } else {
+      setProfileImgUrl(user.profileImgUrl)
+    }
+  }, [user])
 
   return (
     <div className={styles.profileBox}>
       <div className={styles.profileInfoBox}>
         <div className={styles.profileImg}>
-          <img src={user.profileImgUrl} alt={"profile img"}/>
+          <img src={profileImgUrl} alt={"profile img"}/>
         </div>
         <div className={styles.profileInfo}>
           <p className={styles.nickname}>

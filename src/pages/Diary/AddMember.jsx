@@ -116,7 +116,13 @@ const AddMember = () => {
                                     <React.Fragment key={index}>
                                         <div className={styles.memberContainer}>
                                             <div className={styles.memberProfile}>
-                                                <img src={member.profileImgUrl} alt={member.nickname} />
+                                                <img 
+                                                  src={member.profileImgUrl === "" ? 
+                                                  "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" 
+                                                  :
+                                                  member.profileImgUrl}
+                                                  alt={member.nickname}
+                                                />
                                                 <div className={styles.information}>
                                                     <p>{member.nickname}</p>
                                                     <p className={styles.memberName}>@{member.name}</p>

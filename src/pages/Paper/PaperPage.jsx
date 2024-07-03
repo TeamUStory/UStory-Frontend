@@ -274,7 +274,13 @@ const PaperPage = () => {
                     <div className={styles.allCommentContainer}>
                         {commentList.map((comment, index) => (
                             <div className={styles.commentsContainer} key={index}>
-                                <img src={comment.profileImg} alt={comment.userNickname} />
+                                <img 
+                                  src={comment.profileImg === "" ? 
+                                    "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" 
+                                    :
+                                    comment.profileImg}
+                                  alt={comment.userNickname}
+                                />
                                 <div className={styles.commentContainer}>
                                     <p className={styles.nickName}>{comment.userNickname}</p>
                                     <p className={styles.date}>{comment.createdAt}</p>
@@ -309,7 +315,13 @@ const PaperPage = () => {
                     <div className={styles.allCommentContainer}>
                         {commentList.map((comment, index) => (
                             <div className={styles.commentsContainer} key={index}>
-                                <img src={comment.profileImg} alt={comment.userNickname} />
+                                <img 
+                                  src={comment.profileImg === "" ? 
+                                    "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" 
+                                    :
+                                    comment.profileImg}
+                                  alt={comment.userNickname}
+                                />
                                 <div className={styles.commentContainer}>
                                     <p className={styles.nickName}>{comment.userNickname}</p>
                                     <p className={styles.date}>{comment.date}</p>

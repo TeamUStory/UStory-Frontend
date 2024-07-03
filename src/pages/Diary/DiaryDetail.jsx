@@ -145,7 +145,10 @@ const DiaryDetail = () => {
                                             className={styles.member}
                                         >
                                             <img
-                                                src={member.profileImgUrl}
+                                                src={member.profileImgUrl === "" ? 
+                                                "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" 
+                                                :
+                                                member.profileImgUrl}
                                                 alt={member.nickname}
                                             />
                                             <p>{member.nickname}</p>
