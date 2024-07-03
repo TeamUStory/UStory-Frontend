@@ -67,11 +67,15 @@
         justify-content: center;
         gap: 12px;
 
+        box-sizing: border-box;
+        padding-top: 12px;
+
         a{
             text-decoration: none;
             font-weight: 500;
             font-size: 14px;
-            color: inherit;
+            color: $black3;
+
             &.on{
                 font-weight: 600;
                 color: $point-color1;

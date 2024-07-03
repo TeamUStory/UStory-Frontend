@@ -17,6 +17,7 @@ const PlaceSearch = () => {
     const [placeInfo, setPlaceInfo] = useState({});
     const [buttonVariant, setButtonVariant] = useState("disabled");
 
+    // 페이지 들어오면 페이지 reload
     useEffect(() => {
         const hasReloaded = sessionStorage.getItem("hasReloaded");
         if (!hasReloaded) {
@@ -24,6 +25,13 @@ const PlaceSearch = () => {
             window.location.reload();
         }
     }, []);
+
+    // 페이지 이동 시 sessionStorage 삭제
+    useEffect(() => {
+        return () => {
+            sessionStorage.removeItem("hasReloaded");
+        };
+    }, [location]);
 
     const onChange = (e) => {
         setInputText(e.target.value);
