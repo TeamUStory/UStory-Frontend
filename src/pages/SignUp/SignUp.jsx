@@ -97,7 +97,7 @@ const SignUp = () => {
 
     await fetchEmailData(User.postEmail(userData),
       (err) => {
-        if(err.response.status === 400) {
+        if(err.response.status === 409) {
           setEmailValid(false);
           setEmailErrorMessage("* 이미 사용 중인 이메일입니다.");
         }
