@@ -21,6 +21,8 @@ const categories = [
     { ko: "어스", en: "US" }
 ];
 
+const basicDiaryImageUrl = "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/diary-profile.png";
+
 const DiaryList = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState(null);
@@ -69,6 +71,7 @@ const DiaryList = () => {
     // 2개씩 나뉜 다이어리 모음
     const groupedPostItems = makeArray(diaryItems, 2);
 
+    console.log(groupedPostItems)
     return (
         <div className={styles.container}>
             <header className={styles.header}>
@@ -95,7 +98,7 @@ const DiaryList = () => {
                         {group.map((postItem, idx) => (
                             <PostItem
                                 key={idx}
-                                image={postItem.imgUrl}
+                                image={postItem.imgUrl === "기본 DiaryImgUrl" ? basicDiaryImageUrl : postItem.imgUrl}
                                 title={postItem.name}
                                 link={`/diary/${postItem.id}`}
                                 subText={postItem.diaryCategory}

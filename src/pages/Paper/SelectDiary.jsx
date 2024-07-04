@@ -11,6 +11,8 @@ import SadIcon from "@/assets/icons/SadIcon";
 import useAxios from "@/hooks/useAxios";
 import Diary from "@/apis/api/Diary";
 
+const basicDiaryImageUrl = "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/diary-profile.png";
+
 const SelectDiary = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -85,7 +87,7 @@ const SelectDiary = () => {
                                     <React.Fragment key={index}>
                                         <div className={styles.diaryContainer}>
                                             <div className={styles.diaryImage}>
-                                                <img src={diary.imgUrl} alt="멤버 기본이미지" />
+                                                <img src={diary.imgUrl === "기본 DiaryImgUrl" ? basicDiaryImageUrl : diary.imgUrl} alt="다이어리 기본이미지" />
                                                 <div className={styles.information}>
                                                     <p>{diary.name}</p>
                                                     <p className={styles.category}>{diary.diaryCategory}</p>
