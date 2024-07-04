@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './BottomBar.module.scss';
-import HomeIcon from '../../assets/icons/HomeIcon';
-import PageListIcon from '../../assets/icons/PageListIcon';
-import DiaryIcon from '../../assets/icons/DiaryIcon';
-import MyPageIcon from '../../assets/icons/MyPageIcon';
+import HomeIcon from '@/assets/icons/HomeIcon';
+import PageListIcon from '@/assets/icons/PageListIcon';
+import DiaryIcon from '@/assets/icons/DiaryIcon';
+import MyPageIcon from '@/assets/icons/MyPageIcon';
 
 const mapPathnameToIconValue = {
     "/": "home",
