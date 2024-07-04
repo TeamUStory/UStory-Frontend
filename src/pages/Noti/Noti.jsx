@@ -228,9 +228,13 @@ const Noti = () => {
         <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={() => navigate(-1)} />
         <h1 className={styles.title}>알림</h1>
         <div className={styles.rightHeader}>
-          <button className={styles.moreIcon} onClick={toggleMenu}>
-            <MoreIcon stroke="black" />
-          </button>
+          {notiList.length > 0 ? 
+            <button className={styles.moreIcon} onClick={toggleMenu}>
+              <MoreIcon stroke="black" />
+            </button>
+            :
+            null
+          }
           {isToggle && (
             <div className={styles.menuContainer}>
               <Button type="button" variant="inactive" label="선택 삭제" onClick={() => setIsSelect(true)}/>
