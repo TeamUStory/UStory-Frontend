@@ -128,7 +128,10 @@ const DiaryDetail = () => {
                                     {memberRow.map((member, memberIndex) => (
                                         <div key={memberIndex} className={styles.member}>
                                             <img
-                                                src={member.profileImgUrl === "" ? "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" : member.profileImgUrl}
+                                                src={member.profileImgUrl === "" ? 
+                                                "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" 
+                                                :
+                                                member.profileImgUrl}
                                                 alt={member.nickname}
                                             />
                                             <p>{member.nickname}</p>

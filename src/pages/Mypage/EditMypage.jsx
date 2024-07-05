@@ -59,8 +59,12 @@ const EditMypage = () => {
       setValue('profileDescription', userData.profileDescription);
     }
 
-  },[userData, setValue])
+    if(userData?.profileImgUrl === "") {
+      setValue('profileImgUrl', "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png");
+    }
 
+  },[userData, setValue])
+  
   // 닉네임 유효성 검사 로직
   const handleNicknameValidation = async () => {
     const userData = { nickname: nickname };
