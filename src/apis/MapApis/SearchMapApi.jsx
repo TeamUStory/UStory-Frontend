@@ -2,16 +2,19 @@ import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./SearchMapApi.module.scss";
 import SadIcon from "@/assets/icons/SadIcon";
+import useMapApi from "@/hooks/useMapApi";
 
 const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
     const containerRef = useRef(null);
     const [noResult, setNoResult] = useState(false);
     const [placeInfo, setPlaceInfo] = useState({});
-    const [servicesLoaded, setServicesLoaded] = useState(false);
     const map = useRef(null);
     const markers = useRef([]);
     const overlays = useRef([]);
     const markerItems = useRef([]);
+
+    // kakaoMapApi 불러오는 훅 세팅
+    const mapApi = useMapApi('services,drawing');
 
     // 오버레이 초기화하는 함수
     const clearOverlays = () => {
@@ -213,32 +216,12 @@ const SearchMapApi = ({ searchPlace, onUpdatePlaceInfo }) => {
             ps.keywordSearch(searchPlace, placesSearchCB);
         }
     };
-
-    // 카카오 맵 스크립트 로드
+    
     useEffect(() => {
-        const script = document.createElement("script");
-        script.async = true;
-        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_API_KEY}&libraries=services,drawing&autoload=false`;
-        document.body.appendChild(script);
-
-        // 카카오 맵 Services 로드 완료 시 상태 업데이트
-        script.onload = () => {
-            window.kakao.maps.load(() => {
-                setServicesLoaded(true);
-            });
-        };
-
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
-
-    // 카카오맵 Services 로드 완료 후 맵 초기화
-    useEffect(() => {
-        if (servicesLoaded) {
+        if (mapApi) {
             initializeMap();
         }
-    }, [servicesLoaded, searchPlace]);
+    }, [mapApi, searchPlace]);
 
     // 선택된 장소 정보가 업데이트될 때마다 부모 컴포넌트로 전달
     useEffect(() => {

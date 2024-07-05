@@ -1,32 +1,18 @@
 import { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
+import useMapApi from "@/hooks/useMapApi";
 
 const MapApiPlace = ({ width = "100%", height = "344px", borderRadius = "20px", coordinateX, coordinateY, level = 4 }) => {
     const containerRef = useRef(null);
     const location = useLocation();
-    const kakaoApiKey = import.meta.env.VITE_KAKAO_MAP_API_KEY;
+
+    // kakaoMapApi 불러오는 훅 세팅
+    const mapApi = useMapApi('drawing');
 
     useEffect(() => {
-        const scriptId = "kakao-map-script";
-        
-        if (!document.getElementById(scriptId)) {
-            // Kakao 지도 API 스크립트 동적으로 추가
-            const script = document.createElement("script");
-            script.id = scriptId;
-            script.async = true;
-            script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoApiKey}&autoload=false&libraries=drawing`;
-            document.body.appendChild(script);
-
-            script.onload = () => {
-                window.kakao.maps.load(initializeMap);
-            };
-        } else {
-            window.kakao.maps.load(initializeMap);
-        }
-
-        function initializeMap() {
-            if (containerRef.current) {
+        const initializeMap = () => {
+            if (containerRef.current && window.kakao && window.kakao.maps) {
                 const defaultCoordinateX = coordinateX ? Number(coordinateX) : 37.566826;
                 const defaultCoordinateY = coordinateY ? Number(coordinateY) : 126.9786567;
 
@@ -46,15 +32,19 @@ const MapApiPlace = ({ width = "100%", height = "344px", borderRadius = "20px", 
                     marker.setMap(map);
                 }
             }
+        };
+
+        if (mapApi) {
+            initializeMap();
         }
 
         // 컴포넌트 언마운트 시에 스크립트 제거
         return () => {
-            if (document.getElementById(scriptId)) {
-                document.body.removeChild(document.getElementById(scriptId));
+            if (document.getElementById("kakao-map-script")) {
+                document.body.removeChild(document.getElementById("kakao-map-script"));
             }
         };
-    }, [coordinateX, coordinateY, level, location.pathname, kakaoApiKey]);
+    }, [coordinateX, coordinateY, level, location.pathname, mapApi]);
 
     return <div ref={containerRef} key={`${coordinateX}-${coordinateY}-${location.pathname}`} id="map" style={{ width: width, height: height, borderRadius: borderRadius }}></div>;
 };
