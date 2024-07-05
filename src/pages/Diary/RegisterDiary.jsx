@@ -199,6 +199,7 @@ const RegisterDiary = () => {
                                             className={selectedColor === hexcode ? styles.selected : ""}
                                             style={{
                                                 backgroundColor: hexcode,
+                                                borderColor: color === "WHITE" && selectedColor !== hexcode ? "#EEEEEE" : "",
                                             }}
                                             onClick={() => {
                                                 setSelectedColor(hexcode);
@@ -210,6 +211,7 @@ const RegisterDiary = () => {
                             </div>
                         )}
                     />
+
                     <div className={styles.membersSelect}>
                         <div className={styles.title}>
                             <div className={styles.phrases}>

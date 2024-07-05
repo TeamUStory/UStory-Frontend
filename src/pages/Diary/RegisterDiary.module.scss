@@ -48,9 +48,10 @@
                     width: 33px;
                     height: 33px;
                     padding: 0;
+                    border: 2px solid transparent;
 
                     &.selected {
-                        border: 2px solid $point-color1;
+                        border-color: $point-color1;
                     }
                 }
             }

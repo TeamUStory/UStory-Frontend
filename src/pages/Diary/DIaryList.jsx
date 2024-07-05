@@ -21,6 +21,8 @@ const categories = [
     { ko: "어스", en: "US" }
 ];
 
+const basicDiaryImageUrl = "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/diary-profile.png";
+
 const DiaryList = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState(null);
@@ -95,7 +97,7 @@ const DiaryList = () => {
                         {group.map((postItem, idx) => (
                             <PostItem
                                 key={idx}
-                                image={postItem.imgUrl}
+                                image={postItem.imgUrl === "기본 DiaryImgUrl" ? basicDiaryImageUrl : postItem.imgUrl}
                                 title={postItem.name}
                                 link={`/diary/${postItem.id}`}
                                 subText={postItem.diaryCategory}
