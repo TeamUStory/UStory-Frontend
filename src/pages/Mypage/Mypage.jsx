@@ -49,6 +49,10 @@ const Mypage = () => {
     if(logoutData) {
       navigate("/login");
     }
+
+    if(logoutData?.loginType === "KAKAO") {
+      navigate("https://kauth.kakao.com/oauth/logout?client_id=eab271dce70bcf6a5f89799f1f6ca6d5&logout_redirect_uri=https://ustory.me/auth/logout")
+    }
   },[logoutData,navigate])
 
   return (

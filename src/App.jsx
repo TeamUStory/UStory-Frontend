@@ -6,6 +6,7 @@ import Loading from "@/components/Loading/Loading";
 import { useAuth } from "@/hooks/useAuth";
 import useScrollToTop from "@/hooks/useScrollToTop";
 import KakaoCallback from "@/components/KakaoCallback/KakaoCallback";
+import NaverCallback from "@/components/NaverCallback/NaverCallback";
 import Error from "@/components/Error/Error";
 import SplashScreen from "@/components/SplashScreen/SplashScreen";
 
@@ -57,6 +58,10 @@ function App() {
                 <Route
                     path="/login/oauth2/code/kakao"
                     element={<KakaoCallback />}
+                />
+                <Route
+                    path="/login/oauth2/code/naver"
+                    element={<NaverCallback />}
                 />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
