@@ -49,6 +49,11 @@ const Mypage = () => {
     if(logoutData) {
       navigate("/login");
     }
+
+    if(logoutData?.loginType === "KAKAO") {
+      setLogoutSuccess(false)
+      window.location.href="https://kauth.kakao.com/oauth/logout?client_id=eab271dce70bcf6a5f89799f1f6ca6d5&logout_redirect_uri=https://ustory.me/auth/logout"
+    }
   },[logoutData,navigate])
 
   return (
@@ -75,7 +80,7 @@ const Mypage = () => {
           <Modal.Icon><img src={BanImg} alt='cancelImage' /></Modal.Icon>
           <Modal.Body>로그아웃 하시겠습니까?</Modal.Body>
           <Modal.Button>
-            <Button type="button" label="로그아웃 하기" variant="active" onClick={() => setLogoutSuccess(true)}/>
+            <Button type="button" label="로그아웃 하기" variant="active" onClick={handleLogout}/>
           </Modal.Button>
         </Modal>
       )}
