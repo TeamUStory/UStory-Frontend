@@ -2,8 +2,20 @@
 
 .background {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: $white1;
+
+    gap: 15px;
+
+    img {
+        width: 159px;
+    }
+    p {
+        color: $black2;
+        font-size: 16px;
+        font-weight: 600;
+    }
 }
