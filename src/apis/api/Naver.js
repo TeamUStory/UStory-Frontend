@@ -5,7 +5,7 @@ export default {
    */
   getNaverLogin(code, state) {
     return {
-      url: `/login/oauth2/code/kakao?code=${code}?state=${state}`,
+      url: `/login/oauth2/code/naver?code=${code}&state=${state}`,
       method: "post",
     };
   }

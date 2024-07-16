@@ -12,9 +12,8 @@ const NaverCallback = () => {
     const code = url.searchParams.get("code");
     const state = url.searchParams.get("state");
 
-    if (code, state) {
+    if (code && state) {
       fetchData(Naver.getNaverLogin(code, state));
-      console.log(code, state)
     }
   }, [fetchData]);
 
