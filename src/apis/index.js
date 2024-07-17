@@ -13,7 +13,7 @@ export const refresh = async () => {
     const res = await api.post('/jwt/re-issue');
     
     if (res?.data) {
-      let newAccessToken = res.data;
+      let newAccessToken = res.data.refreshAccessToken;
       localStorage.setItem('accessToken', newAccessToken);
       return newAccessToken;
     } else {
@@ -58,8 +58,6 @@ api.interceptors.request.use(
     return Promise.reject(err);
   }
 );
-
-
 
 // 응답
 api.interceptors.response.use(
