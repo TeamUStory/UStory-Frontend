@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styles from "./DiaryDetail.module.scss";
 import ArrowIcon from "@/assets/icons/ArrowIcon";
@@ -16,23 +16,16 @@ import Diary from "@/apis/api/Diary";
 import Paper from "@/apis/api/Paper";
 import BottomBar from "@/components/BottomBar/BottomBar";
 import { makeArray } from "@/utils/makeArray";
+import { useDispatch, useSelector } from "react-redux";
+import { setDiaryDetail, setPaperList, setIsToggle, resetIsToggle, setMembers } from "@/redux/slices/diarySlice";
 
 const basicDiaryImageUrl = "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/diary-profile.png";
 
 const DiaryDetail = () => {
     const navigate = useNavigate();
     const { id } = useParams();
-    const [isToggle, setIsToggle] = useState(false);
-    const [diaryDetail, setDiaryDetail] = useState({
-        users: [],
-        imgUrl: "",
-        name: "",
-        diaryCategory: "",
-        color: "",
-    });
-    const [paperList, setPaperList] = useState([]);
-    const [members, setMembers] = useState([]);
-    const [isIndividual, setIsIndividual] = useState(false);
+    const dispatch = useDispatch();
+    const { diaryDetail, paperList, members, isIndividual, isToggle } = useSelector((state) => state.diary);
 
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
     const { data: paperData, fetchData: fetchPaperData } = useAxios();
@@ -50,34 +43,28 @@ const DiaryDetail = () => {
         };
 
         fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fetchDiaryData, fetchPaperData, id]);
+    }, [fetchDiaryData, fetchPaperData, id, dispatch]);
 
     // diaryDetail 정보 저장
     useEffect(() => {
         if (diaryData) {
-            setDiaryDetail(diaryData);
-            setMembers(diaryData.users);
-
-            if (diaryData.diaryCategory === "개인") {
-                setIsIndividual(true);
-            }
+            dispatch(setDiaryDetail(diaryData));
+            dispatch(setMembers(diaryData.users || []));
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [diaryData]);
+    }, [diaryData, dispatch]);
 
     // paperList 저장
     useEffect(() => {
         if (paperData) {
-            setPaperList(paperData);
+            dispatch(setPaperList(paperData));
         }
-    }, [paperData]);
+    }, [paperData, dispatch]);
 
     // 2개씩 나뉜 멤버 그룹
     const newMembers = makeArray(members, 2);
 
     const toggleMenu = () => {
-        setIsToggle(!isToggle);
+        dispatch(setIsToggle(!isToggle));
     };
 
     // 다이어리 나가기 버튼
@@ -86,10 +73,27 @@ const DiaryDetail = () => {
         navigate("/diary");
     };
 
+    // 페이지가 바뀔 때 isToggle 상태 리셋
+    useEffect(() => {
+        dispatch(resetIsToggle());
+    }, [navigate, id, dispatch]);
+
+    // 뒤로 가기 버튼 클릭
+    const handleBackClick = () => {
+        navigate('/diary');
+        dispatch(setMembers([]));
+    };
+
+    // 수정하기 버튼 클릭
+    const handleEditClick = () => {
+        navigate(`/edit/diary/${id}`);
+        dispatch(setMembers([]));
+    }
+
     return (
         <div className={styles.allContainer}>
             <div className={styles.header}>
-                <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={() => navigate(-1)} />
+                <Button type="button" variant="inactive" label={<ArrowIcon fill="#1d1d1d" />} onClick={handleBackClick} />
                 <div className={styles.rightHeader}>
                     <Noti />
                     <button className={styles.moreIcon} onClick={toggleMenu}>
@@ -97,7 +101,7 @@ const DiaryDetail = () => {
                     </button>
                     {isToggle && (
                         <div className={styles.menuContainer}>
-                            <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate(`/edit/diary/${id}`)} />
+                            <Button type="button" variant="inactive" label="수정하기" onClick={handleEditClick} />
                             {!isIndividual && (
                                 <button className={styles.exitButton} onClick={handleExitClick}>
                                     나가기
@@ -109,7 +113,7 @@ const DiaryDetail = () => {
             </div>
             <div className={styles.background} style={{ backgroundColor: diaryDetail.color }}>
                 <div className={styles.profile}>
-                    <img src={diaryDetail.imgUrl === "기본 DiaryImgUrl" ? basicDiaryImageUrl : diaryDetail.imgUrl} alt={diaryDetail.name} />                  
+                    <img src={diaryDetail.imgUrl === "기본 DiaryImgUrl" ? basicDiaryImageUrl : diaryDetail.imgUrl} alt={diaryDetail.name} />
                     <div className={styles.introduction}>
                         <p>{diaryDetail.name}</p>
                         <p className={styles.category}>({diaryDetail.diaryCategory})</p>
@@ -128,10 +132,7 @@ const DiaryDetail = () => {
                                     {memberRow.map((member, memberIndex) => (
                                         <div key={memberIndex} className={styles.member}>
                                             <img
-                                                src={member.profileImgUrl === "" ? 
-                                                "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" 
-                                                :
-                                                member.profileImgUrl}
+                                                src={member.profileImgUrl === "" ? "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" : member.profileImgUrl}
                                                 alt={member.nickname}
                                             />
                                             <p>{member.nickname}</p>

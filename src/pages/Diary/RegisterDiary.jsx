@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import PropTypes from "prop-types";
@@ -14,6 +14,8 @@ import Diary from "@/apis/api/Diary";
 import useAxios from "@/hooks/useAxios";
 import CompletedImage from "@/assets/images/completedImage.png";
 import CancelImage from "@/assets/images/cancelImage.png";
+import { setDiaryId, toggleModal, toggleBackModal, setButtonActive, setSelectedColor, setMembers, setImageUrl } from "@/redux/slices/diarySlice";
+import { useDispatch, useSelector } from "react-redux";
 
 // 카테고리
 const categories = [
@@ -40,28 +42,28 @@ const markerColors = [
 const RegisterDiary = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch();
     const { register, handleSubmit, setValue, watch, control, reset } = useForm();
-    const [selectedColor, setSelectedColor] = useState("");
-    const [diaryCategory, setDiaryCategory] = useState("");
-    const [members, setMembers] = useState(location.state?.selectedMembers || []);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isBackModalOpen, setIsBackModalOpen] = useState(false);
-    const [buttonActive, setButtonActive] = useState("disabled");
-    const [diaryId, setDiaryId] = useState(0);
+    const { selectedColor, members, isModalOpen, isBackModalOpen, buttonActive, diaryId } = useSelector((state) => state.diary);
 
     const { data: diaryNum, fetchData: fetchDiaryData } = useAxios();
     const watchAllFields = watch();
 
     const handleImageUrl = (url) => {
+        dispatch(setImageUrl(url));
         setValue("imgUrl", url);
     };
 
     // 선택한 멤버들 목록 불러오기
     useEffect(() => {
         if (location.state && location.state.selectedMembers) {
-            setMembers(location.state.selectedMembers);
+            dispatch(setMembers(location.state.selectedMembers));
+        } else if (location.state == undefined) {
+            dispatch(setMembers([]));
+            dispatch(setSelectedColor(""));
+            dispatch(setDiaryId(0));
         }
-    }, [location.state]);
+    }, [location.state, dispatch]);
 
     // Members 업데이트될 때마다 폼 데이터도 업데이트
     useEffect(() => {
@@ -78,10 +80,10 @@ const RegisterDiary = () => {
             setValue("description", formData.description);
             setValue("color", formData.color);
             setValue("imgUrl", formData.imgUrl);
-            setDiaryCategory(formData.diaryCategory);
-            setSelectedColor(markerColors.find((color) => color.color === formData.color)?.hexcode || "");
+            dispatch(setSelectedColor(markerColors.find((color) => color.color === formData.color)?.hexcode || ""));
+            dispatch(setImageUrl(formData.imgUrl || "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/diary-profile.png"));
         }
-    }, [setValue]);
+    }, [setValue, dispatch]);
 
     // 변할때마다 localStorage에 저장
     useEffect(() => {
@@ -101,29 +103,35 @@ const RegisterDiary = () => {
     // 모든 항목의 유효성 검사
     useEffect(() => {
         const isFormValid = Object.values(watchAllFields).every((value) => !!value) && members.length > 0;
-        if (!isFormValid) {
-            setButtonActive("disabled");
-        } else {
-            setButtonActive("active");
-        }
-    }, [watchAllFields]);
+        dispatch(setButtonActive(isFormValid ? "active" : "disabled"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [watchAllFields, dispatch]);
 
     // 다이어리 추가
     const onSubmit = async (data) => {
+        await fetchDiaryData(Diary.postDiary(data));
         localStorage.removeItem("diaryFormData");
         localStorage.removeItem("selectedMembers");
         localStorage.removeItem("diaryImageURL");
-        await fetchDiaryData(Diary.postDiary(data));
-        setIsModalOpen(true);
-        reset();
+        dispatch(toggleModal());
+        dispatch(setSelectedColor(""));
+        dispatch(setDiaryId(0));
+        dispatch(setMembers([]));
+        reset({
+            name: "",
+            diaryCategory: "",
+            description: "",
+            color: "",
+            users: [],
+        });
     };
 
     // 다이어리 아이디 가져오기
     useEffect(() => {
         if (diaryNum) {
-            setDiaryId(diaryNum.id);
+            dispatch(setDiaryId(diaryNum.id));
         }
-    }, [diaryNum]);
+    }, [diaryNum, dispatch]);
 
     const handleButtonClick = (e) => {
         e.preventDefault();
@@ -135,31 +143,41 @@ const RegisterDiary = () => {
             imgUrl: watch("imgUrl"),
             users: members,
         };
-
         if (formData.name && formData.diaryCategory && formData.description && formData.color && formData.imgUrl && formData.users.length > 0) {
             handleSubmit(onSubmit)(formData);
         }
     };
-    
+
+    // 뒤로 가기 버튼 클릭
     const handleBackClick = () => {
-        navigate('/diary');
+        navigate("/diary");
         localStorage.removeItem("diaryFormData");
         localStorage.removeItem("selectedMembers");
         localStorage.removeItem("diaryImageURL");
-    };
-
-    const closeBackModal = () => {
-        setIsBackModalOpen(false);
+        dispatch(setSelectedColor(""));
+        dispatch(setDiaryId(0));
+        reset({
+            name: "",
+            diaryCategory: "",
+            description: "",
+            color: "",
+            users: [],
+        });
+        dispatch(toggleBackModal());
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        dispatch(toggleModal());
         navigate(`/diary/${diaryId}`);
+    };
+
+    const closeBackModal = () => {
+        dispatch(toggleBackModal());
     };
 
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="다이어리 만들기" onClick={() => setIsBackModalOpen(true)} />
+            <SubHeader pageTitle="다이어리 만들기" onClick={() => dispatch(toggleBackModal())} />
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="다이어리 이름" placeholder="다이어리 이름 입력" className={styles.input} {...register("name", { required: true })} />
@@ -173,10 +191,9 @@ const RegisterDiary = () => {
                             <SelectBox
                                 options={categories}
                                 onChange={(e) => {
-                                    setDiaryCategory(e.target.value);
                                     field.onChange(e);
                                 }}
-                                value={diaryCategory}
+                                value={watch("diaryCategory")}
                                 label="카테고리"
                                 defaultValue="카테고리"
                             />
@@ -202,7 +219,7 @@ const RegisterDiary = () => {
                                                 borderColor: color === "WHITE" && selectedColor !== hexcode ? "#EEEEEE" : "",
                                             }}
                                             onClick={() => {
-                                                setSelectedColor(hexcode);
+                                                dispatch(setSelectedColor(hexcode));
                                                 field.onChange(color);
                                             }}
                                         ></button>
@@ -211,7 +228,6 @@ const RegisterDiary = () => {
                             </div>
                         )}
                     />
-
                     <div className={styles.membersSelect}>
                         <div className={styles.title}>
                             <div className={styles.phrases}>
@@ -263,7 +279,7 @@ const RegisterDiary = () => {
                         </Modal.Body>
                         <Modal.Button>
                             {isModalOpen ? (
-                                <Button type="button" label="확인" variant="active" onClick={() => navigate(`/diary/${diaryId}`)} />
+                                <Button type="button" label="확인" variant="active" onClick={closeModal} />
                             ) : (
                                 <Button type="button" label="확인" variant="active" onClick={handleBackClick} />
                             )}

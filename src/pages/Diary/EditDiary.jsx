@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import styles from "./RegisterDiary.module.scss";
@@ -13,6 +13,8 @@ import useAxios from "@/hooks/useAxios";
 import Modal from "@/components/Modal/Modal";
 import CompletedImage from "@/assets/images/completedImage.png";
 import CancelImage from "@/assets/images/cancelImage.png";
+import { setSelectedColor, toggleModal, toggleBackModal, setButtonActive, setIsIndividual, setMembers, setImageUrl } from "@/redux/slices/diarySlice";
+import { useDispatch, useSelector } from "react-redux";
 
 // 카테고리
 const categories = [
@@ -39,32 +41,23 @@ const markerColors = [
 const EditDiary = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch();
     const { id } = useParams();
     const { register, handleSubmit, setValue, watch, control, reset } = useForm();
-
-    const [selectedColor, setSelectedColor] = useState("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isBackModalOpen, setIsBackModalOpen] = useState(false);
-    const [diaryCategory, setDiaryCategory] = useState("");
-    const [diaryMembers, setDiaryMemebers] = useState([]);
-    const [members, setMembers] = useState([]);
-    const [buttonActive, setButtonActive] = useState("disabled");
-    const [imgUrl, setImgUrl] = useState("");
-    const [isIndividual, setIndividual] = useState(false);
+    const { selectedColor, members, isModalOpen, isBackModalOpen, buttonActive, imageUrl, isIndividual } = useSelector((state) => state.diary);
 
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
     const { fetchData: fetchUpdatedDiaryData } = useAxios();
 
     const watchAllFields = watch();
-
+    
     // 다이어리 상세 정보 조회
     useEffect(() => {
         const fetchData = async () => {
             await fetchDiaryData(Diary.getDiaryDetail(id));
         };
         fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [fetchDiaryData, id]);
 
     // 수정할 정보 diaryFormData에 넣기
     useEffect(() => {
@@ -74,31 +67,27 @@ const EditDiary = () => {
             setValue("imgUrl", diaryData.imgUrl);
             setValue("diaryCategory", categories.find((category) => category.label === diaryData.diaryCategory)?.value || "");
             setValue("color", markerColors.find((colors) => colors.hexcode === diaryData.color)?.color);
-
-            setSelectedColor(diaryData.color);
-            setDiaryMemebers(diaryData.users.map((user) => user.nickname));
-            setMembers(diaryData.users.map((user) => user.nickname));
-            setDiaryCategory(categories.find((category) => category.label === diaryData.diaryCategory)?.value || "");
-            setImgUrl(diaryData.imgUrl);
-            if (diaryData.diaryCategory === "개인") {
-                setIndividual(true);
-            }
+            
+            dispatch(setMembers(diaryData.users.map((user) => user.nickname)));
+            dispatch(setSelectedColor(diaryData.color));
+            dispatch(setImageUrl(diaryData.imgUrl));
+            dispatch(setIsIndividual(diaryData.diaryCategory === "개인"));
         }
-    }, [diaryData]);
+    }, [diaryData, dispatch, setValue]);
 
     // imageURl 받아오기
     const handleImageUrl = (url) => {
         setValue("imgUrl", url);
-        setImgUrl(url);
+        dispatch(setImageUrl(url));
     };
 
     // 선택한 멤버들 목록 불러오기
     useEffect(() => {
         if (location.state && location.state.selectedMembers) {
-            const combinedMembers = [...diaryMembers, ...location.state.selectedMembers];
-            setMembers(combinedMembers);
+            const combinedMembers = [...members, ...location.state.selectedMembers];
+            dispatch(setMembers(combinedMembers));
         }
-    }, [location.state, diaryMembers]);
+    }, [location.state, members, dispatch]);
 
     // 변할때마다 localStorage에 저장
     useEffect(() => {
@@ -107,7 +96,7 @@ const EditDiary = () => {
             diaryCategory: isIndividual ? "INDIVIDUAL" : watch("diaryCategory"),
             description: watch("description"),
             color: watch("color"),
-            imgUrl: imgUrl,
+            imgUrl: imageUrl,
             users: members,
         };
 
@@ -122,18 +111,18 @@ const EditDiary = () => {
                 name: watch("name"),
                 description: watch("description"),
                 color: watch("color"),
-                imgUrl: imgUrl,
+                imgUrl: imageUrl,
                 users: members,
             };
             return Object.values(formFields).every((value) => !!value) && members.length > 0;
         };
 
         if (isFormValid()) {
-            setButtonActive("active");
+            dispatch(setButtonActive("active"));
         } else {
-            setButtonActive("disabled");
+            dispatch(setButtonActive("disabled"));
         }
-    }, [watchAllFields, members]);
+    }, [watchAllFields, members, dispatch, watch, imageUrl]);
 
     // 다이어리 수정
     const onSubmit = async (data) => {
@@ -148,8 +137,16 @@ const EditDiary = () => {
         };
 
         await fetchUpdatedDiaryData(Diary.putDiary(id, formData));
-        setIsModalOpen(true);
-        reset();
+        dispatch(toggleModal());
+        dispatch(setIsIndividual(true));
+        reset({
+            name: "",
+            diaryCategory: "",
+            description: "",
+            color: "",
+            users: [],
+        });
+
     };
 
     const handleButtonClick = (e) => {
@@ -159,7 +156,7 @@ const EditDiary = () => {
             diaryCategory: isIndividual ? "INDIVIDUAL" : watch("diaryCategory"),
             description: watch("description"),
             color: watch("color"),
-            imgUrl: imgUrl,
+            imgUrl: imageUrl,
             users: members,
         };
         if (formData.name && formData.description && formData.color && formData.imgUrl && formData.users.length > 0) {
@@ -167,47 +164,58 @@ const EditDiary = () => {
         }
     };
 
+    // 뒤로 가기 버튼 클릭
     const handleBackClick = () => {
-        navigate("/diary");
+        navigate(`/diary/${id}`);
         localStorage.removeItem("diaryFormData");
         localStorage.removeItem("selectedMembers");
         localStorage.removeItem("diaryImageURL");
+        reset({
+            name: "",
+            diaryCategory: "",
+            description: "",
+            color: "",
+            users: [],
+        });
+        dispatch(toggleBackModal());
+        dispatch(setIsIndividual(true));
     };
 
     const closeBackModal = () => {
-        setIsBackModalOpen(false);
+        dispatch(toggleBackModal());
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        dispatch(toggleModal());
         navigate(`/diary/${id}`);
     };
 
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="다이어리 수정하기" onClick={() => setIsBackModalOpen(true)} />
+            <SubHeader pageTitle="다이어리 수정하기" onClick={() => dispatch(toggleBackModal())} />
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="다이어리 이름" placeholder="다이어리 이름 입력" className={styles.input} {...register("name", { required: true })} />
-                    <DiaryImageUpload onImageUrlChange={handleImageUrl} imgUrl={imgUrl} />
-                    {!isIndividual && <Controller
-                        name="diaryCategory"
-                        control={control}
-                        defaultValue=""
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                            <SelectBox
-                                options={categories}
-                                onChange={(e) => {
-                                    setDiaryCategory(e.target.value);
-                                    field.onChange(e);
-                                }}
-                                value={diaryCategory}
-                                label="카테고리"
-                                defaultValue="카테고리"
-                            />
-                        )}
-                    />}
+                    <DiaryImageUpload onImageUrlChange={handleImageUrl} imgUrl={imageUrl} />
+                    {!isIndividual && (
+                        <Controller
+                            name="diaryCategory"
+                            control={control}
+                            defaultValue=""
+                            rules={{ required: true }}
+                            render={({ field }) => (
+                                <SelectBox
+                                    options={categories}
+                                    onChange={(e) => {
+                                        field.onChange(e);
+                                    }}
+                                    value={watch("diaryCategory")}
+                                    label="카테고리"
+                                    defaultValue="카테고리"
+                                />
+                            )}
+                        />
+                    )}
                     <Controller
                         name="color"
                         control={control}
@@ -236,37 +244,39 @@ const EditDiary = () => {
                             </div>
                         )}
                     />
-                    {!isIndividual && <div className={styles.membersSelect}>
-                        <div className={styles.title}>
-                            <div className={styles.phrases}>
-                                <p>멤버 </p>
-                                <p className={styles.information}>최대 10명까지</p>
-                            </div>
-                            <Link
-                                to="/friend/search"
-                                state={{
-                                    formData: {
-                                        name: watch("name"),
-                                        diaryCategory: watch("diaryCategory"),
-                                        description: watch("description"),
-                                        color: watch("color"),
-                                    },
-                                    diaryMembers: diaryMembers,
-                                    id: id,
-                                }}
-                            >
-                                <ArrowIcon fill="#000" />
-                            </Link>
-                        </div>
-                        <div className={styles.selectedMembers}>
-                            {members.map((member, index) => (
-                                <div key={index} className={styles.selectedMember}>
-                                    <input type="hidden" {...register(`users.${index}`)} value={member} />
-                                    {member}
+                    {!isIndividual && (
+                        <div className={styles.membersSelect}>
+                            <div className={styles.title}>
+                                <div className={styles.phrases}>
+                                    <p>멤버 </p>
+                                    <p className={styles.information}>최대 10명까지</p>
                                 </div>
-                            ))}
+                                <Link
+                                    to="/friend/search"
+                                    state={{
+                                        formData: {
+                                            name: watch("name"),
+                                            diaryCategory: watch("diaryCategory"),
+                                            description: watch("description"),
+                                            color: watch("color"),
+                                        },
+                                        diaryMembers: members,
+                                        id: id,
+                                    }}
+                                >
+                                    <ArrowIcon fill="#000" />
+                                </Link>
+                            </div>
+                            <div className={styles.selectedMembers}>
+                                {members.map((member, index) => (
+                                    <div key={index} className={styles.selectedMember}>
+                                        <input type="hidden" {...register(`users.${index}`)} value={member} />
+                                        {member}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>}
+                    )}
                     <InputField label="소개" placeholder="다이어리 소개 입력" id="diaryIntroduction" style={{ width: "100%" }} {...register("description")} />
                     <Button label="수정하기" variant={buttonActive} type="submit" onClick={handleButtonClick} />
                 </form>
@@ -281,14 +291,14 @@ const EditDiary = () => {
                             ) : (
                                 <p>
                                     정말로 뒤로 가시겠습니까?
-                                    <br/>
+                                    <br />
                                     지금까지 수정한 내용은 저장되지 않습니다.
                                 </p>
                             )}
                         </Modal.Body>
                         <Modal.Button>
                             {isModalOpen ? (
-                                <Button type="button" label="확인" variant="active" onClick={() => navigate(`/diary/${id}`)} />
+                                <Button type="button" label="확인" variant="active" onClick={closeModal} />
                             ) : (
                                 <Button type="button" label="확인" variant="active" onClick={handleBackClick} />
                             )}

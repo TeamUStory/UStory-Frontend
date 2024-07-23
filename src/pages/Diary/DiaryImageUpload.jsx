@@ -6,44 +6,33 @@ import ImageEditor from "@/components/ImageEditor/ImageEditor";
 import useAxios from "@/hooks/useAxios";
 import S3Storage from "@/apis/api/S3Storage";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setImageUrl } from "@/redux/slices/diarySlice";
 
 const basicDiaryImageUrl = "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/diary-profile.png";
 
-const DiaryImageUpload = ({ onImageUrlChange, imgUrl }) => {
+const DiaryImageUpload = () => {
+    const dispatch = useDispatch();
+    const imageUrl = useSelector((state) => state.diary.imageUrl);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [uploadedImage, setUploadedImage] = useState(null);
     const [croppedImage, setCroppedImage] = useState(null);
-    const [imageUrl, setImageUrl] = useState(basicDiaryImageUrl);
-
     const [fileName, setFileName] = useState(null);
     const [presignedUrl, setPresignedUrl] = useState(null);
-
     const { data: presignedUrlData, fetchData: fetchPresignedUrlData } = useAxios();
     const fileInputRef = useRef(null);
 
-    // imgUrl로 업데이트
-    useEffect(() => {
-        if (imgUrl) {
-            setImageUrl(imgUrl);
-        }
-    }, [imgUrl]);
-
-    // 로컬 스토리지에서 이미지 URL 불러오기
     useEffect(() => {
         const savedImageUrl = localStorage.getItem("diaryImageURL");
         if (savedImageUrl) {
-            setImageUrl(savedImageUrl);
-            onImageUrlChange(savedImageUrl);
+            dispatch(setImageUrl(savedImageUrl));
         } else {
-            onImageUrlChange(basicDiaryImageUrl);
+            dispatch(setImageUrl(basicDiaryImageUrl));
         }
-    }, []);
+    }, [dispatch]);
 
-    // 파일 업로드 핸들러
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
-
-        // 확장자명 제한
         const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
         if (!allowedExtensions.exec(file.name)) {
             alert("jpg, jpeg, png, gif 확장자만 허용됩니다.");
@@ -60,7 +49,6 @@ const DiaryImageUpload = ({ onImageUrlChange, imgUrl }) => {
         reader.readAsDataURL(file);
     };
 
-    // presignedUrl 반환
     useEffect(() => {
         if (croppedImage) {
             const fetchPresignedUrl = async () => {
@@ -70,28 +58,23 @@ const DiaryImageUpload = ({ onImageUrlChange, imgUrl }) => {
         }
     }, [fetchPresignedUrlData, fileName, croppedImage]);
 
-    // presignedURL 저장
     useEffect(() => {
         if (presignedUrlData) {
             setPresignedUrl(presignedUrlData.presignedUrl);
         }
     }, [presignedUrlData]);
 
-    // 이미지 업로드 요청
     useEffect(() => {
         if (presignedUrl && croppedImage) {
             const uploadImage = async () => {
                 try {
                     const response = await axios.put(presignedUrl, croppedImage, {
-                        headers: {
-                            "Content-Type": croppedImage.type,
-                        },
+                        headers: { "Content-Type": croppedImage.type },
                     });
 
                     if (response.status === 200) {
                         const url = presignedUrl.split("?")[0];
-                        setImageUrl(url);
-                        onImageUrlChange(url);
+                        dispatch(setImageUrl(url));
                         localStorage.setItem("diaryImageURL", url);
                     }
                 } catch (error) {
@@ -100,8 +83,7 @@ const DiaryImageUpload = ({ onImageUrlChange, imgUrl }) => {
             };
             uploadImage();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [presignedUrl, croppedImage]);
+    }, [presignedUrl, croppedImage, dispatch]);
 
     const handleCroppedImage = (croppedFile) => {
         setCroppedImage(croppedFile);
@@ -141,7 +123,6 @@ const DiaryImageUpload = ({ onImageUrlChange, imgUrl }) => {
 };
 
 DiaryImageUpload.propTypes = {
-    onImageUrlChange: PropTypes.func,
     imgUrl: PropTypes.string,
 };
 

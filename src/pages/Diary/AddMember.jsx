@@ -10,15 +10,18 @@ import NoResult from "@/components/NoResult/NoResult";
 import SadIcon from "@/assets/icons/SadIcon";
 import useAxios from "@/hooks/useAxios";
 import Friend from "@/apis/api/Friend";
+import { useDispatch, useSelector } from "react-redux";
+import { setMembers } from "@/redux/slices/diarySlice";
 
 const AddMember = () => {
     const location = useLocation();
     const { diaryMembers = [], id } = location.state || {};
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
-    const [selectedMembers, setSelectedMembers] = useState([]);
-    const [members, setMembers] = useState([]);
+    const selectedMembers = useSelector((state) => state.diary.members);
+    const [membersList, setMembersList] = useState([]);
     const [searchValue, setSearchValue] = useState("");
 
     const { data: friendData, fetchData: fetchFriendList } = useAxios();
@@ -35,18 +38,18 @@ const AddMember = () => {
         const initializeMembers = async () => {
             await fetchFriend();
             const savedSelectedMembers = JSON.parse(localStorage.getItem("selectedMembers")) || [];
-            setSelectedMembers([...new Set([...savedSelectedMembers])]);
+            dispatch(setMembers([...new Set([...savedSelectedMembers])]));
         };
 
         initializeMembers();
-    }, []);
+    }, [dispatch]);
 
     // 친구 존재에 따라 친구들 리스트 추가
     useEffect(() => {
         if (friendData) {
-            setMembers(friendData);
+            setMembersList(friendData);
         } else {
-            setMembers([]);
+            setMembersList([]);
         }
     }, [friendData]);
 
@@ -56,18 +59,17 @@ const AddMember = () => {
             return;
         }
 
-        setSelectedMembers((prevSelectedMembers) => {
-            const isSelected = prevSelectedMembers.includes(nickname);
-            const updatedMembers = isSelected
-                ? prevSelectedMembers.filter((member) => member !== nickname)
-                : prevSelectedMembers.length + diaryMembers.length < 10
-                ? [...prevSelectedMembers, nickname]
-                : prevSelectedMembers;
+        const isSelected = selectedMembers.includes(nickname);
+        const updatedMembers = isSelected
+            ? selectedMembers.filter((member) => member !== nickname)
+            : selectedMembers.length + diaryMembers.length < 10
+            ? [...selectedMembers, nickname]
+            : selectedMembers;
 
-            // 선택한 멤버 localstorage에 저장
-            localStorage.setItem("selectedMembers", JSON.stringify(updatedMembers));
-            return updatedMembers;
-        });
+        // 선택한 멤버 localstorage에 저장
+        localStorage.setItem("selectedMembers", JSON.stringify(updatedMembers));
+
+        dispatch(setMembers(updatedMembers));
     };
 
     // 검색어로 친구 검색
@@ -111,17 +113,14 @@ const AddMember = () => {
                             <SearchIcon onClick={handleSearchClick} />
                         </div>
                         <div className={styles.membersContainer}>
-                            {members.length > 0 ? (
-                                members.map((member, index) => (
+                            {membersList.length > 0 ? (
+                                membersList.map((member, index) => (
                                     <React.Fragment key={index}>
                                         <div className={styles.memberContainer}>
                                             <div className={styles.memberProfile}>
-                                                <img 
-                                                  src={member.profileImgUrl === "" ? 
-                                                  "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" 
-                                                  :
-                                                  member.profileImgUrl}
-                                                  alt={member.nickname}
+                                                <img
+                                                    src={member.profileImgUrl === "" ? "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" : member.profileImgUrl}
+                                                    alt={member.nickname}
                                                 />
                                                 <div className={styles.information}>
                                                     <p>{member.nickname}</p>
@@ -134,12 +133,12 @@ const AddMember = () => {
                                                 disabled={diaryMembers.includes(member.nickname)}
                                             />
                                         </div>
-                                        {index < members.length - 1 && <hr />}
+                                        {index < membersList.length - 1 && <hr />}
                                     </React.Fragment>
                                 ))
                             ) : (
                                 <div className={styles.noResult}>
-                                    <NoResult icon={<SadIcon stroke="#616161" />} message="앗, 친구 목록에 친구가 없어요!" />
+                                    <NoResult icon={<SadIcon stroke="#616161" />} message="앗, 친구 목록에 친구가 없어요!" customStyles={{ position: "relative", padding: "0px" }} />
                                 </div>
                             )}
                         </div>
