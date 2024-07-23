@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import useScrollToTop from "@/hooks/useScrollToTop";
 import KakaoCallback from "@/components/KakaoCallback/KakaoCallback";
 import NaverCallback from "@/components/NaverCallback/NaverCallback";
+import GoogleCallback from "@/components/GoogleCallback/GoogleCallback";
 import Error from "@/components/Error/Error";
 import SplashScreen from "@/components/SplashScreen/SplashScreen";
 
@@ -26,6 +27,7 @@ const Mypage = lazy(() => import("./pages/Mypage/Mypage"));
 const EditMypage = lazy(() => import("./pages/Mypage/EditMypage"));
 const PageList = lazy(() => import("./pages/Mypage/PageList"));
 const SavePageList = lazy(() => import("./pages/Mypage/SavePageList"));
+const LikePageList = lazy(() => import("./pages/Mypage/LikePageList"));
 const Noti = lazy(() => import("./pages/Noti/Noti"));
 const Friends = lazy(() => import("./pages/Friends/Friends"));
 const AddFriend = lazy(() => import("./pages/Friends/AddFriend"));
@@ -63,6 +65,10 @@ function App() {
                     path="/login/oauth2/code/naver"
                     element={<NaverCallback />}
                 />
+                <Route
+                    path="/login/oauth2/code/google"
+                    element={<GoogleCallback />}
+                />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/findpassword" element={<FindPassword />} />
@@ -81,6 +87,7 @@ function App() {
                         <Route path="/mypage/edit" element={<EditMypage />} />
                         <Route path="/mypage/pagelist" element={<PageList />} />
                         <Route path="/mypage/savepagelist" element={<SavePageList />} />
+                        <Route path="/mypage/likepagelist" element={<LikePageList />} />
                         <Route path="/noti" element={<Noti />} />
                         <Route path="/friends" element={<Friends />} />
                         <Route path="/friends/add" element={<AddFriend />} />

@@ -7,7 +7,6 @@ import BottomBar from '@/components/BottomBar/BottomBar';
 import PlusButton from '@/components/PlusButton/PlusButton';
 import ProfileBox from './ProfileBox';
 import SaveList from './SaveList';
-import LikeList from './LikeList';
 import MyRecord from './MyRecord';
 import LogoutIcon from "@/assets/icons/LogoutIcon"
 import Modal from "@/components/Modal/Modal"
@@ -72,7 +71,6 @@ const Mypage = () => {
           <ProfileBox user={user}/>
           <MyRecord />
           <SaveList />
-          <LikeList />
         </div>
       </div>
       <BottomBar />
