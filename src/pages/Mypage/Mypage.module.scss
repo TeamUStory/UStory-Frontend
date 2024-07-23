@@ -140,6 +140,10 @@
 .myRecord{
   margin-top: 18px;
   width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 28px;
+  border-bottom: 1px solid $black4;
+  margin-bottom: 28px;
 
   .title{
     font-size:16px;
@@ -190,15 +194,14 @@
 }
 
 // 저장한 기록
-.mySave{
+.my{
   width: 100%;
-  margin-top: 18px;
 
   .titleBox{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
 
     .title{
       font-size: 16px;
@@ -221,17 +224,6 @@
         margin-top: 3px;
       }
     }
-  }
-
-  .mySaveList{
-    position: relative;
-    width: 100%;
-    height: auto;
-    min-height: 30vh;
-    display: flex;
-    gap: 18px;
-    flex-wrap: wrap;
-    justify-content: space-between;
   }
 }
 
