@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../Home/Home.module.scss";
 import PlusButton from "@/components/PlusButton/PlusButton";
@@ -16,14 +16,15 @@ import User from "@/apis/api/User";
 import { makeArray } from "@/utils/makeArray";
 import { truncateText } from "@/utils/truncateText";
 import CarouselIndicator from "@/components/Carousel/CarouselIndicator";
+import { useDispatch, useSelector } from "react-redux";
+import { setDiaryItems, setPaperItems, setNickname } from "@/redux/slices/homeSlice";
 
 const basicDiaryImageUrl = "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/diary-profile.png";
 
 const Home = () => {
     const navigate = useNavigate();
-    const [diaryItems, setDiaryItems] = useState([]);
-    const [paperItems, setPaperItems] = useState([]);
-    const [nickname, setNickname] = useState("");
+    const dispatch = useDispatch();
+    const { diaryItems, paperItems, nickname } = useSelector((state) => state.home);
 
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
     const { data: paperData, fetchData: fetchPaperData } = useAxios();
@@ -48,21 +49,21 @@ const Home = () => {
     // 다이어리 리스트 정보 저장
     useEffect(() => {
         if (diaryData) {
-            setDiaryItems(diaryData);
+            dispatch(setDiaryItems(diaryData));
         }
     }, [diaryData]);
 
     // 페이퍼 리스트 정보 저장
     useEffect(() => {
         if (paperData) {
-            setPaperItems(paperData);
+            dispatch(setPaperItems(paperData));
         }
     }, [paperData]);
 
     // user 정보 저장
     useEffect(() => {
         if (userData) {
-            setNickname(userData.nickname);
+            dispatch(setNickname(userData.nickname));
         }
     }, [userData]);
 

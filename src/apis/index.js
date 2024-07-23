@@ -91,7 +91,7 @@ export const refresh = async () => {
       throw new Error('No value present');
     }
   } catch (err) {
-    // console.error('토큰 재발급 실패', err);
+    console.error('토큰 재발급 실패', err);
     throw err;
   }
 };

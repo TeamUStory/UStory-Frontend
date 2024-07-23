@@ -3,9 +3,9 @@ import propTypes from 'prop-types';
 import Button from '@/components/Button/Button';
 
 
-const NoResult = ({icon, message, buttonShow, actionFn, buttonText}) => {
+const NoResult = ({icon, message, buttonShow, actionFn, buttonText, customStyles}) => {
   return (
-    <div className={styles.noResult}>
+    <div className={styles.noResult} style={customStyles}>
       <div className={styles.iconBox}>
         {icon}
       </div>
@@ -25,7 +25,8 @@ NoResult.propTypes = {
   message: propTypes.string,
   buttonShow: propTypes.bool,
   actionFn: propTypes.func,
-  buttonText: propTypes.string
+  buttonText: propTypes.string,
+  customStyles: propTypes.object
 }
 
 export default NoResult;
