@@ -5,12 +5,13 @@ import HomeIcon from '@/assets/icons/HomeIcon';
 import PageListIcon from '@/assets/icons/PageListIcon';
 import DiaryIcon from '@/assets/icons/DiaryIcon';
 import MyPageIcon from '@/assets/icons/MyPageIcon';
+import RecommendIcon from '@/assets/icons/RecommendIcon';
 
 const mapPathnameToIconValue = {
     "/": "home",
     "/mypage/pagelist": "pageList",
     "/diary": "diaryList",
-    "/mypage":"myPage"
+    "/mypage":"myPage",
 };
 
 const BottomBar = () => {
@@ -33,17 +34,25 @@ const BottomBar = () => {
         <div className={styles.bottomBar}>
             <div className={styles.line}></div>
             <div className={styles.iconContainer}>
-                <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('home', '/')}>
-                    <HomeIcon color={selectedIcon === 'home' ? '#FB8176' : 'black'} bgColor={selectedIcon === 'home' ? '#F2B1AB45' : 'white'} alt="홈화면" />
+                <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('diaryList', '/diary')}>
+                    <DiaryIcon color={selectedIcon === 'diaryList' ? '#FB8176' : '#AAA'} alt="다이어리" />
+                    <p style={{color: selectedIcon === 'diaryList' ? '#FB8176' : '#AAA'}}>다이어리</p>
                 </div>
                 <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('pageList', `/mypage/pagelist`)}>
-                    <PageListIcon color={selectedIcon === 'pageList' ? '#FB8176' : 'black'} bgColor={selectedIcon === 'pageList' ? '#F2B1AB45' : 'white'} alt="내가 기록한 장소" />
+                    <PageListIcon color={selectedIcon === 'pageList' ? '#FB8176' : '#AAA'} alt="내가 기록한 장소" />
+                    <p style={{color: selectedIcon === 'pageList' ? '#FB8176' : '#AAA'}}>기록</p>
                 </div>
-                <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('diaryList', '/diary')}>
-                    <DiaryIcon color={selectedIcon === 'diaryList' ? '#FB8176' : 'black'} bgColor={selectedIcon === 'diaryList' ? '#F2B1AB45' : 'white'} alt="다이어리" />
+                <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('home', '/')}>
+                    <HomeIcon color={selectedIcon === 'home' ? '#FB8176' : '#AAA'} alt="홈화면" />
+                    <p style={{color: selectedIcon === 'home' ? '#FB8176' : '#AAA'}}>홈</p>
+                </div>
+                <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('home', '/')}>
+                    <RecommendIcon color={selectedIcon === 'home' ? '#FB8176' : '#AAA'} alt="추천페이지" />
+                    <p style={{color: selectedIcon === 'home' ? '#FB8176' : '#AAA'}}>추천</p>
                 </div>
                 <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('myPage', '/mypage')}>
-                    <MyPageIcon color={selectedIcon === 'myPage' ? '#FB8176' : 'black'} bgColor={selectedIcon === 'myPage' ? '#F2B1AB45' : 'white'} alt="마이페이지" />
+                    <MyPageIcon color={selectedIcon === 'myPage' ? '#FB8176' : '#AAA'} alt="마이페이지" />
+                    <p style={{color: selectedIcon === 'myPage' ? '#FB8176' : '#AAA'}}>마이페이지</p>
                 </div>
             </div>
         </div>
