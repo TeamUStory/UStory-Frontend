@@ -21,10 +21,6 @@ const DiaryPageList = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const { paperItems, postItems, page, loading } = useSelector((state) => state.diary);
-    // const [paperItems, setPaperItems] = useState([]);
-    // const [postItems, setPostItems] = useState([]);
-    // const [page, setPage] = useState(1);
-    // const [loading, setLoading] = useState(false);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const pageSize = 10;
