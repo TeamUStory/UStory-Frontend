@@ -21,6 +21,7 @@ export const refresh = async () => {
     }
   } catch (err) {
     console.error('토큰 재발급 실패', err);
+    window.location.reload();
     throw err;
   }
 };
@@ -61,6 +62,7 @@ api.interceptors.response.use(
             }
           } catch (refreshError) {
             console.error('토큰 재발급 중 오류 발생', refreshError);
+            window.location.reload();
             return Promise.reject(refreshError);
           }
         } else if (error.response.status === HttpStatusCode.BadRequest) {
