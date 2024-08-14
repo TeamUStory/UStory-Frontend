@@ -133,11 +133,11 @@ const PaperPage = () => {
     useEffect(() => {
         // 좋아요 여부
         if (likeCheckData) {
-            dispatch(setIsHeartIconFilled(likeCheckData.liked));
+            dispatch(setIsHeartIconFilled(likeCheckData.greatd));
         }
         // 좋아요 갯수
         if (likeCountData) {
-            dispatch(setLikeNum(likeCountData.countLike));
+            dispatch(setLikeNum(likeCountData.countGreat));
         }
     }, [likeCheckData, likeCountData, dispatch]);
 

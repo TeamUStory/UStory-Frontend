@@ -5,7 +5,7 @@ export default {
    */
   deleteLike(paperId) {
     return {
-      url: `/papers/${paperId}/like`,
+      url: `/papers/${paperId}/great`,
       method: "delete"
     }
   },
@@ -16,7 +16,7 @@ export default {
    */
   getLikeCheck(paperId) {
     return {
-      url: `/papers/${paperId}/like`,
+      url: `/papers/${paperId}/great`,
       method: "get"
     }
   },
@@ -38,7 +38,7 @@ export default {
    */
   getLikePaper(params) {
     return {
-      url: `/papers/likes`,
+      url: `/papers/greats`,
       method: "get",
       params: { ...params }
     }
@@ -50,7 +50,7 @@ export default {
    */
   postLike(paperId) {
     return {
-      url: `/papers/${paperId}/like`,
+      url: `/papers/${paperId}/great`,
       method: "post",
     }
   }
