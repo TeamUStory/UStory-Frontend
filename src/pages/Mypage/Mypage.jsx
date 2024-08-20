@@ -16,14 +16,19 @@ import Noti from '@/components/Noti/Noti';
 import useAxios from '@/hooks/useAxios';
 import User from '@/apis/api/User';
 import completedImage from '@/assets/images/completedImage.png';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser } from  "@/redux/slices/userSlice";
 
 const Mypage = () => {
   const [isLogoutModal, setIsLogoutModal] = useState(false)
   const [logoutSuccess, setLogoutSuccess] = useState(false);
   const { fetchData: fetchUserData, data: userData } = useAxios();
   const { fetchData: fetchLogoutData, data: logoutData } = useAxios();  
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
   const navigate = useNavigate();
+
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch()
 
   // 마이페이지 유저 정보 가져오기
   useEffect(() => {
@@ -35,7 +40,7 @@ const Mypage = () => {
 
   useEffect(() => {
     if (userData) {
-      setUser(userData);
+      dispatch(setUser(userData));
     }
   }, [userData])
 

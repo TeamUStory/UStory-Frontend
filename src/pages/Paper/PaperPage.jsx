@@ -24,8 +24,10 @@ import CarouselItem from "@/components/Carousel/CarouselItem";
 import Diary from "@/apis/api/Diary";
 import BottomBar from "@/components/BottomBar/BottomBar";
 import CompletedImage from "@/assets/images/completedImage.png";
-import CancelImage from "@/assets/images/cancelImage.png"
+import CancelImage from "@/assets/images/cancelImage.png";
 import CarouselIndicator from "@/components/Carousel/CarouselIndicator";
+import HeartIcon from "@/assets/icons/HeartIcon";
+import Like from "@/apis/api/Like";
 
 const PaperPage = () => {
     const navigate = useNavigate();
@@ -35,6 +37,7 @@ const PaperPage = () => {
     const [isToggle, setIsToggle] = useState(false);
     const [toggleIndex, setToggleIndex] = useState(null);
     const [isSaveIconFilled, setIsSaveIconFilled] = useState(false);
+    const [isHeartIconFilled, setIsHeartIconFilled] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isCommetOpen, setCommentOpen] = useState(0);
     const [pageDetail, setPageDetail] = useState({});
@@ -42,11 +45,14 @@ const PaperPage = () => {
     const [comment, setComment] = useState("");
     const [editCommentId, setEditCommentId] = useState(null);
     const [editCommentContent, setEditCommentContent] = useState("");
+    const [likeNum, setLikeNum] = useState(0);
 
     const { data: pageData, fetchData: fetchPageData } = useAxios();
     const { data: bookmarkData, fetchData: fetchBookmarkData } = useAxios();
     const { data: commentData, fetchData: fetchCommentData } = useAxios();
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
+    const { data: likeCheckData, fetchData: fetchLikeCheckData } = useAxios();
+    const { data: likeCountData, fetchData: fetchLikeCountData } = useAxios();
     const { fetchData: fetchPageDeleteData } = useAxios();
     const { fetchData: fetchCommentAddData } = useAxios();
     const { fetchData: fetchCommentEditData } = useAxios();
@@ -80,9 +86,20 @@ const PaperPage = () => {
         await fetchBookmarkData(BookMark.getBookmarkPaper(paperId));
     };
 
-    // 페이지 처음 실행됭때, bookmark 정보 가져옴
+    // 좋아요 여부 가져오기
+    const fetchLikeCheck = async () => {
+        await fetchLikeCheckData(Like.getLikeCheck(paperId));
+    };
+
+    // 좋아요 갯수 가져오기
+    const fetchLikeCount = async () => {
+        await fetchLikeCountData(Like.getCountLike(paperId));
+    }
+    // 페이지 처음 실행될 때, bookmark, like 정보 가져옴
     useEffect(() => {
         fetchBookmark();
+        fetchLikeCheck();
+        fetchLikeCount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -103,6 +120,32 @@ const PaperPage = () => {
 
         await fetchBookmark();
         setIsModalOpen(true);
+    };
+
+    // Like 정보 저장
+    useEffect(() => {
+        // 좋아요 여부
+        if (likeCheckData) {
+            setIsHeartIconFilled(likeCheckData.liked);
+        }
+        // 좋아요 갯수
+        if (likeCountData) {
+            setLikeNum(likeCountData.countLike);
+        }
+    }, [likeCheckData, likeCountData]);
+
+    // 좋아요 추가/해제 핸들러
+    const handelHeartIconClick = async () => {
+        if (isHeartIconFilled) {
+            await fetchLikeCheckData(Like.deleteLike(paperId));
+            setIsHeartIconFilled(false);
+        } else {
+            await fetchLikeCheckData(Like.postLike(paperId));
+            setIsHeartIconFilled(true);
+        }
+        
+        fetchLikeCheck();
+        fetchLikeCount();
     };
 
     // Comment 불러오기
@@ -190,14 +233,14 @@ const PaperPage = () => {
             await fetchDiaryData(Diary.getDiaryList(params));
         };
         fetchDiary();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fetchDiaryData])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fetchDiaryData]);
 
     // 페이퍼 삭제
     const paperDeleteClick = async () => {
         await fetchPageDeleteData(Paper.deletePaper(paperId));
         navigate(`/papers/diary/${diaryData[0].id}`);
-    }
+    };
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -258,9 +301,30 @@ const PaperPage = () => {
                             </p>
                         </div>
                     </div>
-                    <div className={styles.right}>
-                        <Button type="button" variant="inactive" label={<PlaceSaveIcon color="#000" fill={isSaveIconFilled ? "#000" : "none"} />} onClick={handleSaveIconClick} />
-                    </div>
+                </div>
+                <div className={styles.buttonsContainer}>
+                    <Button
+                        type="button"
+                        variant="inactive"
+                        label={
+                            <>
+                                <PlaceSaveIcon color="#FB8176" fill={isSaveIconFilled ? "#FB8176" : "none"} />
+                                <p>저장하기</p>
+                            </>
+                        }
+                        onClick={handleSaveIconClick}
+                    />
+                    <Button
+                        type="button"
+                        variant="inactive"
+                        label={
+                            <>
+                                <HeartIcon fill={isHeartIconFilled ? "#FB8176" : "none"} />
+                                <p>{likeNum}</p>
+                            </>
+                        }
+                        onClick={handelHeartIconClick}
+                    />
                 </div>
                 <div className={styles.mapContainer}>
                     <MapApiPlace height="218px" coordinateX={pageDetail.coordinateX} coordinateY={pageDetail.coordinateY} />
@@ -274,12 +338,9 @@ const PaperPage = () => {
                     <div className={styles.allCommentContainer}>
                         {commentList.map((comment, index) => (
                             <div className={styles.commentsContainer} key={index}>
-                                <img 
-                                  src={comment.profileImg === "" ? 
-                                    "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" 
-                                    :
-                                    comment.profileImg}
-                                  alt={comment.userNickname}
+                                <img
+                                    src={comment.profileImg === "" ? "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" : comment.profileImg}
+                                    alt={comment.userNickname}
                                 />
                                 <div className={styles.commentContainer}>
                                     <p className={styles.nickName}>{comment.userNickname}</p>
@@ -315,12 +376,9 @@ const PaperPage = () => {
                     <div className={styles.allCommentContainer}>
                         {commentList.map((comment, index) => (
                             <div className={styles.commentsContainer} key={index}>
-                                <img 
-                                  src={comment.profileImg === "" ? 
-                                    "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" 
-                                    :
-                                    comment.profileImg}
-                                  alt={comment.userNickname}
+                                <img
+                                    src={comment.profileImg === "" ? "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png" : comment.profileImg}
+                                    alt={comment.userNickname}
                                 />
                                 <div className={styles.commentContainer}>
                                     <p className={styles.nickName}>{comment.userNickname}</p>

@@ -17,7 +17,9 @@ import Paper from "@/apis/api/Paper";
 import BottomBar from "@/components/BottomBar/BottomBar";
 import { makeArray } from "@/utils/makeArray";
 import { useDispatch, useSelector } from "react-redux";
-import { setDiaryDetail, setPaperList, setIsToggle, resetIsToggle, setMembers } from "@/redux/slices/diarySlice";
+import { setDiaryDetail, setPaperList, setIsToggle, resetIsToggle, setMembers, toggleModal } from "@/redux/slices/diarySlice";
+import Modal from "@/components/Modal/Modal";
+import CancelImage from "@/assets/images/cancelImage.png";
 
 const basicDiaryImageUrl = "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/diary-profile.png";
 
@@ -25,7 +27,7 @@ const DiaryDetail = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const dispatch = useDispatch();
-    const { diaryDetail, paperList, members, isIndividual, isToggle } = useSelector((state) => state.diary);
+    const { diaryDetail, paperList, members, isIndividual, isToggle, isModalOpen } = useSelector((state) => state.diary);
 
     const { data: diaryData, fetchData: fetchDiaryData } = useAxios();
     const { data: paperData, fetchData: fetchPaperData } = useAxios();
@@ -71,16 +73,20 @@ const DiaryDetail = () => {
     const handleExitClick = async () => {
         await fetchExitDiaryData(Diary.getDiaryExit(id));
         navigate("/diary");
+        dispatch(toggleModal());
     };
 
     // 페이지가 바뀔 때 isToggle 상태 리셋
     useEffect(() => {
         dispatch(resetIsToggle());
+        if (isModalOpen){
+            dispatch(toggleModal());
+        }
     }, [navigate, id, dispatch]);
 
     // 뒤로 가기 버튼 클릭
     const handleBackClick = () => {
-        navigate('/diary');
+        navigate("/diary");
         dispatch(setMembers([]));
     };
 
@@ -88,7 +94,11 @@ const DiaryDetail = () => {
     const handleEditClick = () => {
         navigate(`/edit/diary/${id}`);
         dispatch(setMembers([]));
-    }
+    };
+
+    const closeModal = () => {
+        dispatch(toggleModal());
+    };
 
     return (
         <div className={styles.allContainer}>
@@ -103,7 +113,7 @@ const DiaryDetail = () => {
                         <div className={styles.menuContainer}>
                             <Button type="button" variant="inactive" label="수정하기" onClick={handleEditClick} />
                             {!isIndividual && (
-                                <button className={styles.exitButton} onClick={handleExitClick}>
+                                <button className={styles.exitButton} onClick={() => dispatch(toggleModal())}>
                                     나가기
                                 </button>
                             )}
@@ -174,6 +184,17 @@ const DiaryDetail = () => {
                 </div>
             </div>
             <BottomBar />
+            {isModalOpen && (
+                <Modal closeFn={closeModal}>
+                    <Modal.Icon>
+                        <img src={CancelImage} alt="나가기" />
+                    </Modal.Icon>
+                    <Modal.Body><span style={{color:"#FB8176"}}>{diaryDetail.name}</span>를 나가시겠습니까?</Modal.Body>
+                    <Modal.Button>
+                        <Button type="button" label="나가기" variant="active" onClick={handleExitClick} />
+                    </Modal.Button>
+                </Modal>
+            )}
         </div>
     );
 };

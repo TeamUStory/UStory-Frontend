@@ -35,6 +35,8 @@ const SelectDiary = lazy(() => import("./pages/Paper/SelectDiary"));
 const PaperPage = lazy(() => import("./pages/Paper/PaperPage"));
 const EditPaper = lazy(() => import("./pages/Paper/EditPaper"));
 const PlaceSearch = lazy(() => import("./pages/Paper/PlaceSearch"));
+const Recommendation = lazy(() => import("./pages/Recommendation/Recommendation"));
+const RecommendPaper = lazy(() => import("./pages/Recommendation/RecommendPaper"));
 
 function App() {
     const { isLoggedIn } = useAuth();
@@ -95,6 +97,8 @@ function App() {
                         <Route path="/papers/:paperId" element={<PaperPage />} />
                         <Route path="/edit/paper/:paperId" element={<EditPaper />} />
                         <Route path="/search/place" element={<PlaceSearch />} />
+                        <Route path="/recommendation" element={<Recommendation />} />
+                        <Route path="/recommendation/:recommendPaperKey" element={<RecommendPaper />} />
                     </>
                 ) : (
                     <Route path="*" element={<Login />} />

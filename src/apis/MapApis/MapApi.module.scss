@@ -1,6 +1,6 @@
 @import "@/assets/styles/colors.scss";
 
-.wrap {position: absolute;left: 0;bottom: 50px;width: 200px;margin-left: -144px;text-align: left;font-size: 12px;line-height: 1.5;}
+.wrap {position: absolute;left: 0;bottom: 50px;margin-left: -144px;text-align: left;font-size: 12px;line-height: 1.5;}
 .wrap * {padding: 0;margin: 0;}
 .wrap .info {width: 100%;border-radius: 15px;overflow: hidden;background: #fff; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);}
 .title{
@@ -33,6 +33,7 @@
   font-size: 14px;
   color: $point-color1;
   word-break: break-all;
+  overflow: hidden;
 
   svg{
     width: 16px;

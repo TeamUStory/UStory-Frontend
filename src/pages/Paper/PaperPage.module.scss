@@ -160,10 +160,33 @@
 
             .right button {
                 padding: 0;
-                
             }
             
         }
+        .buttonsContainer {
+            display: flex;
+            justify-content: space-around;
+
+            button {
+                border-radius: 10px;
+                border: 1px $point-color1 solid;
+                box-sizing: border-box;
+                padding: 12px;
+                width: 164px;
+                
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                p {
+                    color: $point-color1;
+                    font-size: 14px;
+                    font-weight: 500;
+                }                
+            }
+        }
+        
         .mapContainer {
             display: flex;
             justify-content: center;

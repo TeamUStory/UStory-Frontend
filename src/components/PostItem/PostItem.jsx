@@ -6,7 +6,9 @@ import { truncateText } from "@/utils/truncateText";
 const PostItem = ({ image, title, link, subText, children }) => {
     return (
         <Link to={link} className={styles.postItem}>
-            <img src={image} alt={title} className={styles.image}/>
+            <p className={styles.image}>
+              <img src={image} alt={title} />
+            </p>
             <div className={styles.content}>
                 <div className={styles.title}>{truncateText(title, 10)}</div>
                 <div className={styles.sub}>
@@ -19,10 +21,10 @@ const PostItem = ({ image, title, link, subText, children }) => {
 }
 
 PostItem.propTypes = {
-    image: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    link: PropTypes.string.isRequired,
-    subText: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    title: PropTypes.string,
+    link: PropTypes.string,
+    subText: PropTypes.string,
     children: PropTypes.node
 }
 

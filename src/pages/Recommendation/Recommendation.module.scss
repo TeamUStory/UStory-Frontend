@@ -1,0 +1,105 @@
+@import "@/assets/styles/colors.scss";
+
+.recommendHeader{
+  flex-direction: row;
+  justify-content: space-between;
+  z-index: 1000;
+
+  background: $white1;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 13px 20px;
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  min-width: 320px;
+  max-width: 480px;
+  margin: 0 auto;
+
+  button{
+    padding: 0px;
+  }
+
+  .title{
+    font-size: 16px;
+    color: $point-color1;
+    font-weight: 600;
+  }
+
+  .btnBox{
+
+    button{
+      position: static;
+      transform: translateY(0);
+    }
+
+    svg{
+      width: 26px;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+  }
+}
+
+.recommendWrap{
+  box-sizing: border-box;
+  padding-top: 50px;
+  min-width: 320px;
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+
+  .wrap{
+    box-sizing: border-box;
+    padding: 20px;
+  }
+}
+
+.rcmdList{
+  position: relative;
+  width: 100%;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  p {
+    position: relative;
+    z-index: 1;
+
+    &:before{
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 100%;
+      background: $point-color1;
+      opacity: 20%;
+      transform: rotate(5deg);
+      left: 5px;
+      top:-10px;
+      border-radius: 10px;
+      z-index: -1;
+    }
+  }
+}
+
+.detail{
+  p:before{
+    display: none;
+  }
+
+  svg path{
+    fill:#aaa;
+    stroke: #aaa;
+  }
+}
+
+.noWrap{
+  height: 80vh;
+  width: 100%;
+
+  p::before{
+    display: none;
+  }
+}

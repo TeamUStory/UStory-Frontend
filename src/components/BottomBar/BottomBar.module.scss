@@ -25,22 +25,19 @@
         align-items: flex-start;
         box-sizing: border-box;
         padding-top: 10px;
-
-        a{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            
-            svg{
-                height: auto;
-            }
-        }
         
         .iconWrapper {
             text-align: center;
             display: flex;
             justify-content: center;
+            align-items: center;
+
+            flex-direction: column;
+
+            p {
+                font-size: 12px;
+                font-weight: 400;
+            }
         }
     }
 }
