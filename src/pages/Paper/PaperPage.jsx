@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./PaperPage.module.scss";
 import Button from "@/components/Button/Button";
 import ArrowIcon from "@/assets/icons/ArrowIcon";
@@ -28,24 +29,30 @@ import CancelImage from "@/assets/images/cancelImage.png";
 import CarouselIndicator from "@/components/Carousel/CarouselIndicator";
 import HeartIcon from "@/assets/icons/HeartIcon";
 import Like from "@/apis/api/Like";
+import {
+    setComment,
+    setEditCommentId,
+    setEditCommentContent,
+    toggleMenu,
+    setCommentList,
+    setImages,
+    setIsSaveIconFilled,
+    setIsHeartIconFilled,
+    setIsModalOpen,
+    setIsCommentOpen,
+    setPageDetail,
+    setLikeNum,
+    setToggleIndex,
+    resetToggleIndex,
+} from "@/redux/slices/paperSlice";
 
 const PaperPage = () => {
     const navigate = useNavigate();
     const { paperId } = useParams();
+    const dispatch = useDispatch();
 
-    const [commentList, setCommentList] = useState([]);
-    const [isToggle, setIsToggle] = useState(false);
-    const [toggleIndex, setToggleIndex] = useState(null);
-    const [isSaveIconFilled, setIsSaveIconFilled] = useState(false);
-    const [isHeartIconFilled, setIsHeartIconFilled] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isCommetOpen, setCommentOpen] = useState(0);
-    const [pageDetail, setPageDetail] = useState({});
-    const [images, setImages] = useState([]);
-    const [comment, setComment] = useState("");
-    const [editCommentId, setEditCommentId] = useState(null);
-    const [editCommentContent, setEditCommentContent] = useState("");
-    const [likeNum, setLikeNum] = useState(0);
+    const { commentList, isToggle, toggleIndex, isSaveIconFilled, isHeartIconFilled, isModalOpen, isCommentOpen, pageDetail, images, comment, editCommentId, editCommentContent, likeNum } =
+        useSelector((state) => state.paper);
 
     const { data: pageData, fetchData: fetchPageData } = useAxios();
     const { data: bookmarkData, fetchData: fetchBookmarkData } = useAxios();
@@ -70,16 +77,16 @@ const PaperPage = () => {
     // paperDetail 정보 저장, 이미지 저장
     useEffect(() => {
         if (pageData) {
-            setPageDetail(pageData);
+            dispatch(setPageDetail(pageData));
             if (pageData.unlocked) {
-                setImages([pageData.thumbnailImageUrl, ...pageData.imageUrls]);
-                setCommentOpen(true);
+                dispatch(setImages([pageData.thumbnailImageUrl, ...pageData.imageUrls]));
+                dispatch(setIsCommentOpen(true));
             } else {
                 setImages([pageData.thumbnailImageUrl]);
-                setCommentOpen(false);
+                dispatch(setIsCommentOpen(false));
             }
         }
-    }, [pageData]);
+    }, [pageData, dispatch]);
 
     // bookmark 정보 가져오기
     const fetchBookmark = async () => {
@@ -94,7 +101,7 @@ const PaperPage = () => {
     // 좋아요 갯수 가져오기
     const fetchLikeCount = async () => {
         await fetchLikeCountData(Like.getCountLike(paperId));
-    }
+    };
     // 페이지 처음 실행될 때, bookmark, like 정보 가져옴
     useEffect(() => {
         fetchBookmark();
@@ -106,9 +113,9 @@ const PaperPage = () => {
     // bookmark 여부 저장
     useEffect(() => {
         if (bookmarkData) {
-            setIsSaveIconFilled(bookmarkData.bookmarked);
+            dispatch(setIsSaveIconFilled(bookmarkData.bookmarked));
         }
-    }, [bookmarkData]);
+    }, [bookmarkData, dispatch]);
 
     // bookmark 추가/해제 핸들러
     const handleSaveIconClick = async () => {
@@ -119,31 +126,31 @@ const PaperPage = () => {
         }
 
         await fetchBookmark();
-        setIsModalOpen(true);
+        dispatch(setIsModalOpen(true));
     };
 
     // Like 정보 저장
     useEffect(() => {
         // 좋아요 여부
         if (likeCheckData) {
-            setIsHeartIconFilled(likeCheckData.liked);
+            dispatch(setIsHeartIconFilled(likeCheckData.greatd));
         }
         // 좋아요 갯수
         if (likeCountData) {
-            setLikeNum(likeCountData.countLike);
+            dispatch(setLikeNum(likeCountData.countGreat));
         }
-    }, [likeCheckData, likeCountData]);
+    }, [likeCheckData, likeCountData, dispatch]);
 
     // 좋아요 추가/해제 핸들러
     const handelHeartIconClick = async () => {
         if (isHeartIconFilled) {
             await fetchLikeCheckData(Like.deleteLike(paperId));
-            setIsHeartIconFilled(false);
+            dispatch(setIsHeartIconFilled(false));
         } else {
             await fetchLikeCheckData(Like.postLike(paperId));
-            setIsHeartIconFilled(true);
+            dispatch(setIsHeartIconFilled(true));
         }
-        
+
         fetchLikeCheck();
         fetchLikeCount();
     };
@@ -159,11 +166,12 @@ const PaperPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // Comment 목록이 바뀔 때, commentList 업데이트
     useEffect(() => {
         if (commentData) {
-            setCommentList(commentData);
+            dispatch(setCommentList(commentData));
         }
-    }, [commentData]);
+    }, [commentData, dispatch]);
 
     const handleInputChange = (e) => {
         setComment(e.target.value);
@@ -179,14 +187,14 @@ const PaperPage = () => {
         await fetchCommentAddData(Comment.postComment(paperId, comment));
 
         fetchComment();
-        setComment("");
+        dispatch(setComment(""));
     };
 
     // 코멘트 수정 버튼 클릭
     const handleEditClick = (commentId, content) => {
-        setEditCommentId(commentId);
-        setEditCommentContent(content);
-        setToggleIndex(null);
+        dispatch(setEditCommentId(commentId));
+        dispatch(setEditCommentContent(content));
+        dispatch(setToggleIndex(null));
     };
 
     // 코멘트 수정 사항 저장
@@ -199,8 +207,8 @@ const PaperPage = () => {
         await fetchCommentEditData(Comment.putComment(editCommentId, editCommentContent));
 
         fetchComment();
-        setEditCommentId(null);
-        setEditCommentContent("");
+        dispatch(setEditCommentId(null));
+        dispatch(setEditCommentContent(""));
     };
 
     // 코멘트 삭제
@@ -209,17 +217,12 @@ const PaperPage = () => {
         fetchComment();
     };
 
-    // header에 있는 moreIcon
-    const toggleMenu = () => {
-        setIsToggle(!isToggle);
-    };
-
     // 코멘트에 있는 moreIcon
     const toggleMenu2 = (index) => {
         if (toggleIndex === index) {
-            setToggleIndex(null);
+            dispatch(resetToggleIndex());
         } else {
-            setToggleIndex(index);
+            dispatch(setToggleIndex(index));
         }
     };
 
@@ -243,7 +246,7 @@ const PaperPage = () => {
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        dispatch(setIsModalOpen(false));
     };
 
     return (
@@ -254,13 +257,15 @@ const PaperPage = () => {
                     <Noti />
                     {pageDetail.isUpdatable === 1 && pageDetail.unlocked === 1 && (
                         <>
-                            <button className={styles.moreIcon} onClick={toggleMenu}>
+                            <button className={styles.moreIcon} onClick={() => dispatch(toggleMenu())}>
                                 <MoreIcon stroke="black" />
                             </button>
                             {isToggle && (
                                 <div className={styles.menuContainer}>
                                     <Button type="button" variant="inactive" label="수정하기" onClick={() => navigate(`/edit/paper/${paperId}`)} />
-                                    <button className={styles.exitButton} type="button" onClick={paperDeleteClick}>삭제하기</button>
+                                    <button className={styles.exitButton} type="button" onClick={paperDeleteClick}>
+                                        삭제하기
+                                    </button>
                                 </div>
                             )}
                         </>
@@ -334,7 +339,7 @@ const PaperPage = () => {
                     <MessageIcon stroke="#000" />
                     <p>코멘트 ({commentList.length})</p>
                 </div>
-                {isCommetOpen ? (
+                {isCommentOpen ? (
                     <div className={styles.allCommentContainer}>
                         {commentList.map((comment, index) => (
                             <div className={styles.commentsContainer} key={index}>
@@ -413,7 +418,7 @@ const PaperPage = () => {
                         {isSaveIconFilled ? (
                             <Button type="button" label="저장리스트 확인하기" variant="active" onClick={() => navigate("/mypage/savepagelist")} />
                         ) : (
-                            <Button type="button" label="확인" variant="active" onClick={() => setIsModalOpen(false)} />
+                            <Button type="button" label="확인" variant="active" onClick={() => dispatch(setIsModalOpen(false))} />
                         )}
                     </Modal.Button>
                 </Modal>
