@@ -12,6 +12,7 @@ const mapPathnameToIconValue = {
     "/mypage/pagelist": "pageList",
     "/diary": "diaryList",
     "/mypage":"myPage",
+    "/recommendation":"recommendation",
 };
 
 const BottomBar = () => {
@@ -46,9 +47,9 @@ const BottomBar = () => {
                     <HomeIcon color={selectedIcon === 'home' ? '#FB8176' : '#AAA'} alt="홈화면" />
                     <p style={{color: selectedIcon === 'home' ? '#FB8176' : '#AAA'}}>홈</p>
                 </div>
-                <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('home', '/')}>
-                    <RecommendIcon color={selectedIcon === 'home' ? '#FB8176' : '#AAA'} alt="추천페이지" />
-                    <p style={{color: selectedIcon === 'home' ? '#FB8176' : '#AAA'}}>추천</p>
+                <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('recommendation', '/recommendation')}>
+                    <RecommendIcon color={selectedIcon === 'recommendation' ? '#FB8176' : '#AAA'} alt="추천페이지" />
+                    <p style={{color: selectedIcon === 'recommendation' ? '#FB8176' : '#AAA'}}>추천</p>
                 </div>
                 <div className={`${styles.iconWrapper}`} onClick={() => handleIconClick('myPage', '/mypage')}>
                     <MyPageIcon color={selectedIcon === 'myPage' ? '#FB8176' : '#AAA'} alt="마이페이지" />

@@ -11,6 +11,8 @@ import ProfileUpload from './ProfileUpload';
 import useAxios  from '../../hooks/useAxios';
 import User from '@/apis/api/User';
 import completedImage from '@/assets/images/completedImage.png';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser } from  "@/redux/slices/userSlice";
 
 const EditMypage = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,6 +29,9 @@ const EditMypage = () => {
   const { fetchData: fetchEditUser, data: editUserData } = useAxios();
   const { fetchData: fetchDeleteUser, response: deleteUserData } = useAxios();
   const navigator = useNavigate();
+
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch()
   
   const text = "탈퇴";
   const nickname = watch('nickname');
@@ -53,6 +58,8 @@ const EditMypage = () => {
 
   useEffect(() => {
     if (userData) {
+      dispatch(setUser(userData));
+
       setValue('profileImgUrl', userData.profileImgUrl);
       setValue('nickname', userData.nickname);
       setValue('name', userData.name);
@@ -62,8 +69,7 @@ const EditMypage = () => {
     if(userData?.profileImgUrl === "") {
       setValue('profileImgUrl', "https://ustory-bucket.s3.ap-northeast-2.amazonaws.com/common/user-profile.png");
     }
-
-  },[userData, setValue])
+  },[userData, dispatch, setValue])
   
   // 닉네임 유효성 검사 로직
   const handleNicknameValidation = async () => {
