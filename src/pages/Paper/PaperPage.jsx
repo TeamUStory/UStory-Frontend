@@ -78,15 +78,15 @@ const PaperPage = () => {
     useEffect(() => {
         if (pageData) {
             dispatch(setPageDetail(pageData));
-            if (pageData.unlocked) {
-                dispatch(setImages([pageData.thumbnailImageUrl, ...pageData.imageUrls]));
-                dispatch(setIsCommentOpen(true));
-            } else {
-                setImages([pageData.thumbnailImageUrl]);
-                dispatch(setIsCommentOpen(false));
-            }
+
+            const images = [pageData.thumbnailImageUrl, ...(pageData.unlocked ? pageData.imageUrls || [] : [])];
+
+            dispatch(setImages(images));
+
+            dispatch(setIsCommentOpen(pageData.unlocked));
         }
     }, [pageData, dispatch]);
+
 
     // bookmark 정보 가져오기
     const fetchBookmark = async () => {

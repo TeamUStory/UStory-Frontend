@@ -24,7 +24,9 @@ const paperSlice = createSlice({
         placeInformation: {},
         paperId: 0,
 
-        // 다이어리 선탣
+        // 이미지 리스트 및 썸네일
+        imageUrls: [],
+        thumbnailImageUrl: "",
     },
     reducers: {
         // 페이퍼 페이지 함수
@@ -37,15 +39,13 @@ const paperSlice = createSlice({
         setEditCommentContent: (state, action) => {
             state.editCommentContent = action.payload;
         },
-        // header에 있는 moreIcon
         toggleMenu: (state) => {
             state.isToggle = !state.isToggle;
         },
-        // comment에 있는 moreIcon
-        setToggleIndex(state, action) {
+        setToggleIndex: (state, action) => {
             state.toggleIndex = action.payload;
         },
-        resetToggleIndex(state) {
+        resetToggleIndex: (state) => {
             state.toggleIndex = null;
         },
         setCommentList: (state, action) => {
@@ -90,7 +90,8 @@ const paperSlice = createSlice({
             state.isBackModalOpen = action.payload;
         },
     },
-});
+});    
+
 
 export const {
     setComment,

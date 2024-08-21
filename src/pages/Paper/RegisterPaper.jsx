@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import PropTypes from "prop-types";
@@ -17,19 +17,17 @@ import useAxios from "@/hooks/useAxios";
 import Paper from "@/apis/api/Paper";
 import CompletedImage from "@/assets/images/completedImage.png";
 import CancelImage from "@/assets/images/cancelImage.png";
+import { setDiary, setPlaceInformation, setPaperId, setButtonActive, setIsBackModalOpen, setIsModalOpen } from "@/redux/slices/paperSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const RegisterPaper = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { register, handleSubmit, setValue, watch, control, reset } = useForm();
     const watchAllFields = watch();
+    const dispatch = useDispatch();
 
-    const [diary, setDiary] = useState({});
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isBackModalOpen, setIsBackModalOpen] = useState(false);
-    const [buttonActive, setButtonActive] = useState("disabled");
-    const [placeInformation, setPlaceInformation] = useState({});
-    const [paperId, setPaperId] = useState(0);
+    const { diary, isModalOpen, isBackModalOpen, buttonActive, placeInformation, paperId } = useSelector((state) => state.paper);
 
     const { data: paperNum, fetchData: fetchPaperData } = useAxios();
 
@@ -43,7 +41,7 @@ const RegisterPaper = () => {
     useEffect(() => {
         const selectedDiary = location.state?.selectedDiary || JSON.parse(localStorage.getItem("selectedDiary"));
         if (selectedDiary) {
-            setDiary(selectedDiary);
+            dispatch(setDiary(selectedDiary));
             localStorage.setItem("selectedDiary", JSON.stringify(selectedDiary));
         }
     }, [location.state]);
@@ -51,7 +49,7 @@ const RegisterPaper = () => {
     // 장소 정보 불러오기
     useEffect(() => {
         const storedPlaceInfo = JSON.parse(localStorage.getItem("placeInfo")) || {};
-        setPlaceInformation(storedPlaceInfo);
+        dispatch(setPlaceInformation(storedPlaceInfo));
     }, []);
 
     // 로컬스토리지에서 formData 불러오기
@@ -91,7 +89,7 @@ const RegisterPaper = () => {
     // 모든 항목의 유효성 검사
     useEffect(() => {
         const isFormValid = Object.values(watchAllFields).every((value) => !!value);
-        setButtonActive(isFormValid ? "active" : "disabled");
+        dispatch(setButtonActive(isFormValid ? "active" : "disabled"));
     }, [watchAllFields]);
 
     const onSubmit = async (data) => {
@@ -110,13 +108,13 @@ const RegisterPaper = () => {
             imageUrls: data.imageUrls,
         };
         await fetchPaperData(Paper.postPaper(postData));
-        setIsModalOpen(true);
+        dispatch(setIsModalOpen(true));
     };
 
     // 페이퍼 아이디 가져오기
     useEffect(() => {
         if (paperNum) {
-            setPaperId(paperNum.paperId);
+            dispatch(setPaperId(paperNum.paperId));
         }
     }, [paperNum]);
 
@@ -126,7 +124,7 @@ const RegisterPaper = () => {
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        dispatch(setIsModalOpen(false));
         navigate(`/papers/${paperId}`);
         reset();
         localStorage.removeItem("paperFormData");
@@ -134,7 +132,7 @@ const RegisterPaper = () => {
         localStorage.removeItem("paperImageUrls");
         localStorage.removeItem("thumbnailImageUrl");
         localStorage.removeItem("selectedDiary");
-        setDiary({});
+        dispatch(setDiary({}));
     };
 
     const handleRegisterClick = () => {
@@ -143,8 +141,8 @@ const RegisterPaper = () => {
         localStorage.removeItem("paperImageUrls");
         localStorage.removeItem("thumbnailImageUrl");
         localStorage.removeItem("selectedDiary");
-        setDiary({});
-        setIsModalOpen(false);
+        dispatch(setDiary({}));
+        dispatch(setIsModalOpen(false));
         window.location.reload();
         reset();
     };
@@ -163,12 +161,12 @@ const RegisterPaper = () => {
     };
 
     const closeBackModal = () => {
-        setIsBackModalOpen(false);
+        dispatch(setIsBackModalOpen(false));
     };
 
     return (
         <div className={styles.container}>
-            <SubHeader pageTitle="기록하기" onClick={() => setIsBackModalOpen(true)} />
+            <SubHeader pageTitle="기록하기" onClick={() => dispatch(setIsBackModalOpen(true))} />
             <div className={styles.formContainer}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <InputField label="제목" placeholder="제목 입력" className={styles.input} {...register("title", { required: true })} />
@@ -216,6 +214,8 @@ const RegisterPaper = () => {
                             {isModalOpen ? (
                                 <p>
                                     장소 기록이 완료되었습니다.
+                                    <br/>
+                                    확인 버튼을 누르면 새로운 기록을 작성할 수 있습니다.
                                     <br />
                                     닫기 버튼을 누르면 등록한 기록 페이지로 넘어갑니다.
                                 </p>
