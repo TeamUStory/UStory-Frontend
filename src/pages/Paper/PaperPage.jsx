@@ -34,6 +34,7 @@ import {
     setEditCommentId,
     setEditCommentContent,
     toggleMenu,
+    resetToggleMenu,
     setCommentList,
     setImages,
     setIsSaveIconFilled,
@@ -65,6 +66,15 @@ const PaperPage = () => {
     const { fetchData: fetchCommentEditData } = useAxios();
     const { fetchData: fetchCommentDeleteData } = useAxios();
 
+    useEffect(() => {
+        return () => {
+            dispatch(resetToggleMenu());
+            if (isModalOpen) {
+                dispatch(setIsModalOpen(false));
+            }
+        };
+    }, [dispatch]);
+
     // paper 상세 정보 조회
     useEffect(() => {
         const fetchPage = async () => {
@@ -86,7 +96,6 @@ const PaperPage = () => {
             dispatch(setIsCommentOpen(pageData.unlocked));
         }
     }, [pageData, dispatch]);
-
 
     // bookmark 정보 가져오기
     const fetchBookmark = async () => {

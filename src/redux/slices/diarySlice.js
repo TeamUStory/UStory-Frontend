@@ -44,7 +44,6 @@ const diarySlice = createSlice({
         },
         setIsIndividual: (state, action) => {
             state.isIndividual = action.payload;
-            console.log(action.payload);
         },
         setPaperList: (state, action) => {
             state.paperList = action.payload;

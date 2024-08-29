@@ -8,16 +8,20 @@ import ImageEditor from "@/components/ImageEditor/ImageEditor";
 import useAxios from "@/hooks/useAxios";
 import S3Storage from "@/apis/api/S3Storage";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setImageUrls, setThumbnailImageUrl } from "@/redux/slices/paperSlice";
 
 const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [uploadedImage, setUploadedImage] = useState(null);
     const [croppedImage, setCroppedImage] = useState(null);
-    const [imageUrls, setImageUrls] = useState([]);
-    const [thumbnailImageUrl, setThumbnailImageUrl] = useState("");
+    // const [imageUrls, setImageUrls] = useState([]);
 
     const [currentFileName, setCurrentFileName] = useState(null);
     const [presignedUrl, setPresignedUrl] = useState(null);
+
+    const dispatch = useDispatch();
+    const { imageUrls, thumbnailImageUrl } = useSelector((state) => state.paper);
 
     const { data: presignedUrlData, fetchData: fetchPresignedUrlData } = useAxios();
 
@@ -27,10 +31,10 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
     // imgUrls와 thumbnail로 초기화
     useEffect(() => {
         if (imgUrls || thumbnail) {
-            setImageUrls([...imgUrls]);
-            setThumbnailImageUrl(thumbnail);
+            dispatch(setImageUrls([...imgUrls]));
+            dispatch(setThumbnailImageUrl(thumbnail));
         }
-    }, [imgUrls, thumbnail]);
+    }, [imgUrls, thumbnail, dispatch]);
 
     // 로컬 스토리지에서 저장된 이미지 및 썸네일 URL 불러오기
     useEffect(() => {
@@ -38,10 +42,10 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
         const savedThumbnailImageUrl = localStorage.getItem("thumbnailImageUrl");
 
         if (savedImageUrls.length > 0) {
-            setImageUrls(savedImageUrls);
+            dispatch(setImageUrls(savedImageUrls));
         }
         if (savedThumbnailImageUrl) {
-            setThumbnailImageUrl(savedThumbnailImageUrl);
+            dispatch(setThumbnailImageUrl(savedThumbnailImageUrl));
         }
     }, []);
 
@@ -98,14 +102,12 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
                         const url = presignedUrl.split("?")[0];
 
                         if (!thumbnailImageUrl && imageUrls.length === 0) {
-                            setThumbnailImageUrl(url);
+                            dispatch(setThumbnailImageUrl(url));
                             localStorage.setItem("thumbnailImageUrl", url);
                         } else {
-                            setImageUrls((prevUrls) => {
-                                const newUrls = [...prevUrls, url].filter((value, index, self) => self.indexOf(value) === index);
-                                localStorage.setItem("paperImageUrls", JSON.stringify(newUrls));
-                                return newUrls;
-                            });
+                            const updatedImageUrls = [...imageUrls, url].filter((value, index, self) => self.indexOf(value) === index);
+                            localStorage.setItem("paperImageUrls", JSON.stringify(updatedImageUrls));
+                            dispatch(setImageUrls(updatedImageUrls));
                         }
 
                         setCroppedImage(null);
@@ -135,67 +137,52 @@ const PaperImageUpload = ({ onImageUrlsChange, imgUrls, thumbnail }) => {
 
     // 썸네일 클릭 처리
     const handleThumbnailClick = (url, e) => {
-        e.preventDefault(); // 폼 제출 방지
-        e.stopPropagation(); // 이벤트 전파 방지
-
+        e.preventDefault();
+        e.stopPropagation();
+    
         if (thumbnailImageUrl === url) {
             return;
-        } else if (imageUrls.includes(url)) {
-            // 이미지 목록에 있는 썸네일 클릭한 경우
+        }
+    
+        if (imageUrls.includes(url)) {
             const prevThumbnailUrl = thumbnailImageUrl;
-
-            setThumbnailImageUrl(url);
+    
+            // 새로운 썸네일 URL 설정
+            dispatch(setThumbnailImageUrl(url));
             localStorage.setItem("thumbnailImageUrl", url);
-
-            // 이전 썸네일 이미지가 있는 경우 이미지 배열에 다시 추가
+    
+            let updatedImageUrls = imageUrls.filter((prevUrl) => prevUrl !== url);
+    
+            // 이전 썸네일 URL이 있으면 배열에 추가
             if (prevThumbnailUrl) {
-                setImageUrls((prevUrls) => {
-                    const newUrls = [...prevUrls, prevThumbnailUrl].filter((value, index, self) => self.indexOf(value) === index);
-                    localStorage.setItem("paperImageUrls", JSON.stringify(newUrls));
-                    return newUrls;
-                });
-
-                // localStorage에서 이전 썸네일 URL 추가
-                if (localStorage.getItem("paperImageUrls")) {
-                    const savedImageUrls = JSON.parse(localStorage.getItem("paperImageUrls"));
-                    const newUrls = [...savedImageUrls, prevThumbnailUrl].filter((value, index, self) => self.indexOf(value) === index);
-                    localStorage.setItem("paperImageUrls", JSON.stringify(newUrls));
-                }
+                updatedImageUrls = [...updatedImageUrls, prevThumbnailUrl];
             }
-
-            // 새로운 썸네일 URL 이미지 배열에서 제거
-            setImageUrls((prevUrls) => {
-                const filteredUrls = prevUrls.filter((prevUrl) => prevUrl !== url);
-                localStorage.setItem("paperImageUrls", JSON.stringify(filteredUrls));
-                return filteredUrls;
-            });
-
-            // localStorage에서 새로운 썸네일 URL 제거
-            if (localStorage.getItem("paperImageUrls")) {
-                const savedImageUrls = JSON.parse(localStorage.getItem("paperImageUrls"));
-                const filteredUrls = savedImageUrls.filter((savedUrl) => savedUrl !== url);
-                localStorage.setItem("paperImageUrls", JSON.stringify(filteredUrls));
-            }
+    
+            // 로컬 스토리지 및 Redux 스토어 업데이트
+            localStorage.setItem("paperImageUrls", JSON.stringify(updatedImageUrls));
+            dispatch(setImageUrls(updatedImageUrls));
         }
     };
+    
 
     // 사진 삭제 처리
     const handleRemoveImage = (index, e) => {
         e.preventDefault();
         e.stopPropagation();
-
+    
         const urlToRemove = imageUrls[index];
-        setImageUrls((prevUrls) => {
-            const newUrls = prevUrls.filter((_, idx) => idx !== index);
-            localStorage.setItem("paperImageUrls", JSON.stringify(newUrls));
-            return newUrls;
-        });
-
+        const updatedImageUrls = imageUrls.filter((_, idx) => idx !== index);
+    
+        // 로컬 스토리지 및 Redux 스토어 업데이트
+        localStorage.setItem("paperImageUrls", JSON.stringify(updatedImageUrls));
+        dispatch(setImageUrls(updatedImageUrls));
+    
         if (thumbnailImageUrl === urlToRemove) {
-            setThumbnailImageUrl("");
+            dispatch(setThumbnailImageUrl(""));
             localStorage.removeItem("thumbnailImageUrl");
         }
     };
+    
 
     // 이미지 및 썸네일 URL 변경 시 부모 컴포넌트로 전달
     useEffect(() => {
