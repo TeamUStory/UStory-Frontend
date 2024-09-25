@@ -31,6 +31,12 @@ const RegisterPaper = () => {
 
     const { data: paperNum, fetchData: fetchPaperData } = useAxios();
 
+    // 뒤로 가기, 등록 완료 모달창 초기화
+    useEffect(() => {
+        dispatch(setIsBackModalOpen(false));
+        dispatch(setIsModalOpen(false));
+    }, []);
+
     // 이미지 URL과 썸네일 URL 변화 감지
     const handleImageUrlsChange = (newImageUrls, newThumbnail) => {
         setValue("imageUrls", newImageUrls);

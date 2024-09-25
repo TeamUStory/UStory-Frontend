@@ -27,6 +27,10 @@ const paperSlice = createSlice({
         // 이미지 리스트 및 썸네일
         imageUrls: [],
         thumbnailImageUrl: "",
+
+        // 페이퍼 수정 초기 상태
+        isLoadedFromStorage: false,
+        thumbnailUrl: "",
     },
     reducers: {
         // 페이퍼 페이지 함수
@@ -41,6 +45,9 @@ const paperSlice = createSlice({
         },
         toggleMenu: (state) => {
             state.isToggle = !state.isToggle;
+        },
+        resetToggleMenu: (state) => {
+            state.isToggle = false;
         },
         setToggleIndex: (state, action) => {
             state.toggleIndex = action.payload;
@@ -89,15 +96,31 @@ const paperSlice = createSlice({
         setIsBackModalOpen: (state, action) => {
             state.isBackModalOpen = action.payload;
         },
-    },
-});    
 
+        // 이미지 업로드 함수
+        setImageUrls: (state, action) => {
+            state.imageUrls = action.payload;
+        },
+        setThumbnailImageUrl: (state, action) => {
+            state.thumbnailImageUrl = action.payload;
+        },
+
+        // 페이퍼 수정 페이지 함수
+        setIsLoadedFromStorage: (state, action) => {
+            state.isLoadedFromStorage = action.payload;
+        },
+        setThumbnailUrl: (state, action) => {
+            state.thumbnailUrl = action.payload;
+        },
+    },
+});
 
 export const {
     setComment,
     setEditCommentId,
     setEditCommentContent,
     toggleMenu,
+    resetToggleMenu,
     setCommentList,
     setImages,
     setIsSaveIconFilled,
@@ -113,6 +136,10 @@ export const {
     setPaperId,
     setButtonActive,
     setIsBackModalOpen,
+    setImageUrls,
+    setThumbnailImageUrl,
+    setIsLoadedFromStorage,
+    setThumbnailUrl,
 } = paperSlice.actions;
 
 export default paperSlice;
